@@ -1,110 +1,118 @@
-from openai import OpenAI
-from openai import AzureOpenAI
-import os
 import json
-from dotenv import load_dotenv
-from agents.twitter.context_api_fetcher import get_client_context
+from pathlib import Path
+from typing import Any, Dict, Optional
 
-load_dotenv()
+from context_api_fetcher import get_client_context
+from llm_client import llm
 
-AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
-AZURE_OPENAI_API_KEY  = os.getenv("AZURE_OPENAI_API_KEY")
-API_VERSION           = os.getenv("API_VERSION")
-DEPLOYMENT_NAME       = os.getenv("DEPLOYMENT_NAME") 
+# ---------------------------------------------------------------------------
+# Optional user profile loader (same as classifier)
+# ---------------------------------------------------------------------------
+BASE_DIR = Path(__file__).resolve().parent
+DATA_USER = BASE_DIR / "data" / "user"
 
-if not all([AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_API_KEY]):
-    raise ValueError("Missing required environment variables: AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_API_KEY")
+def load_user_profile(name: str | Path) -> Dict[str, Any]:
+    """Load a user JSON profile from *data/user/*."""
+    path = Path(name)
+    if not path.suffix:
+        path = path.with_suffix(".json")
+    if not path.is_absolute():
+        path = DATA_USER / path.name
 
-assert AZURE_OPENAI_ENDPOINT is not None
-assert AZURE_OPENAI_API_KEY is not None
+    with open(path, encoding="utf-8") as fp:
+        return json.load(fp)
 
-client = AzureOpenAI(
-    azure_endpoint=AZURE_OPENAI_ENDPOINT,
-    api_key=AZURE_OPENAI_API_KEY,
-    api_version=API_VERSION,
+# ---------------------------------------------------------------------------
+# Prompt assembly
+# ---------------------------------------------------------------------------
+SYSTEM_HEADER = (
+    "You are an AI assistant that analyzes business articles and extracts structured insights.\n\n"
+    "Your task is to return a **valid JSON object** with the following fields:\n"
+    "- \"short_description\": string (⚠️ max 6 words)\n"
+    "- \"actionable\": boolean (true or false)\n"
+    "- \"opportunity_type\": string (e.g. \"New business opportunity\")\n"
+    "- \"suggested_action\": string (e.g. \"Contact client\", \"Send proposal\", \"Schedule meeting\")\n"
+    "- \"relevance\": string (⚠️ max 100 characters, required only if actionable is true)\n\n"
+    "⚠️ Use only double quotes in JSON.\n"
+    "⚠️ Respond only with the JSON object. Do not include explanations, comments, or markdown.\n"
 )
 
-def analyze_article(client_name, title, content, context=""):
-    context = get_client_context(client_name)
 
-    prompt = f"""
-You are an AI assistant that analyzes business articles and extracts insights.
-You must respond with a **valid JSON object**, using only double quotes for keys and string values.
+JSON_INSTRUCTIONS = (
+    "Respond ONLY with a JSON object in this format (no markdown, no comments):\n"
+    "{\n"
+    "  \"short_description\": \"...\",\n"
+    "  \"actionable\": true | false,\n"
+    "  \"opportunity_type\": \"...\",\n"
+    "  \"suggested_action\": \"...\",\n"
+    "  \"relevance\": \"...\"\n"
+    "}"
+)
 
-Given the article below, return a JSON object with the following fields:
+def _build_prompt(title: str, content: str, user_profile: Optional[Dict[str, Any]], context: str) -> str:
+    user_section = (
+        "User profile (JSON):\n" + json.dumps(user_profile, ensure_ascii=False, indent=2)
+        if user_profile else ""
+    )
+    context_section = ("Recent client context:\n" + context) if context else ""
 
-- short_description (string, max 6 words)
-- actionable (boolean: true or false)
-- opportunity_type (string, e.g. "New business opportunity")
-- suggested_action (string, e.g. "Contact client", "Send proposal", "Schedule meeting", etc)
-- relevance (string, max 100 characters, only if actionable is true; else empty string)
+    return (
+        f"{SYSTEM_HEADER}\n\n"
+        f"Analyze the following article.\n\n"
+        f"Title: {title}\n\n"
+        f"Content:\n{content[:3000]}\n\n"
+        f"{user_section}\n\n"
+        f"{context_section}\n\n"
+        f"{JSON_INSTRUCTIONS}"
+    )
 
-Example JSON format:
-{{
-  "short_description": "AI in insurance workflows",
-  "actionable": true,
-  "opportunity_type": "Partnership potential",
-  "suggested_action": "Schedule meeting",
-  "relevance": "This article shows how their AI solution fits our client's business model"
-}}
+# ---------------------------------------------------------------------------
+# Main function
+# ---------------------------------------------------------------------------
+def analyze_article(
+    client_name: str,
+    title: str,
+    content: str,
+    user_profile: Optional[Dict[str, Any]] = None,
+    context_provider=get_client_context
+) -> Dict[str, Any]:
 
-Now analyze the following article.
-
-Title: {title}
-
-Content:
-{content[:3000]}
-
-Respond ONLY with a valid JSON object. Do NOT include explanations, comments, or markdown.
-
-Additionally, consider the following context about the client:
-{context}
-"""
+    context = context_provider(client_name) if client_name else ""
+    prompt = _build_prompt(title, content, user_profile, context)
 
     try:
-        response = client.chat.completions.create(
-            model=DEPLOYMENT_NAME,                   # <-- schimbat
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.3
-        )
+        reply = llm.invoke(prompt).content.strip()
+        parsed = json.loads(reply)
+    except Exception as exc:
+        print(f"❌ LLM error or invalid JSON: {exc}\n🔎 Reply was:\n{reply}")
+        return {
+            "short_description": "",
+            "actionable": False,
+            "opportunity_type": "",
+            "suggested_action": "",
+            "relevance": ""
+        }
 
-        reply_content = response.choices[0].message.content
-        if not reply_content:
-            print("❌ Eroare: Răspunsul de la LLM este gol.")
-            return "", False, "", "", ""
+    actionable = bool(parsed.get("actionable", False))
 
-        reply = reply_content.strip()
-        result = json.loads(reply)
+    return {
+        "short_description": parsed.get("short_description", ""),
+        "actionable": actionable,
+        "opportunity_type": parsed.get("opportunity_type", "") if actionable else "",
+        "suggested_action": parsed.get("suggested_action", "") if actionable else "",
+        "relevance": parsed.get("relevance", "") if actionable else ""
+    }
 
-        if result.get("actionable", False) and not result.get("relevance"):
-            print("⚠️ Warning: Article is actionable but relevance is missing.")
-
-        return (
-            result.get("short_description", ""),
-            result.get("actionable", False),
-            result.get("opportunity_type", ""),
-            result.get("suggested_action"
-                       , ""),
-            result.get("relevance", "")
-        )
-
-    except json.JSONDecodeError as e:
-        print(f"❌ Eroare în analiza semantică (JSON invalid): {e}")
-        print(f"🔎 Răspunsul LLM a fost:\n{reply if 'reply' in locals() else 'N/A'}")
-        return "", False, "", "", ""
-
-    except Exception as e:
-        print(f"❌ Eroare generală în analiza semantică: {e}")
-        return "", False, "", "", ""
-
-
+# ---------------------------------------------------------------------------
+# CLI usage (optional test)
+# ---------------------------------------------------------------------------
 if __name__ == "__main__":
-    # date de test
-    client_name = "AcmeCorp"
-    article_title = "AI platform streamlines SME lending"
-    article_content = """
-    Fintech startup LendX a anunțat lansarea unei platforme AI care reduce timpul de aprobare a creditelor pentru IMM-uri la sub 24 de ore...
-    """
-
-    result = analyze_article(client_name, article_title, article_content)
-    print(result)
+    test_client = "digital_excellence"
+    profile = load_user_profile(test_client)
+    result = analyze_article(
+        test_client,
+        "AI adoption in legal workflows",
+        "UiPath unveils automation suite targeting legal departments...",
+        user_profile=profile
+    )
+    print(json.dumps(result, indent=2, ensure_ascii=False))

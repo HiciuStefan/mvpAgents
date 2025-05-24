@@ -1,12 +1,8 @@
-from typing import List
+from playwright.sync_api import sync_playwright
+from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
 
-from playwright.sync_api import sync_playwright
-from bs4.element import Tag
-from bs4 import BeautifulSoup
-
-
-def extract_article_links(index_url: str) -> List[str]:
+def extract_article_links(index_url):
     print(f"🔗 Accesez cu Playwright: {index_url}")
 
     # 🔹 Listă flexibilă de cuvinte care apar frecvent în linkurile articolelor
@@ -34,12 +30,9 @@ def extract_article_links(index_url: str) -> List[str]:
 
     parsed_base = urlparse(index_url)
     base_domain = parsed_base.netloc
+
     for a in soup.find_all("a", href=True):
-        if not isinstance(a, Tag):
-            continue
-        href = a.get("href")
-        if not isinstance(href, str):
-            continue
+        href = a["href"]
         full_url = urljoin(index_url, href)
         parsed = urlparse(full_url)
 
