@@ -1,14 +1,14 @@
 import time
 import os
-from dotenv import load_dotenv
+import dotenv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from urls_data import MONITORED_URLS
 
-load_dotenv()
-TWITTER_USER = os.getenv("TWITTER_USER")
-TWITTER_PASS = os.getenv("TWITTER_PASS")
+dotenv.load_dotenv()
+TWITTER_USER = os.getenv("TWITTER_USER1")
+TWITTER_PASS = os.getenv("TWITTER_PASS1")
 
 def scrape_new_tweets(processed_ids: set) -> list:
     options = webdriver.ChromeOptions()
@@ -19,6 +19,10 @@ def scrape_new_tweets(processed_ids: set) -> list:
     browser = webdriver.Chrome(options=options)
 
     try:
+        
+        print(f"🔍 Login {TWITTER_USER}")
+        print(f"🔍 Login {TWITTER_PASS}")
+        
         print("🔐 Conectare la Twitter...")
         browser.get("https://twitter.com/login")
         time.sleep(3)
@@ -32,6 +36,7 @@ def scrape_new_tweets(processed_ids: set) -> list:
         password_input.send_keys(TWITTER_PASS)
         password_input.send_keys(Keys.RETURN)
         time.sleep(5)
+
 
         all_tweets = []
 
@@ -47,7 +52,7 @@ def scrape_new_tweets(processed_ids: set) -> list:
                 time.sleep(0.5)
 
             articles = browser.find_elements(By.CSS_SELECTOR, "article[data-testid='tweet']")
-
+            print(f"⚠️ Tweeturi: {articles}")
             count = 0
             for tweet in articles:
                 if count >= 3:
