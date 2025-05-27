@@ -1,0 +1,26 @@
+# 🐍 Fișiere Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# 🔐 Fișiere sensibile
+.env
+
+# 📦 Medii virtuale
+.venv/
+venv/
+
+# 🧪 Test coverage / build
+.coverage
+dist/
+build/
+*.egg-info/
+
+# 💻 Fișiere specifice editorului
+.vscode/
+.idea/
+
+# 🗑 Fișiere sistem temporare
+.DS_Store
+Thumbs.db

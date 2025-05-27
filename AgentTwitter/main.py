@@ -1,8 +1,9 @@
 from urls_data import MONITORED_URLS
 from scrape_tweets import scrape_new_tweets
-from generate_summary import generate_summary  # nou
+from generate_summary import generate_summary
 from state_manager import get_processed_ids, save_new_tweets
 from urllib.parse import urlparse
+from classify_tweet import classify_tweet  # dacă ai mutat funcția într-un fișier separat
 
 def extract_account_from_url(url: str) -> str:
     return urlparse(url).path.strip("/").split("/")[0]
@@ -19,8 +20,9 @@ def main():
 
     grouped = {}
     for tweet in all_new_tweets:
-        account = extract_account_from_url(tweet["url"])
+        tweet["category"] = classify_tweet(tweet["text"])
         tweet["status"] = "pending"
+        account = extract_account_from_url(tweet["url"])
         if account not in grouped:
             grouped[account] = {
                 "url": f"https://twitter.com/{account}",
@@ -41,6 +43,5 @@ def main():
 
     return grouped
 
-# Test local
 if __name__ == "__main__":
     main()

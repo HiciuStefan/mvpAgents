@@ -73,12 +73,27 @@ def update_tweet_status(tweet_id: str, new_status: str):
         print(f"⚠️ Tweetul cu ID-ul {tweet_id} nu a fost găsit.")
 
 
-def add_reply_to_tweet(tweet_id: str, reply_text: str):
+def add_reply_to_tweet(tweet_id: str, reply_text: str = None, category: str = None):
     tweets = load_existing_tweets()
     for tweet in tweets:
         if tweet["id"] == tweet_id:
-            tweet["reply"] = reply_text
+            if reply_text is not None:
+                tweet["reply"] = reply_text
+            if category is not None:
+                tweet["category"] = category
             break
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(tweets, f, ensure_ascii=False, indent=2)
+
+
+
+def update_tweet_category(tweet_id: str, new_category: str):
+    tweets = load_existing_tweets()
+    for tweet in tweets:
+        if tweet["id"] == tweet_id:
+            tweet["category"] = new_category
+            break
+    with open(DATA_FILE, "w", encoding="utf-8") as f:
+        json.dump(tweets, f, ensure_ascii=False, indent=2)
+
 
