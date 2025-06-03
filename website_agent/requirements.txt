@@ -1,0 +1,8 @@
+langchain
+beautifulsoup4
+requests
+openai
+python-dotenv
+tqdm
+playwright
+streamlit

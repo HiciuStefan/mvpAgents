@@ -1,0 +1,31 @@
+[
+  {
+    "name": "Digital Excellence",
+    "base_url": "https://digitalexcellence.ai",
+    "sitemap_url": "https://digitalexcellence.ai/sitemap-0.xml",
+    "sitemap_found": true,
+    "fallback_used": false,
+    "article_urls": [
+      "https://digitalexcellence.ai/news/bits-pretzels",
+      "https://digitalexcellence.ai/news/introducing-digitalexcellence",
+      "https://digitalexcellence.ai/news/rise-of-ai",
+      "https://digitalexcellence.ai/news/hyperautomation-2025",
+      "https://digitalexcellence.ai/news/deepseek",
+      "https://digitalexcellence.ai/news/rpa-automation-2025",
+      "https://digitalexcellence.ai/news/ai-rpa"
+    ],
+    "articles_found": 7
+  },
+  {
+    "name": "TechCrunch",
+    "base_url": "https://techcrunch.com",
+    "sitemap_url": "https://techcrunch.com/sitemap-page-1.xml",
+    "sitemap_found": true,
+    "fallback_used": false,
+    "article_urls": [
+      "https://techcrunch.com/video/post-synapse-meltdown-this-is-the-state-of-the-banking-as-a-service-industry/",
+      "https://techcrunch.com/video/postmates-founder-bastian-lehmann-is-hungry-for-more-with-tiptop-a-new-fintech-startup/"
+    ],
+    "articles_found": 2
+  }
+]
