@@ -1,26 +1,36 @@
-# 🐍 Fișiere Python
+# 🐍 Python
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
+*.pyc
 
-# 🔐 Fișiere sensibile
-.env
-
-# 📦 Medii virtuale
+# 📦 Pachete și medii virtuale
 .venv/
+env/
 venv/
+backup_temp/.venv/
 
-# 🧪 Test coverage / build
-.coverage
-dist/
-build/
-*.egg-info/
+# 🔑 Fișiere de mediu
+.env
+backup_temp/.env
 
-# 💻 Fișiere specifice editorului
-.vscode/
-.idea/
-
-# 🗑 Fișiere sistem temporare
+# 📁 Fișiere temporare sau cache
+*.log
+*.tmp
+*.bak
 .DS_Store
-Thumbs.db
+
+# 💻 VSCode settings (opțional)
+.vscode/
+
+# 📊 Date generate
+*.sqlite3
+*.db
+*.json
+
+# 🤖 LangGraph sau LLM cache (dacă apar)
+.cache/
+openai.log
+
+backup_temp/

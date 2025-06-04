@@ -1,3 +1,5 @@
+# scrape_tweets.py
+
 import time
 import os
 from dotenv import load_dotenv
@@ -35,8 +37,10 @@ def scrape_new_tweets(processed_ids: set) -> list:
 
         all_tweets = []
 
-        for profile_url in MONITORED_URLS:
-            print(f"🔍 Verific {profile_url}")
+        for profile in MONITORED_URLS:
+            client_name = profile["client_name"]
+            profile_url = profile["profile_url"]
+            print(f"🔍 Verific {client_name} → {profile_url}")
             browser.get(profile_url)
             time.sleep(5)
 
@@ -66,6 +70,7 @@ def scrape_new_tweets(processed_ids: set) -> list:
                         tweet_id = tweet_url.split("/")[-1]
                         if tweet_id not in processed_ids:
                             all_tweets.append({
+                                "client_name": client_name,
                                 "id": tweet_id,
                                 "text": tweet_text,
                                 "url": tweet_url
