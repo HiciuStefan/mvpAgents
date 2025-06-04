@@ -26,7 +26,7 @@ def extract_title_from_url(url):
     slug = url.rstrip("/").split("/")[-1].replace("-", " ")
     return slug.capitalize()
 
-def save_article_to_processed(processed, url, content, title="", date=None):
+def save_article_to_processed(processed, url, content, title="", client_name="Unknown", date=None):
     if not title:
         title = extract_title_from_url(url)
 
@@ -34,6 +34,7 @@ def save_article_to_processed(processed, url, content, title="", date=None):
     summary, label, opportunity_type, suggested_action = analyze_article(title, content)
 
     processed.append({
+        "client": client_name,
         "url": url,
         "title": title,
         "content": content,
@@ -67,8 +68,9 @@ def main():
             try:
                 content = extract_article_content(url)
                 print(f"📃 Conținut extras:\n{content[:500]}...\n")
-
-                save_article_to_processed(processed_articles, url, content)
+                if content:
+                    client_name = site.get("name", "Unknown")  # 🔹 AICI
+                    save_article_to_processed(processed_articles, url, content, client_name=client_name)
 
             except Exception as e:
                 print(f"⚠️ Eroare la procesarea articolului: {e}")
