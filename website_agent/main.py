@@ -34,7 +34,7 @@ def save_article_to_processed(processed, url, content, title="", client_name="Un
     summary, label, opportunity_type, suggested_action = analyze_article(title, content)
 
     processed.append({
-        "client": client_name,
+        "client_name": client_name,
         "url": url,
         "title": title,
         "content": content,
@@ -43,7 +43,7 @@ def save_article_to_processed(processed, url, content, title="", client_name="Un
         "opportunity_type": opportunity_type,
         "suggested_action": suggested_action,
         "read": False,
-        "saved_at": date or datetime.now().isoformat()
+        "scraped_at": date or datetime.now().isoformat()
     })
 
 def main():
