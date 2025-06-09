@@ -12,7 +12,7 @@ def analyze_article(title, content):
 You are an AI assistant that analyzes business articles and extracts insights.
 Given the article below, respond with a JSON object containing:
 
-- summary (2-3 sentence summary of the article)
+- summary (max 6 words summary of the article)
 - label ("Actionable" or "Informational")
 - opportunity_type (e.g., "New business opportunity", "Upsell context", "Partnership potential", "Networking opportunity", etc.)
 - suggested_action (e.g., "Contact client", "Send proposal", "Schedule meeting", "None")

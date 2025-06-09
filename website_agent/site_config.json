@@ -27,5 +27,34 @@
       "https://techcrunch.com/video/postmates-founder-bastian-lehmann-is-hungry-for-more-with-tiptop-a-new-fintech-startup/"
     ],
     "articles_found": 2
+  },
+  {
+    "name": "Dinamic92",
+    "base_url": "https://www.dinamic92.ro/",
+    "sitemap_url": "https://www.dinamic92.ro/post-sitemap.xml",
+    "sitemap_found": true,
+    "fallback_used": false,
+    "article_urls": [
+      "https://www.dinamic92.ro/posta-romana/"
+    ],
+    "articles_found": 1
+  },
+  {
+    "name": "Rifil",
+    "base_url": "https://rifil.net/ro/",
+    "sitemap_url": "",
+    "sitemap_found": false,
+    "fallback_used": false,
+    "article_urls": [],
+    "articles_found": 0
+  },
+  {
+    "name": "Digi24",
+    "base_url": "https://www.digi24.ro/",
+    "sitemap_url": "https://www.digi24.ro/sitemap.xml",
+    "sitemap_found": false,
+    "fallback_used": false,
+    "article_urls": [],
+    "articles_found": 0
   }
 ]
