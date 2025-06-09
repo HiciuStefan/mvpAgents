@@ -7,8 +7,12 @@ MONITORED_URLS = [
         "profile_url": "https://twitter.com/Lica2216"
     },
     {
-        "client_name": "Mihaela Ilie",
-        "profile_url": "https://x.com/MihaelaIlie17"
+        "client_name": "Dinamic92",
+        "profile_url": "https://x.com/dinamic92xpert"
+    },
+    {
+        "client_name": "Izotec",
+        "profile_url": "https://x.com/Izotec"
     }
 ]
 
