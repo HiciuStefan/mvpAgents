@@ -20,13 +20,13 @@ def get_processed_ids() -> set:
     Returnează setul de tweet_id-uri deja procesate (indiferent de status).
     """
     tweets = load_existing_tweets()
-    return {tweet["id"] for tweet in tweets}
+    return {tweet["tweet_id"] for tweet in tweets}
 
 def save_new_tweets(new_tweets: list):
     existing = load_existing_tweets()
 
     def normalize(tweet):
-        return (str(tweet["id"]).strip(), tweet["text"].strip())
+        return (str(tweet["tweet_id"]).strip(), tweet["text"].strip())
 
     existing_keys = {normalize(t) for t in existing}
     unique_new = []
@@ -37,7 +37,7 @@ def save_new_tweets(new_tweets: list):
             unique_new.append(t)
             existing_keys.add(key)
         else:
-            print(f"⚠️ Tweet duplicat ignorat: {t['id']}")
+            print(f"⚠️ Tweet duplicat ignorat: {t['tweet_id']}")
 
     if not unique_new:
         print("📭 Niciun tweet nou de salvat.")
@@ -60,7 +60,7 @@ def update_tweet_status(tweet_id: str, new_status: str):
     modified = False
 
     for tweet in tweets:
-        if tweet["id"] == tweet_id:
+        if tweet["tweet_id"] == tweet_id:
             tweet["status"] = new_status
             modified = True
             break
@@ -76,7 +76,7 @@ def update_tweet_status(tweet_id: str, new_status: str):
 def add_reply_to_tweet(tweet_id: str, reply_text: str = None, category: str = None):
     tweets = load_existing_tweets()
     for tweet in tweets:
-        if tweet["id"] == tweet_id:
+        if tweet["tweet_id"] == tweet_id:
             if reply_text is not None:
                 tweet["reply"] = reply_text
             if category is not None:
@@ -90,7 +90,7 @@ def add_reply_to_tweet(tweet_id: str, reply_text: str = None, category: str = No
 def update_tweet_category(tweet_id: str, new_category: str):
     tweets = load_existing_tweets()
     for tweet in tweets:
-        if tweet["id"] == tweet_id:
+        if tweet["tweet_id"] == tweet_id:
             tweet["category"] = new_category
             break
     with open(DATA_FILE, "w", encoding="utf-8") as f:

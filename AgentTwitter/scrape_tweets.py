@@ -54,7 +54,7 @@ def scrape_new_tweets(processed_ids: set) -> list:
 
             count = 0
             for tweet in articles:
-                if count >= 3:
+                if count >= 2:
                     break
                 try:
                     tweet_text = tweet.find_element(By.CSS_SELECTOR, "div[data-testid='tweetText']").text
@@ -71,7 +71,7 @@ def scrape_new_tweets(processed_ids: set) -> list:
                         if tweet_id not in processed_ids:
                             all_tweets.append({
                                 "client_name": client_name,
-                                "id": tweet_id,
+                                "tweet_id": tweet_id,
                                 "text": tweet_text,
                                 "url": tweet_url
                             })

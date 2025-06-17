@@ -20,9 +20,11 @@ def main():
 
     grouped = {}
     for tweet in all_new_tweets:
-        tweet["category"] = classify_tweet(tweet["text"])
-        tweet["summary"] = generate_summary(tweet["text"])
-        tweet["status"] = "pending"
+        tweet["action_type"] = classify_tweet(tweet["text"])
+        tweet["short_description"] = generate_summary(tweet["text"])
+        tweet["status"] = "new"
+        tweet["reply"] = ""
+        # tweet["tweet_id"] = tweet.pop("id")
         account = extract_account_from_url(tweet["url"])
         if account not in grouped:
             grouped[account] = {
