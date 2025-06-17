@@ -18,7 +18,7 @@ def classify_tweet(tweet_text: str) -> str:
 
     Your task is to classify each tweet into one of the following two categories:
     - Important: if the tweet refers to topics that could be relevant for a business (e.g. mentions of business opportunities, public recognition, customer feedback, important opinions, leadership updates, product announcements, market shifts, events etc.)
-    - Neutral: if the tweet is generic, personal, unrelated to business, or not actionable
+    - informative: if the tweet is generic, personal, unrelated to business, or not actionable
 
     Classify the following tweet accordingly.
 
@@ -29,9 +29,11 @@ def classify_tweet(tweet_text: str) -> str:
 
     response = llm.invoke(prompt).content.strip().lower()
     if "important" in response:
-        return "important"
+        return "actionable"
+    elif "neutral" in response:
+        return "informative"
     else:
-        return "neutral"
+        return ""
 
 
 

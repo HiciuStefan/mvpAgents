@@ -4,6 +4,8 @@ from generate_summary import generate_summary
 from state_manager import get_processed_ids, save_new_tweets
 from urllib.parse import urlparse
 from classify_tweet import classify_tweet  # dacă ai mutat funcția într-un fișier separat
+from send_tweets_to_api import send_tweet_to_api
+
 
 def extract_account_from_url(url: str) -> str:
     return urlparse(url).path.strip("/").split("/")[0]
@@ -43,6 +45,10 @@ def main():
     # Salvează toate tweeturile în tweets.json
     all_tweets_flat = [t for acc in grouped.values() for t in acc["tweets"]]
     save_new_tweets(all_tweets_flat)
+    print("✅ Tweeturile noi au fost salvate în tweets.json.")
+
+    for tweet in all_tweets_flat:
+        send_tweet_to_api(tweet)
 
     return grouped
 

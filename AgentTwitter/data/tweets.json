@@ -4,7 +4,7 @@
     "tweet_id": "1934664772446003450",
     "text": "50 million emails.  One smart solution.  Discover how banks master millions of emails with #AgenticAutomation:",
     "url": "https://x.com/UiPath/status/1934664772446003450",
-    "action_type": "important",
+    "action_type": "actionable",
     "short_description": "Banks manage millions of emails with #AgenticAutomation.",
     "status": "new",
     "reply": ""
@@ -14,8 +14,8 @@
     "tweet_id": "1934627027199627509",
     "text": "What if your AI could do more than just complete tasks? What if it could plan them, too?  #AgenticAutomation brings together people, robots, and AI agents in perfect orchestration.",
     "url": "https://x.com/UiPath/status/1934627027199627509",
-    "action_type": "important",
-    "short_description": "AI's potential in planning tasks explored.",
+    "action_type": "actionable",
+    "short_description": "AI potential in planning tasks explored.",
     "status": "new",
     "reply": ""
   }
