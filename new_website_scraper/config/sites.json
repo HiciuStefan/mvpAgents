@@ -1,0 +1,41 @@
+[
+    {
+        "name": "UIPath",
+        "base_url": "https://www.uipath.com/",
+        "article_urls": [
+            "https://www.uipath.com/solutions"
+        ],
+        "link_selector": "",
+        "selectors": {
+            "title": ["h1"],
+            "content": ["main", "article", "section", "div.text", "div[class^='sc-']", "p"]
+        }
+    },
+    {
+        "name": "digitalexcellence",
+        "base_url": "https://digitalexcellence.ai",
+        "article_urls": [
+            "https://digitalexcellence.ai/news"
+        ],
+        "link_selector": "",
+        "selectors": {
+            "title": ["h1", "div.post-title", "header h1", "div[class*='title']", "div[class*='headline']"],
+            "content": ["main", "article", "section", "div.text", "div[class^='sc-']", "p"]
+        }
+    },
+    {
+        "name": "opaque",
+        "base_url": "https://www.opaque.co/",
+        "article_urls": [
+            "https://www.opaque.co/solutions/finance"
+        ],
+        "link_selector": "",
+        "selectors": {
+            "title": ["h1", "div.post-title", "header h1", "div[class*='title']", "div[class*='headline']"],
+            "content": ["main", "article", "section", "div.text", "div[class^='sc-']", "p"]
+        }
+    }
+]
+
+
+
