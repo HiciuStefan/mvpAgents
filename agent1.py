@@ -17,39 +17,16 @@ if "AZURE_OPENAI_API_KEY" not in os.environ:
 	os.environ["AZURE_OPENAI_API_KEY"] = getpass.getpass(
 		"Enter your AzureOpenAI API key: "
 	)
-os.environ["AZURE_OPENAI_ENDPOINT"] = "https://openai-vasi.openai.azure.com/openai/deployments/gpt-35-turbo-vasi/chat/completions?api-version=2025-01-01-preview"
+os.environ["AZURE_OPENAI_ENDPOINT"] = "https://alex-test-1112.openai.azure.com/openai/deployments/gpt-4o-mini/chat/completions?api-version=2025-01-01-preview"
 
 # Inițializează modelul LLM
 llm = AzureChatOpenAI(
     temperature=0,
     api_version="2025-01-01-preview",
-    azure_deployment="gpt-35-turbo-vasi"
+    azure_deployment="2025-01-01-preview"
 )
 
-
-
-def generate_reply(tweet_text: str) -> str:
-    """
-    Generate a friendly short answer for a tweet.
-    """
-    prompt = f"""You are a helpful AI assistant that writes thoughtful, concise Twitter replies.
-Tweet: "{tweet_text}"
-Reply:"""
-    try:
-        response = llm.invoke(prompt)
-        return response.content.strip()
-    except Exception as e:
-        print(f"Error generating the answer: {e}")
-        return "Thank you for sharing your thoughts!"
-    
-
-
 def lookup(name: str) -> str:
-    llm = AzureChatOpenAI(
-        temperature=0,
-        api_version="2025-01-01-preview",
-        azure_deployment="gpt-35-turbo-vasi"
-    )
 
     template = """given the full name {name_of_person} I want you to get me a link to their Linkedin profile page.
                           Your answer should contain only a URL"""
@@ -82,5 +59,4 @@ def lookup(name: str) -> str:
 
 if __name__=="__main__":
     print("Running...")
-    print(generate_reply("Hellow Twitter World!"))
     print(lookup("Razvan Dumitrescu"))
