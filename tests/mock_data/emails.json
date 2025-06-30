@@ -1,0 +1,57 @@
+[
+  {
+    "client_name": "UIPath",
+    "message_id": "email-001",
+    "subject": "AI Partnership Proposal",
+    "content": "We are exploring a potential partnership on AI solutions in finance.",
+    "short_description": "Proposal for AI partnership in finance.",
+    "suggested_action": "Schedule meeting",
+    "action_type": "actionable",
+    "type": "inbound",
+    "processed_at": "2025-06-01T10:00:00"
+  },
+  {
+    "client_name": "UIPath",
+    "message_id": "email-002",
+    "subject": "Webinar Follow-up",
+    "content": "Thank you for attending our webinar on hyperautomation.",
+    "short_description": "Follow-up after hyperautomation webinar.",
+    "suggested_action": "Send case studies",
+    "action_type": "informative",
+    "type": "outbound",
+    "processed_at": "2025-06-02T11:15:00"
+  },
+  {
+    "client_name": "UIPath",
+    "message_id": "email-003",
+    "subject": "Client Success Story",
+    "content": "Sharing a new success story from a UiPath client in healthcare.",
+    "short_description": "Success story from healthcare client.",
+    "suggested_action": "Share on LinkedIn",
+    "action_type": "informative",
+    "type": "internal",
+    "processed_at": "2025-06-03T09:45:00"
+  },
+  {
+    "client_name": "UIPath",
+    "message_id": "email-004",
+    "subject": "Meeting Notes – RPA Expansion",
+    "content": "Notes from our last meeting regarding expanding RPA services.",
+    "short_description": "RPA service expansion discussion.",
+    "suggested_action": "Prepare follow-up proposal",
+    "action_type": "actionable",
+    "type": "internal",
+    "processed_at": "2025-06-04T14:30:00"
+  },
+  {
+    "client_name": "UIPath",
+    "message_id": "email-005",
+    "subject": "Product Roadmap Update",
+    "content": "Here is the updated roadmap for Q3 initiatives.",
+    "short_description": "Roadmap update for Q3.",
+    "suggested_action": "Review internally",
+    "action_type": "informative",
+    "type": "outbound",
+    "processed_at": "2025-06-05T08:00:00"
+  }
+]

@@ -1,0 +1,110 @@
+[
+  {
+    "client_name": "UIPath",
+    "tweet_id": "1936025254549229899",
+    "text": "Bucharest, you brought the energy! We lit up #DevTalksRomania as the #AgenticAutomation partner—thanks for stopping by.\nJoin us to build what’s next  http://spr.ly/60184V3GI",
+    "url": "https://x.com/UiPath/status/1936025254549229899",
+    "actionable": true,
+    "relevance": "Event participation and invitation for collaboration",
+    "suggested_action": "Schedule meeting",
+    "short_description": "Successful event at #DevTalksRomania, Bucharest.",
+    "status": "new",
+    "reply": ""
+  },
+  {
+    "client_name": "UIPath",
+    "tweet_id": "1935978426680115624",
+    "text": "Unlock the power of #AgenticAutomation with Autopilot for Everyone.  Join #UiPathDevDives on 6/26 for a look at the newest features, live demos, and insights from our product team.",
+    "url": "https://x.com/UiPath/status/1935978426680115624",
+    "actionable": true,
+    "relevance": "Product announcement and customer engagement opportunity",
+    "suggested_action": "Schedule meeting",
+    "short_description": "\"Join UiPathDevDives to explore AgenticAutomation features.\"",
+    "status": "new",
+    "reply": ""
+  },
+  {
+    "client_name": "UIPath",
+    "tweet_id": "1935748189434290533",
+    "text": "Explore a smarter way to work with #AgenticAutomation.  UiPath Maestro has everything you need to orchestrate and transform agentic processes, end-to-end: http://spr.ly/60184VJ2K",
+    "url": "https://x.com/UiPath/status/1935748189434290533",
+    "actionable": true,
+    "relevance": "Product announcement related to agentic automation",
+    "suggested_action": "Schedule meeting",
+    "short_description": "\"Work smarter with UiPath Maestro's #AgenticAutomation.\"",
+    "status": "new",
+    "reply": ""
+  },
+  {
+    "client_name": "UIPath",
+    "tweet_id": "1935694600271798750",
+    "text": "From pro-code to low-code, we’ve got devs covered.  \n@sebschroetel\n breaks down how we’re enabling real, secure automation at scale—with agentic power built in: http://spr.ly/60144pAsm via \n@techgigdotcom",
+    "url": "https://x.com/UiPath/status/1935694600271798750",
+    "actionable": true,
+    "relevance": "Announcement about new product features for developers",
+    "suggested_action": "Share update with development team",
+    "short_description": "Enabling secure automation at scale for devs.",
+    "status": "new",
+    "reply": ""
+  },
+  {
+    "client_name": "Liverpool",
+    "tweet_id": "1936016301694091652",
+    "text": " Celebrating Liverpool’s Dutch connection… \n https://lfc.cl/orangeyboom",
+    "url": "https://x.com/Liverpool/status/1936016301694091652",
+    "actionable": false,
+    "relevance": "",
+    "suggested_action": "",
+    "short_description": "\"Celebrating Liverpool's Dutch Connection\"",
+    "status": "new",
+    "reply": ""
+  },
+  {
+    "client_name": "Liverpool",
+    "tweet_id": "1936012990714720276",
+    "text": "The hard run Arne Slot will have his eye on after Liverpool’s fixtures released",
+    "url": "https://x.com/Liverpool/status/1936012990714720276",
+    "actionable": false,
+    "relevance": "",
+    "suggested_action": "",
+    "short_description": "\"Arne Slot focuses on Liverpool's fixtures\"",
+    "status": "new",
+    "reply": ""
+  },
+  {
+    "client_name": "Liverpool",
+    "tweet_id": "1935985832956997712",
+    "text": "Wirtz medical latest",
+    "url": "https://x.com/Liverpool/status/1935985832956997712",
+    "actionable": true,
+    "relevance": "Possible update on Wirtz medical's products or services",
+    "suggested_action": "Research further",
+    "short_description": "Latest update on Wirtz Medical",
+    "status": "new",
+    "reply": ""
+  },
+  {
+    "client_name": "Liverpool",
+    "tweet_id": "1935426335175843981",
+    "text": "Liverpool confirm major Anfield upgrade fans will see on matchdays next season",
+    "url": "https://x.com/Liverpool/status/1935426335175843981",
+    "actionable": true,
+    "relevance": "Potential business opportunity in sports sector",
+    "suggested_action": "Schedule meeting",
+    "short_description": "Liverpool announces major Anfield upgrade next season.",
+    "status": "new",
+    "reply": ""
+  },
+  {
+    "client_name": "Liverpool",
+    "tweet_id": "1935256378798420073",
+    "text": "Premier League fixtures are out",
+    "url": "https://x.com/Liverpool/status/1935256378798420073",
+    "actionable": false,
+    "relevance": "",
+    "suggested_action": "",
+    "short_description": "Premier League match schedule released.",
+    "status": "new",
+    "reply": ""
+  }
+]
