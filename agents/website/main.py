@@ -1,11 +1,11 @@
 import os
 import json
 from datetime import datetime
-from scrape_index_links import extract_article_links
-from scraper import scrape_article
-from semantic_analyzer import analyze_article, load_user_profile
-from api_client import send_article_to_api
-from context_api_fetcher import get_client_context
+from .scrape_index_links import extract_article_links
+from .scraper import scrape_article
+from agents._tools.llm_websiteAgent import analyze_article, load_user_profile
+from .api_client import send_article_to_api
+from .context_api_fetcher import get_client_context
 
 SITES_FILE = "config/sites.json"
 MAX_ARTICLES = 4

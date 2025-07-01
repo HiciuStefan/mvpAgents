@@ -1,9 +1,9 @@
 from agents.twitter.data.user.urls_data import MONITORED_URLS
-from scrape_tweets import scrape_new_tweets
-from state_manager import get_processed_ids, save_new_tweets
+from .scrape_tweets import scrape_new_tweets
+from .state_manager import get_processed_ids, save_new_tweets
 from urllib.parse import urlparse
-from classify_tweet import classify_tweet
-from send_tweets_to_api import send_tweet_to_api
+from .classify_tweet import classify_tweet
+from .send_tweets_to_api import send_tweet_to_api
 from _tools.llm_twitterAgent import generate_summary
 
 def extract_account_from_url(url: str) -> str:

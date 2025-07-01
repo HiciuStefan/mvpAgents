@@ -1,6 +1,6 @@
 # generate_summary.py
 
-from llm_client import llm
+from agents._tools.llm_client import llm
 from typing import Optional, Dict, Any
 import json
 from agents.twitter.context_api_fetcher import get_client_context

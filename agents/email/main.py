@@ -1,4 +1,4 @@
-from email_agent import workflow  # Import the workflow
+from .email_agent import workflow  # Import the workflow
 import requests
 from datetime import datetime, timezone
 from dotenv import load_dotenv

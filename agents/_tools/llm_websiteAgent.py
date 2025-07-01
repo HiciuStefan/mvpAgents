@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 from agents.website.context_api_fetcher import get_client_context
-from llm_client import llm
+from .llm_client import llm
 
 # ---------------------------------------------------------------------------
 # Optional user profile loader (same as classifier)
