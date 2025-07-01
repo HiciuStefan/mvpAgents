@@ -4,7 +4,7 @@ from typing import Dict, List
 from fetch_emails import get_emails, mark_email_as_read
 from gmail_auth import authenticate_gmail
 from googleapiclient.discovery import build
-from get_label import return_email_label
+from agents._tools.llm_emailAgent import return_email_label
 from googleapiclient.errors import HttpError
 
 # Define the state (shared data between nodes)

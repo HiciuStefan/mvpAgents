@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from urls_data import MONITORED_URLS
+from agents.twitter.data.user.urls_data import MONITORED_URLS
 
 load_dotenv()
 TWITTER_USER = os.getenv("TWITTER_USER")
