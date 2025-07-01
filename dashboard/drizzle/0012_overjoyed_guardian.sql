@@ -1,0 +1,1 @@
+ALTER TABLE "deai_processed_items" ADD COLUMN "is_actionable" boolean DEFAULT false NOT NULL;

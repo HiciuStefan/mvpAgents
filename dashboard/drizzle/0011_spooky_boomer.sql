@@ -1,0 +1,1 @@
+ALTER TABLE "deai_website" DROP COLUMN "summary";

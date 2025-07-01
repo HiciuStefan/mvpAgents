@@ -1,0 +1,1 @@
+ALTER TABLE "deai_twitter" ADD COLUMN "tweet_id" text;
