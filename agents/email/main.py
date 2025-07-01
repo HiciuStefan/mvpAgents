@@ -1,11 +1,13 @@
 from .email_agent import workflow  # Import the workflow
 import requests
+import os
 from datetime import datetime, timezone
 from dotenv import load_dotenv
 
 
 API_URL = "https://de-dashboard.vercel.app/api/agents/email"  
-EMAIL_AGENT_API_KEY = load_dotenv.get_env("EMAIL_AGENT_API_KEY")
+load_dotenv()
+EMAIL_AGENT_API_KEY = os.getenv("EMAIL_AGENT_API_KEY")
 
 headers = {
     "Content-Type": "application/json",

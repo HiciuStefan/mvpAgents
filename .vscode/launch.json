@@ -1,0 +1,30 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug twitter agent",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "agents.twitter.main",
+      "cwd": "${workspaceFolder}"
+    }, {
+      "name": "Debug email agent",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "agents.email.main",
+      "cwd": "${workspaceFolder}"
+    }, {
+      "name": "Debug website agent",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "agents.website.main",
+      "cwd": "${workspaceFolder}"
+    }, {
+      "name": "Debug marketing agent",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "agents.marketing.main",
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}
