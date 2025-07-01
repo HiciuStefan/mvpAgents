@@ -60,3 +60,5 @@ beautifulsoup4
 requests
 openai
 dotenv
+selenium
+langchain_openai

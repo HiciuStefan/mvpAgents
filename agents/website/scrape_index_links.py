@@ -16,7 +16,6 @@ def extract_article_links(index_url):
 
             # Așteptăm pentru încărcare completă
             page.wait_for_timeout(7000)
-            page.screenshot(path="debug.png")  # opțional pentru verificare
 
             html = page.content()
             browser.close()

@@ -1,6 +1,6 @@
 from urls_data import MONITORED_URLS
 from scrape_tweets import scrape_new_tweets
-from agents.twitter.generate_summary import generate_summary
+from generate_summary import generate_summary
 from state_manager import get_processed_ids, save_new_tweets
 from urllib.parse import urlparse
 from classify_tweet import classify_tweet
@@ -48,8 +48,8 @@ def main():
 
     # Salvează toate tweeturile în tweets.json
     all_tweets_flat = [t for acc in grouped.values() for t in acc["tweets"]]
-    save_new_tweets(all_tweets_flat)
-    print("✅ Tweeturile noi au fost salvate în tweets.json.")
+    # save_new_tweets(all_tweets_flat)
+    # print("✅ Tweeturile noi au fost salvate în tweets.json.")
 
     for tweet in all_tweets_flat:
         send_tweet_to_api(tweet)

@@ -10,6 +10,18 @@
             "title": ["h1"],
             "content": ["main", "article", "section", "div.text", "div[class^='sc-']", "p"]
         }
+    },
+    {
+        "name": "Opaque",
+        "base_url": "hhttps://www.opaque.co",
+        "article_urls": [
+            "https://www.opaque.co/solutions/finance"
+        ],
+        "link_selector": "",
+        "selectors": {
+            "title": ["h1"],
+            "content": ["main", "article", "section", "div.text", "div[class^='sc-']", "p"]
+        }
     }
 ]
 
