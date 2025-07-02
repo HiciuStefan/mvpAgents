@@ -1,5 +1,5 @@
 from langgraph.graph import StateGraph
-from typing import Dict, List
+from typing import Dict, List, TypedDict, Optional
 
 from .fetch_emails import get_emails, mark_email_as_read
 from .gmail_auth import authenticate_gmail
@@ -8,9 +8,10 @@ from agents._tools.llm_emailAgent import return_email_label
 from googleapiclient.errors import HttpError
 
 # Define the state (shared data between nodes)
-class AgentState(Dict):
+class AgentState(TypedDict, total=False):
     emails: List[Dict]
     filtered_emails: List[Dict]
+    logs: List[str]
 
 # Nodes
 def fetch_emails(state: AgentState) -> AgentState:
@@ -73,21 +74,27 @@ def filter_emails(state: AgentState) -> AgentState:
     "\n"
     "Suggested Action: Review the detailed service offerings and follow up with any questions."
     )
-    for email in state["emails"]:
+    for email in state.get("emails", []):
 
         db_history_text = history_text if email.get("id") == "197a111580ad8eab" else ""
-        result=return_email_label(email["body"],db_history_text)
-        label=result["category"]
-        actionable=result.get("actionable")
-        short_description=result["short_description"]
-        suggested_action=result.get("suggested_action")
-        relevance=result.get("relevance")
-        email["label"] = label 
-        email["actionable"] = actionable
-        email["short_description"] = short_description 
-        email["suggested_action"] = suggested_action 
-        email["relevance"] = relevance
-        apply_gmail_label(creds, email, label,logs)
+        result = return_email_label(email["body"], db_history_text)
+        # If result is a list, get the first element
+        if isinstance(result, list) and len(result) > 0:
+            result = result[0]
+        if isinstance(result, dict):
+            label = result.get("category")
+            actionable = result.get("actionable")
+            short_description = result.get("short_description")
+            suggested_action = result.get("suggested_action")
+            relevance = result.get("relevance")
+            email["label"] = label 
+            email["actionable"] = actionable
+            email["short_description"] = short_description 
+            email["suggested_action"] = suggested_action 
+            email["relevance"] = relevance
+            apply_gmail_label(creds, email, label, logs)
+        else:
+            print(f"Warning: result is not a dict for email {email.get('id')}: {result}")
     state["logs"] = logs
     return state
 
