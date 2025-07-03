@@ -93,7 +93,7 @@ def process_client(client_name, article_urls, selectors):
 
             send_article_to_api(article_data)
             processed_articles.append(article_data)
-            save_json(PROCESSED_FILE, processed_articles)
+            # save_json(PROCESSED_FILE, processed_articles)
             print(f"✅ Articol salvat și trimis: {title}")
 
             # was_sent = send_article_to_api(article_data)
