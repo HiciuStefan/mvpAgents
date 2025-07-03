@@ -5,7 +5,7 @@ import io
 # Import our modules
 from drive_integration import get_drive_service, list_drive_files, download_drive_file
 from document_processing import extract_text_from_pdf, export_google_doc_as_text
-from llm_chain  import generate_marketing_strategy
+from agents._tools.llm_marketingAgent  import generate_marketing_strategy
 
 st.set_page_config(page_title="AI Marketing Agent", layout="wide")
 st.title("AI Marketing Agent")
