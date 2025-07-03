@@ -1,8 +1,15 @@
 import os
 from dotenv import load_dotenv
 from langchain_openai import AzureChatOpenAI
+from pydantic import BaseModel, SecretStr, ValidationError
 import json
 
+class EmailLabel(BaseModel):
+	category: str
+	short_description: str
+	actionable: bool  
+	suggested_action: str 
+	relevance: str   
 
 load_dotenv()
 
@@ -10,16 +17,23 @@ endpoint = os.getenv("ENDPOINT_URL")
 subscription_key = os.getenv("AZURE_OPENAI_API_KEY")
 version=os.getenv("API_VERSION")
 deployment = os.getenv("DEPLOYMENT_NAME")
+FALLBACK_LABEL = EmailLabel(
+			category="Unknown",
+			short_description="",
+			actionable=False,
+			suggested_action="",
+			relevance=""
+		)
 
 llm = AzureChatOpenAI(
-    azure_endpoint   = endpoint,   
-    api_key          = subscription_key,
-    api_version      = version,
-    azure_deployment = deployment, 
-    temperature      = 0.3,
+	azure_endpoint   = endpoint,   
+	api_key          = SecretStr(subscription_key) if subscription_key else None,
+	api_version      = version,
+	azure_deployment = deployment, 
+	temperature      = 0.3,
 )
 
-def return_email_label(email_text: str,db_history_text:str) -> str:
+def return_email_label(email_text: str, db_history_text: str) -> EmailLabel:
 	try:
 		messages = [
 			{
@@ -64,17 +78,26 @@ def return_email_label(email_text: str,db_history_text:str) -> str:
 		]
 
 		ai_msg = llm.invoke(messages)
+		raw = ai_msg.content
+		# coalesce list→str if necessary:
+		if isinstance(raw, list):
+			raw = "".join(str(item) for item in raw)
 
-		result = json.loads(ai_msg.content)
-		return result
+		try:
+			data = json.loads(raw)  # your parsed JSON
+			label: EmailLabel = EmailLabel(**data)
+			return label
+		except json.JSONDecodeError as e:
+			print(f"❌ JSON parsing failed: {e}")
+			# Return a fallback EmailLabel instance on JSON error
+			return FALLBACK_LABEL
+		except ValidationError as exc:
+			# this will include missing-fields, wrong-types, extra-fields
+			raise RuntimeError(f"Invalid response schema from LLM:\n{exc}")
 
 	except Exception as e:
 		print(f"Error processing email text: {e}")
-		# Return a fallback dictionary 
-		return {
-			"category": "Unknown",
-			"short_description": "",
-			"suggested_action": ""
-		}
+		# Return a fallback EmailLabel instance
+		return FALLBACK_LABEL
 
 

@@ -8,7 +8,7 @@ from agents._tools.llm_emailAgent import return_email_label
 from googleapiclient.errors import HttpError
 
 # Define the state (shared data between nodes)
-class AgentState(TypedDict, total=False):
+class AgentState(TypedDict):
     emails: List[Dict]
     filtered_emails: List[Dict]
     logs: List[str]
@@ -74,27 +74,31 @@ def filter_emails(state: AgentState) -> AgentState:
     "\n"
     "Suggested Action: Review the detailed service offerings and follow up with any questions."
     )
-    for email in state.get("emails", []):
+    for email in state["emails"]:
 
         db_history_text = history_text if email.get("id") == "197a111580ad8eab" else ""
-        result = return_email_label(email["body"], db_history_text)
-        # If result is a list, get the first element
-        if isinstance(result, list) and len(result) > 0:
-            result = result[0]
-        if isinstance(result, dict):
-            label = result.get("category")
-            actionable = result.get("actionable")
-            short_description = result.get("short_description")
-            suggested_action = result.get("suggested_action")
-            relevance = result.get("relevance")
-            email["label"] = label 
-            email["actionable"] = actionable
-            email["short_description"] = short_description 
-            email["suggested_action"] = suggested_action 
-            email["relevance"] = relevance
-            apply_gmail_label(creds, email, label, logs)
-        else:
-            print(f"Warning: result is not a dict for email {email.get('id')}: {result}")
+        
+        try:
+            # parse + validate into a Pydantic model
+            label_model = return_email_label(
+                email_text=email["body"],
+                db_history_text=db_history_text
+            )
+
+            # unpack the validated fields back into the email dict
+            email["label"]            = label_model.category
+            email["short_description"] = label_model.short_description
+            email["actionable"]      = label_model.actionable
+            email["suggested_action"]  = label_model.suggested_action
+            email["relevance"]       = label_model.relevance
+
+            # apply your Gmail label by category name
+            apply_gmail_label(creds, email, label_model.category, logs)
+
+        except RuntimeError as e:
+            # either JSON parse or validation failed
+            print(f"⚠️ Skipping email {email['id']}: {e}")
+            continue
     state["logs"] = logs
     return state
 
@@ -169,5 +173,9 @@ workflow = builder.compile()
 
 # Run the agent
 if __name__ == "__main__":
-    result = workflow.invoke({})
+    result = workflow.invoke({
+        "emails": [],
+        "filtered_emails": [],
+        "logs": []
+    })
 
