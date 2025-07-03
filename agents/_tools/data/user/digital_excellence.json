@@ -1,0 +1,30 @@
+{
+  "company": "Digital Excellence",
+  "tagline": "AI that delivers. People who own execution.",
+  "mission": "We build applied AI systems that help businesses scale, adapt, and operate smarter by turning complex challenges into functional, measurable outcomes—fast.",
+  "vision": "As AI reshapes industries, we aim to be the partner that moves with speed and clarity, helping organizations build what’s next.",
+  "principles": [
+    "Execution over slides — we deliver working systems, not decks.",
+    "AI made practical — we apply AI where it fits and scale what works. No hype.",
+    "Business-aligned thinking — everything we build maps to a goal that matters."
+  ],
+  "services": [
+    "Process automation (RPA & workflow orchestration)",
+    "End-to-end AI infrastructure implementation",
+    "Data-driven operational optimization with machine learning",
+    "Intelligent infrastructure support (MLOps, observability, cost control)"
+  ],
+  "key_metrics": {
+    "client_satisfaction_rate": "11%",
+    "clients": "3+",
+    "hours_automated": "2000",
+    "end_to_end_projects": "1",
+    "average_efficiency_improvement": "6%"
+  },
+  "value_proposition": "Not a vendor, a delivery partner: we bring AI expertise, execution speed, and outcome focus.",
+  "inspirational_quote": "AI will be the most transformative technology since electricity. — Eric Schmidt",
+  "industry": "Applied Artificial Intelligence & Automation",
+  "products": "Custom AI and RPA solutions",
+  "goals": "Secure two new enterprise clients and expand strategic banking partnerships in the next quarter.",
+  "icp": "Regional banks and mid-market fintechs seeking to reduce operational costs and accelerate credit decisions through AI automation"
+}
