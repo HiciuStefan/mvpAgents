@@ -3,8 +3,8 @@ import streamlit as st
 import io
 
 # Import our modules
-from drive_integration import get_drive_service, list_drive_files, download_drive_file
-from document_processing import extract_text_from_pdf, export_google_doc_as_text
+from agents.marketing.drive_integration import (get_drive_service, list_drive_files, download_drive_file)
+from agents.marketing.document_processing import (extract_text_from_pdf, export_google_doc_as_text)
 from agents._tools.llm_marketingAgent  import generate_marketing_strategy
 
 st.set_page_config(page_title="AI Marketing Agent", layout="wide")
