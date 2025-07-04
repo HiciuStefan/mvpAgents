@@ -2,14 +2,23 @@
 import os
 from langchain import PromptTemplate, LLMChain #langchain_community.llms
 from langchain_openai import AzureChatOpenAI  # Use the Azure-specific Chat model integration
+from dotenv import load_dotenv
+from pydantic import SecretStr
 
-# Ensure your environment variables are correctly set.
-# You can also set these in your OS or in a .env file if you prefer.
-if "AZURE_OPENAI_API_KEY" not in os.environ:
-    os.environ["AZURE_OPENAI_API_KEY"] = "ACYhswv9bdG9HLSwegzWBaepqA7mKYn3mQtHqU3hiTJzzbRO9qyOJQQJ99BEACfhMk5XJ3w3AAABACOGp1TG"
-if "AZURE_OPENAI_API_BASE" not in os.environ:
-    os.environ["AZURE_OPENAI_API_BASE"] = "https://openai-vasi.openai.azure.com/openai/deployments/gpt-35-turbo-vasi/chat/completions?api-version=2025-01-01-preview"
+load_dotenv()
+endpoint = os.getenv("ENDPOINT_URL")
+subscription_key = os.getenv("AZURE_OPENAI_API_KEY")
+version=os.getenv("API_VERSION")
+deployment = os.getenv("DEPLOYMENT_NAME")
 
+
+llm = AzureChatOpenAI(
+	azure_endpoint   = endpoint,   
+	api_key          = SecretStr(subscription_key) if subscription_key else None,
+	api_version      = version,
+	azure_deployment = deployment, 
+	temperature      = 0.3,
+)
 def create_marketing_strategy_chain():
     # Define the prompt template for generating the marketing strategy.
     prompt_template = """
@@ -25,19 +34,7 @@ def create_marketing_strategy_chain():
         input_variables=["input_text"],
         template=prompt_template
     )
-    
-    # Initialize the LLM using AzureChatOpenAI.
-    # Note: The azure_deployment parameter should match the deployment name in your Azure resource.
-    llm = AzureChatOpenAI(
-        azure_deployment="gpt-35-turbo-vasi",  # Replace with your actual deployment name
-        api_version="2025-01-01-preview",        # Replace with your actual API version if needed
-        temperature=0,
-        max_tokens=None,
-        timeout=None,
-        max_retries=2,
-        azure_endpoint=os.environ.get("AZURE_OPENAI_API_BASE"),
-    )
-    
+
     # Create a chain that pairs the prompt with the Azure LLM.
     chain = LLMChain(llm=llm, prompt=template)
     return chain
