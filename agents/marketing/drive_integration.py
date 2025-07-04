@@ -6,10 +6,12 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from googleapiclient.http import MediaIoBaseDownload
 import io
+from dotenv import load_dotenv
 
 # The scopes define what permissions we need. Here we need read-only access.
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
-
+load_dotenv()
+secrets_path = os.getenv("CLIENT_SECRETS_PATH")
 def get_drive_service():
     """Authenticates and returns a Google Drive API service."""
     creds = None
@@ -22,8 +24,9 @@ def get_drive_service():
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                os.path.join('credentials', 'client_secrets.json'), SCOPES)
+            # flow = InstalledAppFlow.from_client_secrets_file(
+            #     os.path.join('credentials', 'client_secrets.json'), SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file(secrets_path, SCOPES)
             creds = flow.run_local_server(port=3000)
         # Save the credentials for the next run.
         with open('token.pickle', 'wb') as token:
