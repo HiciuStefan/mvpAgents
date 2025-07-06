@@ -1,18 +1,36 @@
 # scrape_tweets.py
 
+import json
 import time
 import os
 from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from agents.twitter.data.user.urls_data import MONITORED_URLS
+
+# Construiește calea către fișierul de configurare
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+CONFIG_FILE = os.path.join(SCRIPT_DIR, "..", "config", "twitter_config.json")
+
+def load_monitored_urls():
+    """Încarcă URL-urile monitorizate din fișierul JSON."""
+    if not os.path.exists(CONFIG_FILE):
+        print(f"Fișierul de configurare {CONFIG_FILE} nu a fost găsit.")
+        return []
+    with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+        return data.get("monitored_urls", [])
 
 load_dotenv()
 TWITTER_USER = os.getenv("TWITTER_USER")
 TWITTER_PASS = os.getenv("TWITTER_PASS")
 
 def scrape_new_tweets(processed_ids: set) -> list:
+    monitored_urls = load_monitored_urls()
+    if not monitored_urls:
+        print("Nicio URL de monitorizat nu a fost găsită în configurație.")
+        return []
+
     options = webdriver.ChromeOptions()
     options.add_argument("--headless=new")
     options.add_argument("--start-maximized")
@@ -21,7 +39,7 @@ def scrape_new_tweets(processed_ids: set) -> list:
     browser = webdriver.Chrome(options=options)
 
     try:
-        print("🔐 Conectare la Twitter...")
+        print("Conectare la Twitter...")
         browser.get("https://twitter.com/login")
         time.sleep(3)
 
@@ -30,7 +48,6 @@ def scrape_new_tweets(processed_ids: set) -> list:
         username_input.send_keys(Keys.RETURN)
         time.sleep(3)
 
-        # password_input = browser.find_element(By.NAME, "password")
         password_input = browser.find_element(By.CSS_SELECTOR, 'input[type="password"]')
         password_input.send_keys(TWITTER_PASS)
         password_input.send_keys(Keys.RETURN)
@@ -38,14 +55,13 @@ def scrape_new_tweets(processed_ids: set) -> list:
 
         all_tweets = []
 
-        for profile in MONITORED_URLS:
+        for profile in monitored_urls:
             client_name = profile["client_name"]
             profile_url = profile["profile_url"]
-            print(f"🔍 Verific {client_name} → {profile_url}")
+            print(f"Verific {client_name} -> {profile_url}")
             browser.get(profile_url)
             time.sleep(5)
 
-            # Scroll ușor ca să încarce tweeturile
             body = browser.find_element(By.TAG_NAME, "body")
             for _ in range(3):
                 body.send_keys(Keys.PAGE_DOWN)
@@ -63,7 +79,7 @@ def scrape_new_tweets(processed_ids: set) -> list:
                     tweet_url = None
                     for link in links:
                         href = link.get_attribute("href")
-                        if "/status/" in href:
+                        if href and "/status/" in href:
                             tweet_url = href
                             break
 

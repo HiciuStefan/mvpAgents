@@ -2,24 +2,17 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from agents.website.context_api_fetcher import get_client_context
+from agents.common.context_api_fetcher import get_client_context
 from .llm_client import llm
 
 # ---------------------------------------------------------------------------
 # Optional user profile loader (same as classifier)
 # ---------------------------------------------------------------------------
-BASE_DIR = Path(__file__).resolve().parent
-DATA_USER = BASE_DIR / "data" / "user"
+CONFIG_PATH = Path(__file__).resolve().parent.parent / "config" / "user_config.json"
 
-def load_user_profile(name: str | Path) -> Dict[str, Any]:
-    """Load a user JSON profile from *data/user/*."""
-    path = Path(name)
-    if not path.suffix:
-        path = path.with_suffix(".json")
-    if not path.is_absolute():
-        path = DATA_USER / path.name
-
-    with open(path, encoding="utf-8") as fp:
+def load_user_profile(name: str | Path = None) -> Dict[str, Any]:
+    """Load the user JSON profile from agents/config/user_config.json."""
+    with open(CONFIG_PATH, encoding="utf-8") as fp:
         return json.load(fp)
 
 # ---------------------------------------------------------------------------
@@ -108,7 +101,7 @@ def analyze_article(
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
     test_client = "digital_excellence"
-    profile = load_user_profile(test_client)
+    profile = load_user_profile()
     result = analyze_article(
         test_client,
         "AI adoption in legal workflows",

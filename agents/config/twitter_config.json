@@ -1,0 +1,12 @@
+{
+    "monitored_urls": [
+        {
+            "client_name": "UIPath",
+            "profile_url": "https://x.com/UIPath"
+        },
+        {
+            "client_name": "Liverpool",
+            "profile_url": "https://x.com/Liverpool"
+        }
+    ]
+}

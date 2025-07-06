@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
 
 def extract_article_links(index_url):
-    print(f"🔗 Accesez cu Playwright: {index_url}")
+    print(f"Accesez cu Playwright: {index_url}")
 
     # 🔹 Listă flexibilă de cuvinte care apar frecvent în linkurile articolelor
     link_filters = ["/solutions/", "/blog/", "/news/", "/article", "/post", "/insights", "/update"]
@@ -46,5 +46,5 @@ def extract_article_links(index_url):
             links.append(full_url)
 
     unique_links = list(set(links))
-    print(f"✅ Găsite {len(unique_links)} linkuri care trec filtrul flexibil.")
+    print(f"Gasite {len(unique_links)} linkuri care trec filtrul flexibil.")
     return unique_links

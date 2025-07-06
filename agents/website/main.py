@@ -1,30 +1,21 @@
 import os
 import json
 from datetime import datetime
-from .scrape_index_links import extract_article_links
-from .scraper import scrape_article
+from agents.website.scrape_index_links import extract_article_links
+from agents.website.scraper import scrape_article
 from agents._tools.llm_websiteAgent import analyze_article, load_user_profile
-from .api_client import send_article_to_api
-from .context_api_fetcher import get_client_context
+from agents.common.api_sender import ApiClient # MODIFICAT
+from agents.common.context_api_fetcher import get_client_context
 
-SITES_FILE = "config/sites.json"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+SITES_FILE = os.path.join(SCRIPT_DIR, "..", "config", "website_config.json")
 MAX_ARTICLES = 4
-PROCESSED_FILE = "results/processed_articles.json"
 
-# Încarcă fișier JSON dacă există, altfel returnează listă goală
-def load_json(path):
-    if not os.path.exists(path):
-        return []
-    with open(path, "r", encoding="utf-8") as f:
-        try:
-            return json.load(f)
-        except json.JSONDecodeError:
-            return []
-
-# Salvează datele într-un fișier JSON
-def save_json(path, data):
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+# Inițializează clientul API o singură dată
+website_api_client = ApiClient(
+    api_endpoint_env="WEBSITE_AGENT_URL",
+    api_key_env="WEBSITE_AGENT_API_KEY"
+)
 
 # Încarcă configurațiile din sites.json
 def load_sites_config():
@@ -38,25 +29,21 @@ def load_sites_config():
             print(f"⚠️ Eroare la parsarea {SITES_FILE}.")
             return {}
 
-# Verifică dacă articolul a mai fost procesat
-def already_processed(processed, url):
-    return any(article["url"] == url for article in processed)
+# Helper pentru a printa în siguranță pe Windows
+def safe_print(text):
+    try:
+        print(text)
+    except UnicodeEncodeError:
+        print(text.encode('utf-8', 'replace').decode('utf-8'))
 
 # Procesează toate articolele pentru un client
 def process_client(client_name, article_urls, selectors):
-    print(f"\n🔎 Scraping site: {client_name}")
-
-    processed_articles = load_json(PROCESSED_FILE)
-    processed_urls = {a["url"] for a in processed_articles if a.get("client_name") == client_name}
+    safe_print(f"\nScraping site: {client_name}")
 
     unique_urls = list(set(article_urls))[:MAX_ARTICLES]
 
     for url in unique_urls:
-        if url in processed_urls:
-            print(f"⏭️ Deja procesat: {url}")
-            continue
-
-        print(f"\n📄 Extragere articol: {url}")
+        safe_print(f"\nExtragere articol: {url}")
         try:
             result = scrape_article(url, selectors)
             title = result.get("title", "Fără titlu")
@@ -68,7 +55,7 @@ def process_client(client_name, article_urls, selectors):
 
             client_context = get_client_context(client_name)
 
-            user_profile = load_user_profile("digital_excellence")
+            user_profile = load_user_profile()
 
             analysis_result = analyze_article(
             client_name=client_name,
@@ -91,27 +78,19 @@ def process_client(client_name, article_urls, selectors):
                 "scraped_at": datetime.now().isoformat()
             }
 
-            send_article_to_api(article_data)
-            processed_articles.append(article_data)
-            # save_json(PROCESSED_FILE, processed_articles)
-            print(f"✅ Articol salvat și trimis: {title}")
-
-            # was_sent = send_article_to_api(article_data)
-
-            # if was_sent:
-            #     print(f"✅ Articol salvat și trimis: {title}")
-            # else:
-            #     print(f"⚠️ Articol NEtrimis: {title}")
-
+            # Folosește clientul API centralizat
+            if website_api_client.send_data(article_data):
+                safe_print(f"✅ Articol trimis: {title}")
+            else:
+                safe_print(f"Warning: Articolul nu a putut fi trimis sau există deja: {title}")
 
         except Exception as e:
-            print(f"⚠️ Eroare la articol: {e}")
+            safe_print(f"Eroare la articol: {e}")
 
 # Funcția principală
 def main():
-    print("🚀 Pornim scraper-ul...")
+    print("Pornim scraper-ul...")
     sites_config = load_sites_config()
-    processed_articles = load_json(PROCESSED_FILE)
 
     for site in sites_config:
         client_name = site["name"]
@@ -120,12 +99,12 @@ def main():
 
         for index_url in site["article_urls"]:
             links = extract_article_links(index_url)
-            print(f"🔗 Găsite {len(links)} linkuri în {index_url}")
+            print(f"Gasite {len(links)} linkuri in {index_url}")
             all_links.extend(links)
 
         process_client(client_name, all_links, selectors)
 
-    print("\n🎉 Gata! Toate articolele au fost procesate.")
+    print("\nGata! Toate articolele au fost procesate.")
 
 if __name__ == "__main__":
     main()
