@@ -1,0 +1,35 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Virtual environment folders
+venv/
+.env/
+
+# Secret keys, auth tokens, user settings
+*.pickle
+*.json
+token.pickle
+
+# Streamlit cache and config
+.streamlit/
+
+# VS Code settings
+.vscode/
+
+# System files and OS clutter
+.DS_Store         # from macOS, but safe to include
+Thumbs.db         # Windows
+desktop.ini       # Windows
+*.lnk             # Windows shortcuts
+
+# Logs, temp files, backups
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
