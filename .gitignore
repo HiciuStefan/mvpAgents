@@ -5,6 +5,7 @@ __pycache__/
 # Virtual environment folders
 venv/
 .env/
+.env
 
 # Secret keys, auth tokens, user settings
 *.pickle
