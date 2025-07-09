@@ -21,7 +21,28 @@ export function ActionableItems({ data }: { data: ActionableDataType })
 	const { email_count, task_count, notes_count } = data;
 	const total = email_count + task_count + notes_count;
 
-		return (
+	return (
+		<Card className={styles.card} style={{ width: '360px' }}>
+			<CardHeader>
+				<CardTitle className={styles.card_title}>Tasks</CardTitle>
+			</CardHeader>
+			<CardContent className="pr-4">
+				<div className="flex items-start gap-5">
+					<span className="font-display text-3xl lg:text-4xl font-bold">{total}</span>
+					<ProgressBars data={data} />
+				</div>
+			</CardContent>
+		</Card>
+	);
+}
+
+
+export function ActionableItems2({ data }: { data: ActionableDataType })
+{
+	const { email_count, task_count, notes_count } = data;
+	const total = email_count + task_count + notes_count;
+
+	return (
 		<Card className={styles.card}>
 			<CardHeader>
 				<CardTitle className={styles.card_title}>Tasks</CardTitle>
@@ -43,7 +64,7 @@ function ProgressBars({ data } : { data: ActionableDataType })
 
 	return (
 		<div className="flex flex-col mt-[-10px] w-full">
-			<div>
+			{/* <div>
 				<Link href="#" className={styles.item_link}>
 					<div className="flex justify-between">
 						<div className="flex gap-2">
@@ -55,7 +76,7 @@ function ProgressBars({ data } : { data: ActionableDataType })
 						</div>
 					</div>
 				</Link>
-			</div>
+			</div> */}
 			<div>
 				<Link href="#" className={styles.item_link}>
 					<div className="flex justify-between">

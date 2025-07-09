@@ -1,16 +1,16 @@
 import clsx from "clsx";
-import { Mail, Globe } from "lucide-react";
+import { Mail, Globe, MessageCircle } from "lucide-react";
 import type { ProcessedItemType } from "~/server/db/schema";
 
 
 interface ChannelBadgeProps {
-	type: ProcessedItemType;
+	type: ProcessedItemType | 'whatsapp';
 	className?: string;
 }
 
 export const typeMap = {
 	email: {
-		color: "bg-green-100 text-green-700",
+		color: "bg-orange-100 text-orange-700",
 		icon: <Mail size={14} />,
 		label: "Email",
 	},
@@ -23,6 +23,31 @@ export const typeMap = {
 		color: "bg-neutral-100 text-neutral-700",
 		icon: <XSVG size={11} />,
 		label: '(Twitter)'
+	},
+	whatsapp: {
+		color: "bg-green-100 text-green-800",
+		icon: <MessageCircle size={14} />,
+		label: "WhatsApp",
+	},
+};
+
+
+export const typeMapNoLabel = {
+	email: {
+		color: "bg-orange-100 text-orange-700",
+		icon: <Mail size={16} strokeWidth={1.5} />,
+	},
+	website: {
+		color: "bg-blue-100 text-blue-700",
+		icon: <Globe size={16} strokeWidth={1.5} />,
+	},
+	twitter: {
+		color: "bg-neutral-100 text-neutral-700",
+		icon: <XSVG size={14} strokeWidth={1.5} />,
+	},
+	whatsapp: {
+		color: "bg-green-100 text-green-800",
+		icon: <MessageCircle size={16} strokeWidth={1.5} />,
 	},
 };
 
@@ -40,6 +65,23 @@ export function ChannelBadge({ type, className }: ChannelBadgeProps)
 		>
 			<span className="w-4 h-4 flex items-center justify-center">{icon}</span>
 			{label}
+		</div>
+	);
+}
+
+
+export function ChannelBadgeNoLabel({ type, className }: ChannelBadgeProps)
+{
+	const { icon } = typeMapNoLabel[type];
+
+	return (
+		<div
+			className={clsx(
+				"inline-flex items-center gap-2 w-6 h-6 px-1 py-0.5 rounded-full text-xs font-medium whitespace-nowrap",
+				className
+			)}
+		>
+			<span className="w-4 h-4 flex items-center justify-center">{icon}</span>
 		</div>
 	);
 }
