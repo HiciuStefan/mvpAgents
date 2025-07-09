@@ -6,6 +6,8 @@ import { BusinessIntelligence } from "~/components/business_intelligence";
 import { LatestProcessed } from "~/components/latest_processed";
 import { CenteredDailyUpdates } from "~/components/daily_updates/centered";
 import Header from "~/components/header";
+import { UrgentActionables } from "~/components/urgent_actionables";
+// import BusinessIntelligenceCard2 from "./something";
 
 
 export default async function Home()
@@ -38,13 +40,21 @@ export default async function Home()
 				<main className="flex flex-col gap-[24px]">
 					{/* <Header /> */}
 					<div className="flex flex-row gap-[24px]">
-						<CenteredDailyUpdates data={daily_data} />
+						<div className="flex flex-col gap-[24px]">
+							<CenteredDailyUpdates data={daily_data} />
+							<ActionableItems data={actionable_data} />
+						</div>
 						<div className="flex flex-col gap-[24px]">
 							<div className="flex flex-row gap-[24px]">
-								<BusinessIntelligence />
-								<ActionableItems data={actionable_data} />
+								{/* <BusinessIntelligence />
+								 */}
+								{/* <UrgentActionables /> */}
+								<LatestProcessed />
+								{/* <ActionableItems data={actionable_data} /> */}
 							</div>
-							<LatestProcessed />
+							<UrgentActionables />
+							{/* <BusinessIntelligenceCard2 /> */}
+							{/* <LatestProcessed /> */}
 						</div>
 					</div>
 				</main>
