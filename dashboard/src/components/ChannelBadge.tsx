@@ -43,7 +43,7 @@ export const typeMapNoLabel = {
 	},
 	twitter: {
 		color: "bg-neutral-100 text-neutral-700",
-		icon: <XSVG size={14} strokeWidth={1.5} />,
+		icon: <XSVG size={14} />,
 	},
 	whatsapp: {
 		color: "bg-green-100 text-green-800",
