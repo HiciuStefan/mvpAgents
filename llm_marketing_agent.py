@@ -1,10 +1,11 @@
-import openai
 import json
 from typing import Dict, List, Optional
 import os
 import streamlit as st
 import os
 from dotenv import load_dotenv
+from langchain_openai import AzureChatOpenAI
+from pydantic import BaseModel, SecretStr, ValidationError
 
 load_dotenv()
 
@@ -17,12 +18,18 @@ class MarketingAgent:
         """Initialize Azure OpenAI client"""
         try:
             # You'll need to set these in your environment or Streamlit secrets
-            openai.api_type = os.getenv("AZURE_OPENAI_API_TYPE", "azure")
-            openai.api_base = os.getenv("AZURE_OPENAI_API_BASE", "")
-            openai.api_version = os.getenv("AZURE_OPENAI_API_VERSION", "2023-05-15")
-            openai.api_key = os.getenv("AZURE_OPENAI_API_KEY", "")
-            openai.deployment = os.getenv("DEPLOYMENT_NAME", "")
-            self.azure_client = openai
+            endpoint = os.getenv("ENDPOINT_URL")
+            subscription_key = os.getenv("AZURE_OPENAI_API_KEY")
+            version=os.getenv("API_VERSION")
+            deployment = os.getenv("DEPLOYMENT_NAME")
+           
+            self.azure_client =  AzureChatOpenAI(
+                azure_endpoint   = endpoint,   
+                api_key          = SecretStr(subscription_key) if subscription_key else None,
+                api_version      = version,
+                azure_deployment = deployment, 
+                temperature =   0.3,
+            )
         except Exception as e:
             st.error(f"Azure OpenAI setup error: {e}")
     
@@ -102,16 +109,16 @@ class MarketingAgent:
         """
         
         try:
-            response = self.azure_client.ChatCompletion.create(
-                engine="gpt-4",  # Replace with your deployment name
-                messages=[
+            message = [
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
-                ],
-                temperature=0.7,
-                max_tokens=2000
-            )
-            return response.choices[0].message.content
+                ]
+            if not self.azure_client:
+                return "Azure OpenAI client is not initialized."
+            response = self.azure_client.invoke(message)
+                              
+            
+            return str(response.content)
         except Exception as e:
             return f"Error generating strategy: {e}"
     
@@ -152,16 +159,14 @@ class MarketingAgent:
         """
         
         try:
-            response = self.azure_client.ChatCompletion.create(
-                engine="gpt-4",
-                messages=[
+            if not self.azure_client:
+                return {"error": "Azure OpenAI client is not initialized."}
+            message = [
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
-                ],
-                temperature=0.7,
-                max_tokens=2500
-            )
-            return json.loads(response.choices[0].message.content)
+                ]
+            response = self.azure_client.invoke(message)
+            return json.loads(str(response.content))
         except Exception as e:
             return {"error": f"Error generating deliverables: {e}"}
     

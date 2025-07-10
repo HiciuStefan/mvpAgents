@@ -1,3 +1,4 @@
+from ast import IsNot
 import streamlit as st
 
 import json
@@ -9,11 +10,12 @@ import plotly.graph_objects as go
 from dataclasses import dataclass
 import os
 from dotenv import load_dotenv
-import pandas as pd
 from datetime import datetime
 from typing import Dict, Any
 import io
 import base64
+
+from streamlit.runtime.state import SessionState
 
 CAMPAIGNS_FILE = "campaigns_data.json"
 TEMP_CAMPAIGN_FILE = "temp_campaign_data.json"
@@ -166,6 +168,7 @@ def save_temp_campaign_data(data: Dict) -> bool:
             "campaign_data": data
         }
         with open(TEMP_CAMPAIGN_FILE, 'w') as f:
+ 
             json.dump(temp_data, f, indent=2, default=str)
         return True
     except Exception as e:
@@ -204,11 +207,40 @@ def collect_sostac_data_improved() -> Dict:
             sostac_data[section][question['key']] = value
     
     # If session state is empty, try to load from temp file
-    if not any(any(section_data.values()) for section_data in sostac_data.values()):
-        temp_data = load_temp_campaign_data()
-        if temp_data and "campaign_data" in temp_data:
-            sostac_data = temp_data["campaign_data"].get("sostac_data", sostac_data)
+    temp_data = load_temp_campaign_data()
+
+   
+    if temp_data and temp_data["campaign_data"].get("sostac_data", 0) != 0 and st.session_state.get("current_step") >1:
+        sostac_data_from_file = temp_data["campaign_data"].get("sostac_data", {})
+        situation_from_file = sostac_data_from_file.get("situation", {})
+        sostac_data["situation"] = situation_from_file
     
+    if temp_data and temp_data["campaign_data"].get("sostac_data", 0) != 0 : 
+        if st.session_state.get("current_step") >2:
+            sostac_data_from_file = temp_data["campaign_data"].get("sostac_data", {})
+            situation_from_file = sostac_data_from_file.get("objectives", {})
+            sostac_data["objectives"] = situation_from_file
+
+        if st.session_state.get("current_step") >3:
+            sostac_data_from_file = temp_data["campaign_data"].get("sostac_data", {})
+            situation_from_file = sostac_data_from_file.get("strategy", {})
+            sostac_data["strategy"] = situation_from_file
+
+        if st.session_state.get("current_step") >4:
+            sostac_data_from_file = temp_data["campaign_data"].get("sostac_data", {})
+            situation_from_file = sostac_data_from_file.get("tactics", {})
+            sostac_data["tactics"] = situation_from_file
+
+        if st.session_state.get("current_step") >5:
+            sostac_data_from_file = temp_data["campaign_data"].get("sostac_data", {})
+            situation_from_file = sostac_data_from_file.get("actions", {})
+            sostac_data["actions"] = situation_from_file
+            
+        if st.session_state.get("current_step") >6:
+            sostac_data_from_file = temp_data["campaign_data"].get("sostac_data", {})
+            situation_from_file = sostac_data_from_file.get("control", {})
+            sostac_data["control"] = situation_from_file
+
     return sostac_data
 
 def get_campaign_name_improved() -> str:
@@ -225,12 +257,18 @@ def get_campaign_name_improved() -> str:
     return campaign_name
 
 def auto_save_progress():
-    """Auto-save progress during campaign creation"""
-    if st.session_state.get("current_step", 0) > 0:
+     """Auto-save progress during campaign creation"""
+     if st.session_state.get("current_step", 0) > 0:
         # Collect all current data
+        prev_data = load_temp_campaign_data()
+        campaignName= ""
+        campaign_description = ""
+        if st.session_state.get("campaign_name",0)==0 and prev_data:
+            campaignName = prev_data["campaign_data"].get("campaign_name", "")
+            campaign_description = prev_data["campaign_data"].get("campaign_description", "")
         current_data = {
-            "campaign_name": st.session_state.get("campaign_name", ""),
-            "campaign_description": st.session_state.get("campaign_description", ""),
+            "campaign_name": st.session_state.get("campaign_name", campaignName),
+            "campaign_description": st.session_state.get("campaign_description", campaign_description),
             "sostac_data": collect_sostac_data_improved(),
             "current_step": st.session_state.get("current_step", 0)
         }
@@ -238,9 +276,17 @@ def auto_save_progress():
         # Save to temp file
         save_temp_campaign_data(current_data)
 
+
+n = 0
+def addPrint(s):
+    global n
+    print(n)
+    n += 1
+    print("///////////////////////////// ")
+    print(s)
+    
 def initialize_session_state():
     """Initialize session state with data from files if available"""
-    
     # Load campaigns from file if session state is empty
     if 'campaigns' not in st.session_state or not st.session_state.campaigns:
         file_campaigns = load_campaigns_from_file()
@@ -258,9 +304,9 @@ def initialize_session_state():
                 campaign.approved = campaign_data.get("approved", False)
                 campaign.created_at = campaign_data.get("created_at", datetime.now().isoformat())
                 campaigns[campaign_id] = campaign
-            
             st.session_state.campaigns = campaigns
-    
+   
+
     # Load temporary campaign data if in creation process
     if (
         st.session_state.get("page") == "create_campaign"
@@ -315,7 +361,7 @@ def initialize_session_state():
 def create_campaign_page_improved():
     """Improved campaign creation with better data persistence"""
     st.title("🎯 Create New Campaign")
-    
+    # print(st.session_state)
     # Auto-save progress
     auto_save_progress()
     
@@ -511,6 +557,7 @@ def create_campaign_page_improved():
     
     # # Step indicator
     # st.markdown(f"**Step {current_step + 1} of {len(steps)}: {steps[current_step]}**")
+    
     
     # if current_step == 0:
     #     # Basic campaign info
@@ -1339,6 +1386,7 @@ def main():
     # if 'page' not in st.session_state:
     #     st.session_state.page = "dashboard"
     # Initialize session state and load data
+    
     initialize_session_state()
 
         # Initialize other session state variables
