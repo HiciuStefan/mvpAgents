@@ -1,0 +1,11 @@
+.rounded_rectangle {
+	display: flex;
+	height: 34px;
+	padding: 0 25px;
+	align-items: center;
+	justify-content: center;
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+}

@@ -78,7 +78,7 @@ const mock_data: UrgentActionableType[] = [
 	}
 ];
 
-async function fetchMockData(): Promise<UrgentActionableType[]> {
+export async function fetchMockData(): Promise<UrgentActionableType[]> {
 	return new Promise((resolve) => {
 		resolve(mock_data);
 	});
