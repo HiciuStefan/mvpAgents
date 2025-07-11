@@ -1,4 +1,5 @@
 from ast import IsNot
+import keyword
 import streamlit as st
 
 import json
@@ -57,7 +58,10 @@ def render_question(question_data: Dict, section: str) -> any:
     elif question_data["type"] == "text_input":
         return st.text_input(question_data["question"], key=key)
     elif question_data["type"] == "text_area":
-        return st.text_area(question_data["question"], key=key)
+        value = st.text_area(question_data["question"], key=key)
+        if "example" in question_data:
+            st.caption(f"💡 Example: {question_data['example']}")
+        return value
 
 # def collect_sostac_data() -> Dict:
     # """Collect all SOSTAC responses from session state"""
@@ -644,14 +648,16 @@ def generate_strategy_page():
         
         # Get trending topics
         with st.spinner("Analyzing current trends..."):
-            trends = agent.get_trending_topics()
+            keyword=campaign.sostac_data.get('situation', {}).get('category', '')
+            trends = agent.get_trending_topics(keyword)
             st.success(f"Found {len(trends)} trending topics")
         
         # Analyze competitors
         with st.spinner("Analyzing competitors..."):
             competitors = campaign.sostac_data.get('situation', {}).get('competitors', '').split(',')
             industry = campaign.sostac_data.get('situation', {}).get('industry', '')
-            competitor_analysis = agent.analyze_competitors(industry, competitors)
+            # competitor_analysis = agent.analyze_competitors(industry, competitors)
+            competitor_analysis = competitors
             st.success("Competitor analysis complete")
         
         # Generate strategy
@@ -719,7 +725,7 @@ def generate_deliverables_page():
         with st.spinner("Finding relevant influencers..."):
             industry = campaign.sostac_data.get('situation', {}).get('industry', '')
             budget = campaign.sostac_data.get('objectives', {}).get('budget_range', '')
-            influencers = agent.find_influencers(industry, "US", budget)
+            influencers = agent.find_influencers(industry, "RO", "micro")
         
         campaign.influencers = influencers
         

@@ -6,8 +6,19 @@ SOSTAC_QUESTIONS = {
             {
                 "question": "What type of business are you marketing?",
                 "type": "radio",
-                "options": ["Product", "Service", "Both"],
+                "options": ["Product", "Service"],
                 "key": "business_type"
+            },
+            {
+                "question": "What is your product/service type?",
+                "type": "text_area",
+                "example":"dairy butter,crm software,logistics trucking",
+                "key": "category"
+            },
+            {
+                "question": "What is the brand or marketing name?",
+                "type": "text_area",
+                "key": "name"
             },
             {
                 "question": "What industry are you in?",

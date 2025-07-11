@@ -1,11 +1,16 @@
+from itertools import count
 import json
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 import os
 import streamlit as st
 import os
+import datetime
 from dotenv import load_dotenv
 from langchain_openai import AzureChatOpenAI
 from pydantic import BaseModel, SecretStr, ValidationError
+from pytrends.request import TrendReq
+
+from find_influencers import YouTubeInfluencerFinder
 
 load_dotenv()
 
@@ -33,15 +38,91 @@ class MarketingAgent:
         except Exception as e:
             st.error(f"Azure OpenAI setup error: {e}")
     
-    def get_trending_topics(self, country: str = "US") -> List[str]:
+    def get_trending_topics(self, keywords: list) -> Dict[str, Any]:
         """Get trending topics using Google Trends API or similar"""
-        # This is a placeholder - you'd integrate with actual trending APIs
-        sample_trends = [
-            "AI automation", "sustainable lifestyle", "remote work tools",
-            "health tech", "e-commerce growth", "digital transformation",
-            "social media marketing", "customer experience", "data privacy"
-        ]
-        return sample_trends[:5]
+        pytrends = TrendReq(hl='en-US', tz=0,retries=3, backoff_factor=0.5)
+        
+        # Check if keywords are provided
+        if not keywords:
+            st.error("No keywords provided for trending topics.")
+            return ""
+        if not isinstance(keywords, list):
+            st.error("Keywords should be provided as a list.")
+            return ""
+        
+        # Validate keywords
+        for keyword in keywords:
+            if not isinstance(keyword, str) or not keyword.strip():
+                st.error(f"Invalid keyword: {keyword}. Keywords should be non-empty strings.")
+                return ""
+            
+        # Ensure keywords are in lowercase
+        keywords = [keyword.lower().strip() for keyword in keywords if isinstance(keyword, str) and keyword.strip()]
+        if not keywords:
+            st.error("No valid keywords provided for trending topics.")
+            return ""
+        
+        end_date = datetime.datetime.now()
+        start_date = end_date - datetime.timedelta(days=60)
+
+        # Convert dates to string format
+        start_date_str = start_date.strftime('%Y-%m-%d')
+        end_date_str = end_date.strftime('%Y-%m-%d')
+
+        # Build the payload for one or more search terms
+        pytrends.build_payload(
+        kw_list = keywords,  # list of queries (Romanian for “artificial intelligence”)
+        timeframe = f'{start_date_str} {end_date_str}',#'now 7-d',                   # last 7 days
+        geo='RO',                                # blank = world; use country codes (e.g. 'RO')
+        )
+
+        # Get interest over time
+        interest_over_time_df = pytrends.interest_over_time()
+
+        # Resample the data to get monthly values
+        if interest_over_time_df.empty:
+            st.error("No data found for the provided keywords.")
+            return []
+        
+        # 2. Interest over time monthly
+        monthly_total_interest_df = (
+            interest_over_time_df
+                .resample('M')
+                .sum()
+                .reset_index() 
+                .rename(columns={interest_over_time_df.index.name or 'date': 'month'})
+            )
+
+        # 3. Today's trending searches in Romania
+        trending_df = pytrends.trending_searches(pn='romania')
+        # The result is a single-column DataFrame; grab top 10 as list
+        trending_searches = trending_df[0].head(10).tolist()
+
+        # 4. Related topics (higher-level clusters)
+        topics_dict = pytrends.related_topics().get(keyword, {})
+        top_topics_df = topics_dict.get('top')
+        related_topics = (
+            top_topics_df.reset_index()
+            .rename(columns={'topic_title':'topic', 'value':'score'})
+            .to_dict(orient='records')
+        ) if top_topics_df is not None else []
+
+        # 5. Related queries (exact search phrases)
+        queries_dict = pytrends.related_queries().get(keyword, {})
+        top_q_df    = queries_dict.get('top')
+        rising_q_df = queries_dict.get('rising')
+
+        top_queries    = top_q_df.to_dict(orient='records')    if top_q_df    is not None else []
+        rising_queries = rising_q_df.to_dict(orient='records') if rising_q_df is not None else []
+
+        return {
+            'monthly_total_interest': monthly_total_interest_df,
+            'trending_searches': trending_searches,
+            'related_topics': related_topics,
+            'top_queries': top_queries,
+            'rising_queries': rising_queries
+        }
+
     
     def analyze_competitors(self, industry: str, competitors: List[str]) -> Dict:
         """Analyze competitor campaigns and strategies"""
@@ -65,7 +146,7 @@ class MarketingAgent:
         }
         return competitor_analysis
     
-    def generate_campaign_strategy(self, sostac_data: Dict, trends: List[str], competitor_analysis: Dict) -> str:
+    def generate_campaign_strategy(self, sostac_data: Dict, trends: Dict, competitor_analysis: List[str]) -> str:
         """Generate comprehensive campaign strategy using LLM"""
         
         system_prompt = """
@@ -90,10 +171,10 @@ class MarketingAgent:
         {json.dumps(sostac_data, indent=2)}
         
         Current Trends to Leverage:
-        {', '.join(trends)}
+        {json.dumps(trends, indent=2)}
         
-        Competitor Analysis:
-        {json.dumps(competitor_analysis, indent=2)}
+        Competitors:
+        {', '.join(competitor_analysis)}
         
         Provide a detailed strategy with:
         1. Executive Summary
@@ -105,7 +186,7 @@ class MarketingAgent:
         7. Budget Allocation
         8. Success Metrics
         9. Risk Mitigation
-        10. Next Steps
+        10.Top 3 thematic hooks for a marketing campaign.
         """
         
         try:
@@ -172,38 +253,14 @@ class MarketingAgent:
     
     def find_influencers(self, industry: str, country: str, budget_range: str) -> List[Dict]:
         """Find relevant influencers based on campaign parameters"""
-        # This would integrate with influencer databases
-        sample_influencers = [
-            {
-                "name": "Sarah Johnson",
-                "platform": "Instagram",
-                "followers": "250K",
-                "engagement_rate": "4.2%",
-                "niche": industry,
-                "estimated_cost": "$2,500-$5,000",
-                "country": country,
-                "recent_performance": "High engagement on product reviews"
-            },
-            {
-                "name": "Mike Chen",
-                "platform": "TikTok",
-                "followers": "180K",
-                "engagement_rate": "6.8%",
-                "niche": industry,
-                "estimated_cost": "$1,500-$3,000",
-                "country": country,
-                "recent_performance": "Viral content creator"
-            },
-            {
-                "name": "Emma Rodriguez",
-                "platform": "YouTube",
-                "followers": "95K",
-                "engagement_rate": "3.5%",
-                "niche": industry,
-                "estimated_cost": "$3,000-$6,000",
-                "country": country,
-                "recent_performance": "Long-form content specialist"
-            }
-        ]
-        return sample_influencers
+        finder = YouTubeInfluencerFinder("YOUR_YOUTUBE_API_KEY")
+        influencers = finder.find_influencers(
+            industry=industry,
+            country=country, 
+            budget_range=budget_range
+        )
+        if not influencers:
+            st.error("No influencers found for the specified criteria.")
+            return []
+        return influencers
 
