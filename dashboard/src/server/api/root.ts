@@ -1,9 +1,9 @@
 import { email_router } from '~/server/api/routers/email';
 import { twitter_router } from '~/server/api/routers/twitter';
 import { website_router } from '~/server/api/routers/website';
+import { rag_router } from '~/server/api/routers/rag';
 import { processed_items_router }from '~/server/api/routers/latest_items';
 import { createCallerFactory, createTRPCRouter } from '~/server/api/trpc';
-
 /**
  * This is the primary router for your server.
  *
@@ -13,7 +13,8 @@ export const appRouter = createTRPCRouter({
 	email: email_router,
 	twitter: twitter_router,
 	website: website_router,
-	processed_items: processed_items_router
+	processed_items: processed_items_router,
+	rag: rag_router
 });
 
 // export type definition of API
