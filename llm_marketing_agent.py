@@ -23,9 +23,9 @@ class MarketingAgent:
         """Initialize Azure OpenAI client"""
         try:
             # You'll need to set these in your environment or Streamlit secrets
-            endpoint = os.getenv("ENDPOINT_URL")
+            endpoint = os.getenv("AZURE_OPENAI_API_BASE")
             subscription_key = os.getenv("AZURE_OPENAI_API_KEY")
-            version=os.getenv("API_VERSION")
+            version=os.getenv("AZURE_OPENAI_API_VERSION")
             deployment = os.getenv("DEPLOYMENT_NAME")
            
             self.azure_client =  AzureChatOpenAI(
