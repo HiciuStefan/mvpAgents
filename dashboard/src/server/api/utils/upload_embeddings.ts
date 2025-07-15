@@ -25,7 +25,7 @@ interface AzureSearchResponse {
 }
 
 export async function upload_embeddings(embeddings_response: CreateEmbeddingResponse, input: string): Promise<AzureSearchResponse | null> {
-	const AZURE_SEARCH_API_KEY = process.env.AZURE_SEARCH_API_KEY ?? 'eqbSD8mEmAhsQvTanXL7CrgBNjD9As8OG3tyNoGiY0AzSeDQqxRP';
+	const AZURE_SEARCH_API_KEY = process.env.RAG_API_KEY ?? '';
 
 	// Construct the search URL
 	const search_url = 'https://ais-search-swc.search.windows.net/indexes/index1751888498617/docs/index?api-version=2024-07-01';
