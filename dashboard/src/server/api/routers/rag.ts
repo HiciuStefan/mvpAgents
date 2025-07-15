@@ -11,7 +11,7 @@ interface DeleteDocument {
 }
 
 const endpoint = "https://ais-search-swc.search.windows.net";
-const apiKey = process.env.AZURE_SEARCH_API_KEY ?? 'eqbSD8mEmAhsQvTanXL7CrgBNjD9As8OG3tyNoGiY0AzSeDQqxRP';
+const apiKey = process.env.RAG_API_KEY ?? '';
 const indexName = "index1751888498617";
 
 export const rag_router = createTRPCRouter({
