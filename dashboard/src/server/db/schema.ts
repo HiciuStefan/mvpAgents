@@ -195,3 +195,19 @@ export const processed_DELETE_schema = z.object({
 export const processed_DELETE_by_id_schema = z.object({
 	id: z.string()
 });
+
+// NEW SCHEMAS FOR RAG
+// POST schema for POST requests
+export const rag_post_schema = z.object({
+	input: z.string()
+});
+
+// GET schema for GET requests
+export const rag_get_schema = z.object({
+	text: z.string()
+});
+
+// DELETE schema for DELETE requests
+export const rag_delete_schema = z.object({
+	confirm: z.boolean().optional() // Optional confirmation flag
+});

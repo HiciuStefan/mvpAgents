@@ -76,7 +76,7 @@ export function create_error_response(error: unknown)
 	});
 };
 
-	
+
 
 export type agent_type = 'twitter' | 'email' | 'website';
 
@@ -100,6 +100,33 @@ export function validate_api_key(req: NextRequest, agent: agent_type): Result<vo
 		};
 	}
 
+
+	return {
+		data: undefined,
+		error: null
+	};
+}
+
+// Validate API key against any key in the KEYS object (agent-agnostic)
+export function validate_any_api_key(req: NextRequest): Result<void, AppError>
+{
+	const apiKey = req.headers.get('X-API-Key');
+	if (!apiKey)
+	{
+	  	return {
+			data: null,
+			error: new AppError(401, 'API key is missing')
+		};
+	}
+
+	const validKeys = Object.values(KEYS);
+	if (!validKeys.includes(apiKey))
+	{
+	  	return {
+			data: null,
+			error: new AppError(401, 'Invalid API key')
+		};
+	}
 
 	return {
 		data: undefined,
