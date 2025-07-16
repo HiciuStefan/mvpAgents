@@ -648,7 +648,8 @@ def generate_strategy_page():
         
         # Get trending topics
         with st.spinner("Analyzing current trends..."):
-            keyword=campaign.sostac_data.get('situation', {}).get('category', '')
+            category = campaign.sostac_data.get('situation', {}).get('category', '')
+            keyword = [category] if category else []
             trends = agent.get_trending_topics(keyword)
             st.success(f"Found {len(trends)} trending topics")
         
