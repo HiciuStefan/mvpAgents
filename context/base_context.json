@@ -1,0 +1,70 @@
+  "context": [
+    {
+      "type": "twitter",
+      "date": "2024-06-15",
+      "title": "SolarisProAi Expansion Update",
+      "content": "Exciting news! SolarisProAi is expanding our AI platform to 6 new international markets this quarter. Our computer vision solutions are gaining traction in Europe and Asia. Building world-class AI requires world-class talent. #AIExpansion #ComputerVision #GlobalTech",
+      "recommendation": {
+        "action": "Monitor for follow-up hiring announcements",
+        "reasoning": "International expansion typically requires additional technical talent. Company showing growth trajectory and international focus - potential opportunity for developer placement."
+      }
+    },
+    {
+      "type": "email",
+      "date": "2024-06-18",
+      "from": "sarah.chen@solarisproai.com",
+      "to": "partnerships@digitalexcellence.com",
+      "subject": "AI Developer Requirement - International Team",
+      "body": "Hi Digital Excellence Team,\n\nFollowing our recent discussions about talent acquisition, we have an urgent requirement for a Senior AI Developer to join our international expansion team. \n\nKey requirements:\n- 3-5 years experience in computer vision and deep learning\n- Proficiency in Python, PyTorch, OpenCV\n- Experience with MLOps and model deployment\n- Strong English communication skills\n- IMPORTANT: Must be able to travel internationally at least 2 times per month as part of our distributed international team\n\nBudget: $85-95K annually\nStart date: July 1st, 2024\nProject: Real-time object detection for retail analytics\n\nPlease let me know if you have suitable candidates.\n\nBest regards,\nSarah Chen\nCTO, SolarisProAi",
+      "recommendation": {
+        "action": "Source senior AI developers with international travel capability",
+        "reasoning": "Clear technical requirements specified. Travel requirement is critical differentiator - need to ensure candidates are comfortable with 2x monthly international travel before presenting profiles."
+      }
+    },
+    {
+      "type": "email",
+      "date": "2024-06-20",
+      "from": "partnerships@digitalexcellence.com",
+      "to": "sarah.chen@solarisproai.com",
+      "subject": "Re: AI Developer Requirement - International Team",
+      "body": "Hi Sarah,\n\nThank you for reaching out. We have identified 3 strong candidates for your Senior AI Developer position:\n\n1. Alex Rodriguez - 4 years experience, specialized in retail computer vision, comfortable with frequent travel\n2. Maya Patel - 5 years experience, strong MLOps background, has international project experience\n3. David Kim - 3 years experience, PyTorch expert, previously worked with distributed teams\n\nAll candidates meet your technical requirements and travel expectations. Would you like to schedule interviews for next week?\n\nAlso, given the international nature of the role, should we discuss any visa/work permit considerations for the target markets?\n\nBest regards,\nMark Thompson\nPartnership Manager, Digital Excellence",
+      "recommendation": {
+        "action": "Schedule interviews and clarify visa requirements",
+        "reasoning": "Strong candidate pool identified. Proactive question about visa/work permits shows thorough understanding of international travel implications. Need to confirm logistics before proceeding."
+      }
+    },
+    {
+      "type": "email",
+      "date": "2024-06-25",
+      "from": "sarah.chen@solarisproai.com",
+      "to": "partnerships@digitalexcellence.com",
+      "subject": "Alex Rodriguez - Offer Extended",
+      "body": "Hi Mark,\n\nGreat news! After interviews, we're extending an offer to Alex Rodriguez. He impressed us with his retail computer vision portfolio and his enthusiasm for the international travel aspect.\n\nOffer details:\n- $92,000 annually\n- Start date: July 8th, 2024\n- Travel budget: $15,000 annually for international trips\n- 6-month probation period\n\nPlease coordinate with Alex on the contract details. We're excited to have him join our international team.\n\nThanks for the excellent candidates!\n\nBest regards,\nSarah Chen\nCTO, SolarisProAi",
+      "recommendation": {
+        "action": "Finalize contract with Alex Rodriguez and maintain relationship for future opportunities",
+        "reasoning": "Successful placement completed. Travel budget allocation indicates serious commitment to international operations. Strong relationship building opportunity - client satisfied with quality of candidates provided."
+      }
+    },
+    {
+      "type": "twitter",
+      "date": "2024-07-10",
+      "title": "SolarisProAi Team Growth",
+      "content": "Thrilled to welcome Alex Rodriguez to our international AI team! 🚀 Our computer vision capabilities are scaling rapidly across European and Asian markets. Innovation knows no borders when you have the right talent. #TeamGrowth #AITalent #GlobalInnovation",
+      "recommendation": {
+        "action": "Congratulate on successful placement and stay engaged for future opportunities",
+        "reasoning": "Public acknowledgment of successful placement. Continued emphasis on international operations and scaling suggests potential for additional developer requirements. Maintain visibility and engagement."
+      }
+    },
+    {
+      "type": "email",
+      "date": "2024-07-15",
+      "from": "partnerships@digitalexcellence.com",
+      "to": "sarah.chen@solarisproai.com",
+      "subject": "One-Month Check-in - Alex Rodriguez",
+      "body": "Hi Sarah,\n\nHope you're doing well! It's been about a month since Alex started with your team. How is he settling in with the international travel requirements and the retail analytics project?\n\nWe like to check in on our placements to ensure everything is going smoothly. Any feedback would be appreciated.\n\nAlso, with your continued expansion, please keep us in mind for any future AI talent needs. We're building a strong pipeline of international-travel-ready developers.\n\nBest regards,\nMark Thompson\nPartnership Manager, Digital Excellence",
+      "recommendation": {
+        "action": "Gather feedback on placement success and position for future opportunities",
+        "reasoning": "Proactive relationship management. Emphasizing 'international-travel-ready developers' shows understanding of client's unique requirements. Good timing for feedback collection and future opportunity positioning."
+      }
+    }
+  ]
