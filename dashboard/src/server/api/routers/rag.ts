@@ -90,7 +90,7 @@ export const rag_router = createTRPCRouter({
 	delete: publicProcedure
 		.input(rag_delete_schema)
 		.mutation(async () => {
-			const keyField = "id"; // Changed back to lowercase "id" to match the uploaded documents
+			const keyField = "ID"; // Changed back to lowercase "id" to match the uploaded documents
 
 			const client = new SearchClient(endpoint, indexName, new AzureKeyCredential(apiKey));
 
