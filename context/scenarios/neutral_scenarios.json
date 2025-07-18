@@ -1,0 +1,35 @@
+[
+    {
+      "type": "email",
+      "date": "2024-09-01",
+      "from": "sarah.chen@solarisproai.com",
+      "to": "partnerships@digitalexcellence.com",
+      "subject": "New Onboarding Requirements",
+      "body": "Hi Mark,\n\nAs we expand, we've updated our onboarding documentation and travel reimbursement policies. Please make sure future candidates are aware of the revised travel and reporting expectations.\n\nBest,\nSarah",
+      "recommendation": {
+        "action": "Update candidate briefing process",
+        "reasoning": "Neutral update but important operational detail. Ensures smooth onboarding for future hires."
+      }
+    },
+    {
+      "type": "website",
+      "date": "2024-09-05",
+      "title": "SolarisProAi Enhances Internal AI Training Program",
+      "content": "As we scale, our internal AI team is benefiting from a structured mentorship and training program. While we continue hiring externally, internal growth is equally important. #TechGrowth #AITraining",
+      "recommendation": {
+        "action": "Monitor balance between internal training vs. external hiring",
+        "reasoning": "Signals a potential shift in hiring strategy. May reduce external demand slightly over time."
+      }
+    },
+    {
+      "type": "twitter",
+      "date": "2024-09-07",
+      "title": "Team Expansion Pause",
+      "content": "Taking a short breather as we onboard our latest team additions. Stability and alignment are just as important as rapid growth. #AIExpansion #GrowthPacing",
+      "recommendation": {
+        "action": "Check back in 2\u20133 weeks for new hiring needs",
+        "reasoning": "Signals a temporary slowdown. Stay informed and reengage soon."
+      },
+      "reply": ""
+    }
+  ]

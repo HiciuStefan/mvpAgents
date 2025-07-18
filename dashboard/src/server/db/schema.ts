@@ -73,8 +73,8 @@ export const processed_tweets_schema = baseAgentInputSchema.extend({
 	tweet_id: z.string().min(1, 'Tweet ID is required'),
 	url: z.string().url('Must be a valid URL'),
 	text: z.string().min(1, 'Text is required'),
-	status: z.string().min(1, 'Status is required'),
-	reply: z.string(),
+	status: z.string().optional(),
+	reply: z.string().optional(),
 });
 
 export const twitter = create_agent_table('twitter',
@@ -82,8 +82,8 @@ export const twitter = create_agent_table('twitter',
 		tweet_id: d.text().notNull(),
 		url: d.text().notNull(),
 		text: d.text().notNull(),
-		status: d.text().notNull(), // 'pending', 'posted', or 'rejected'
-		reply: d.text().notNull().default(''),
+								status: d.text(), // 'pending', 'posted', or 'rejected'
+		reply: d.text(),
 	}),
 	// (t) => [index('name_idx').on(t.name)]
 );

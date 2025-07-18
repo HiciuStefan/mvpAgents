@@ -38,24 +38,29 @@ export const twitter_router = createTRPCRouter({
 					tweet_id,
 					url,
 					text,
-					status,
-					reply,
 					suggested_action,
 					short_description,
 					relevance
 				} = input;
 
-				const [item] = await tx.insert(twitter).values({
+				const insertData: typeof twitter.$inferInsert = {
 					processed_item_id: processedItem.id,
 					tweet_id,
 					url,
 					text,
-					status,
-					reply,
 					suggested_action,
 					short_description,
 					relevance
-				}).returning();
+				};
+
+				if (input.status !== undefined) {
+					insertData.status = input.status;
+				}
+				if (input.reply !== undefined) {
+					insertData.reply = input.reply;
+				}
+
+				const [item] = await tx.insert(twitter).values(insertData).returning();
 
 				return {
 					processedItem,
