@@ -99,7 +99,7 @@ if __name__ == "__main__":
             "input_type": item.get("type"),
             "content": key[1],
             "actionable": bool(analysis),
-            "llm_output": analysis if analysis else None
+            "llm_output_batch": analysis if analysis else None
         }
         full_results.append(result_item)
 
