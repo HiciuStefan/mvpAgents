@@ -1,0 +1,17 @@
+{
+    "type": "object",
+    "properties": {
+        "client_name": {"type": "string"},
+        "url": {"type": "string", "format": "uri"},
+        "title": {"type": "string"},
+        "content": {"type": "string"},
+        "short_description": {"type": "string"},
+        "actionable": {"type": "boolean"},
+        "opportunity_type": {"type": "string"},
+        "suggested_action": {"type": "string"},
+        "relevance": {"type": "string"},
+        "read": {"type": "boolean"},
+        "scraped_at": {"type": "string", "format": "date-time"}
+    },
+    "required": ["client_name", "url", "title", "content", "short_description", "actionable", "opportunity_type", "suggested_action", "relevance", "read", "scraped_at"]
+}

@@ -45,4 +45,4 @@ selenium
 langchain_openai
 #email
 google_auth_oauthlib
-google-api-python-client
+google-api-python-clientjsonschema 

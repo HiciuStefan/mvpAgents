@@ -3,6 +3,8 @@ from urllib.parse import urlparse
 from agents._tools.llm_twitterAgent import classify_tweet
 from agents.common.api_sender import ApiClient
 from agents._tools.llm_twitterAgent import generate_summary
+from agents.common.json_validator import validate_json
+import json
 
 
 def extract_account_from_url(url: str) -> str:
@@ -51,12 +53,24 @@ def main():
     # Aplatizează lista de tweet-uri pentru a le trimite
     all_tweets_flat = [t for acc in grouped.values() for t in acc["tweets"]]
 
+    with open('agents/config/twitter_schema.json', 'r') as f:
+        tweet_schema = json.load(f)
+
     # Folosește noul ApiClient pentru a trimite tweet-urile
     print(f"Se încearcă trimiterea a {len(all_tweets_flat)} tweet-uri către API...")
     successful_sends = 0
     for tweet in all_tweets_flat:
-        if twitter_api_client.send_data(tweet):
-            successful_sends += 1
+        # Adaugă câmpurile lipsă cu valori default înainte de validare
+        for key in tweet_schema['properties']:
+            if key not in tweet:
+                tweet[key] = "" # Sau o altă valoare default potrivită
+
+        is_valid, message = validate_json(tweet, tweet_schema)
+        if is_valid:
+            if twitter_api_client.send_data(tweet):
+                successful_sends += 1
+        else:
+            print(f"Tweet invalid: {message}. Tweet-ul nu a fost trimis.")
     
     print(f"Rezumat trimitere: {successful_sends} din {len(all_tweets_flat)} tweet-uri au fost trimise cu succes.")
 

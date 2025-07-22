@@ -5,15 +5,7 @@ from typing import Any, Dict, Optional
 from agents.common.context_api_fetcher import get_client_context
 from .llm_client import llm
 
-# ---------------------------------------------------------------------------
-# Optional user profile loader (same as classifier)
-# ---------------------------------------------------------------------------
-CONFIG_PATH = Path(__file__).resolve().parent.parent / "config" / "user_config.json"
-
-def load_user_profile(name: str | Path = None) -> Dict[str, Any]:
-    """Load the user JSON profile from agents/config/user_config.json."""
-    with open(CONFIG_PATH, encoding="utf-8") as fp:
-        return json.load(fp)
+from agents.config.config_loader import load_user_profile
 
 # ---------------------------------------------------------------------------
 # Prompt assembly

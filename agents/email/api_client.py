@@ -9,6 +9,7 @@ API_KEY = os.getenv("WEBSITE_AGENT_API_KEY")
 
 
 def send_article_to_api(article: dict):
+    print("✅ Initializat send_article_to_api")
     headers = {
         "X-API-key": API_KEY,
         "Content-Type": "application/json"

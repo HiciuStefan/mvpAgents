@@ -7,15 +7,7 @@ from pathlib import Path
 from agents.common.context_api_fetcher import get_client_context
 
 
-# ---------------------------------------------------------------------------
-# 3) Helpers – user profile I/O
-# ---------------------------------------------------------------------------
-CONFIG_PATH = Path(__file__).resolve().parent / "config" / "user_config.json"
-
-def load_user_profile(name: str | Path = None) -> Dict[str, Any]:
-    """Load the user JSON profile from agents/config/user_config.json."""
-    with open(CONFIG_PATH, encoding="utf-8") as fp:
-        return json.load(fp)
+from agents.config.config_loader import load_user_profile
 
 # ---------------------------------------------------------------------------
 # 4) Prompt building (includes client context)

@@ -1,0 +1,142 @@
+[
+  {
+    "scenario_type": "positive",
+    "input_type": "email",
+    "content": "Hi Mark,\n\nHope you're well! Alex has been performing excellently and has integrated well with our international team.\n\nDue to our rapid expansion success, we need another AI Developer to join our international team. The role is similar to Alex's position:\n\n- Mid-level AI Developer (2-4 years experience)\n- Computer vision and deep learning focus\n- Python, TensorFlow/PyTorch proficiency\n- Natural language processing skills (new requirement)\n- Budget: $75-85K annually\n- Start date: September 15th, 2024\n- Project: Multi-language sentiment analysis for international markets\n\nCan you help us find another strong candidate? We're looking to move quickly on this.\n\nBest regards,\nSarah Chen\nCTO, SolarisProAi",
+    "actionable": true,
+    "llm_output": {
+      "original_item": {
+        "type": "email",
+        "date": "2024-08-20",
+        "from": "sarah.chen@solarisproai.com",
+        "to": "partnerships@digitalexcellence.com",
+        "subject": "Urgent: Additional AI Developer Required",
+        "body": "Hi Mark,\n\nHope you're well! Alex has been performing excellently and has integrated well with our international team.\n\nDue to our rapid expansion success, we need another AI Developer to join our international team. The role is similar to Alex's position:\n\n- Mid-level AI Developer (2-4 years experience)\n- Computer vision and deep learning focus\n- Python, TensorFlow/PyTorch proficiency\n- Natural language processing skills (new requirement)\n- Budget: $75-85K annually\n- Start date: September 15th, 2024\n- Project: Multi-language sentiment analysis for international markets\n\nCan you help us find another strong candidate? We're looking to move quickly on this.\n\nBest regards,\nSarah Chen\nCTO, SolarisProAi"
+      },
+      "analysis": {
+        "short_description": "Urgent request for new developer",
+        "actionable": true,
+        "opportunity_type": "Client request",
+        "suggested_action": "Source candidates for a Mid-level AI Developer with NLP skills",
+        "relevance": "Client has a new, urgent hiring need due to successful expansion."
+      }
+    }
+  },
+  {
+    "scenario_type": "positive",
+    "input_type": "email",
+    "content": "Hi Mark,\n\nJust a quick update – our second AI developer, Priya Malhotra, is settling in very well. Her work on the sentiment analysis module has been excellent so far, especially her multilingual NLP enhancements.\n\nThanks again for finding such high-quality talent. We’ll likely need a third developer soon if this growth continues.\n\nBest,\nSarah",
+    "actionable": false,
+    "llm_output": null
+  },
+  {
+    "scenario_type": "positive",
+    "input_type": "twitter",
+    "content": "We're building something incredible! ✨ Just added another AI developer to our global vision team. Huge thanks to our recruitment partner for helping us scale with precision. #AITalent #GlobalAI #NLP",
+    "actionable": false,
+    "llm_output": null
+  },
+  {
+    "scenario_type": "positive",
+    "input_type": "twitter",
+    "content": "@DigitalExcellence Your work in AI recruitment is impressive! We're a startup looking for top-tier ML engineers. DM us to discuss potential collaboration! #AIJobs #TechRecruitment",
+    "actionable": false,
+    "llm_output": null
+  },
+  {
+    "scenario_type": "positive",
+    "input_type": "website",
+    "content": "A new AI startup, 'InnovateAI', just filled out our partnership inquiry form on our website. They are looking for talent acquisition solutions for their rapidly expanding ML engineering team. This represents a high-value lead.",
+    "actionable": true,
+    "llm_output": {
+      "original_item": {
+        "type": "website",
+        "date": "2025-07-18",
+        "title": "New Lead: AI Startup Seeking Partnership",
+        "content": "A new AI startup, 'InnovateAI', just filled out our partnership inquiry form on our website. They are looking for talent acquisition solutions for their rapidly expanding ML engineering team. This represents a high-value lead.",
+        "url": "https://www.innovateai.com/partnership-inquiry"
+      },
+      "analysis": {
+        "short_description": "New lead from InnovateAI",
+        "actionable": true,
+        "opportunity_type": "New business opportunity",
+        "suggested_action": "Follow up with InnovateAI immediately to schedule a meeting",
+        "relevance": "Direct inquiry from a high-potential client. Prompt action is crucial for conversion."
+      }
+    }
+  },
+  {
+    "scenario_type": "neutral",
+    "input_type": "email",
+    "content": "Hi Mark,\n\nAs we expand, we've updated our onboarding documentation and travel reimbursement policies. Please make sure future candidates are aware of the revised travel and reporting expectations.\n\nBest,\nSarah",
+    "actionable": false,
+    "llm_output": null
+  },
+  {
+    "scenario_type": "neutral",
+    "input_type": "website",
+    "content": "As we scale, our internal AI team is benefiting from a structured mentorship and training program. While we continue hiring externally, internal growth is equally important. #TechGrowth #AITraining",
+    "actionable": false,
+    "llm_output": null
+  },
+  {
+    "scenario_type": "neutral",
+    "input_type": "twitter",
+    "content": "Taking a short breather as we onboard our latest team additions. Stability and alignment are just as important as rapid growth. #AIExpansion #GrowthPacing",
+    "actionable": false,
+    "llm_output": null
+  },
+  {
+    "scenario_type": "negative",
+    "input_type": "email",
+    "content": "Hi Mark,\n\nWe have a problem. Alex Rodriguez has requested a significant raise and is threatening to resign if his salary isn’t adjusted by next week. This is causing disruption in our team planning.\n\nCan we discuss his expectations and explore whether a replacement would be feasible if needed?\n\nSarah",
+    "actionable": true,
+    "llm_output": {
+      "original_item": {
+        "type": "email",
+        "date": "2024-09-15",
+        "from": "sarah.chen@solarisproai.com",
+        "to": "partnerships@digitalexcellence.com",
+        "subject": "Urgent: Developer Compensation Issue",
+        "body": "Hi Mark,\n\nWe have a problem. Alex Rodriguez has requested a significant raise and is threatening to resign if his salary isn’t adjusted by next week. This is causing disruption in our team planning.\n\nCan we discuss his expectations and explore whether a replacement would be feasible if needed?\n\nSarah"
+      },
+      "analysis": {
+        "short_description": "Urgent developer compensation issue",
+        "actionable": true,
+        "opportunity_type": "Reputational risk",
+        "suggested_action": "Initiate retention or replacement planning",
+        "relevance": "Potential loss of a key team member could disrupt client projects."
+      }
+    }
+  },
+  {
+    "scenario_type": "negative",
+    "input_type": "email",
+    "content": "Hi Mark,\n\nThe last candidate you submitted didn’t meet our expectations in terms of communication skills and real-time problem solving. We'd appreciate a tighter screening process moving forward.\n\nBest,\nSarah",
+    "actionable": true,
+    "llm_output": {
+      "original_item": {
+        "type": "email",
+        "date": "2024-09-18",
+        "from": "sarah.chen@solarisproai.com",
+        "to": "partnerships@digitalexcellence.com",
+        "subject": "Feedback on Recent Candidate",
+        "body": "Hi Mark,\n\nThe last candidate you submitted didn’t meet our expectations in terms of communication skills and real-time problem solving. We'd appreciate a tighter screening process moving forward.\n\nBest,\nSarah"
+      },
+      "analysis": {
+        "short_description": "Feedback on candidate quality",
+        "actionable": true,
+        "opportunity_type": "Client request",
+        "suggested_action": "Review and tighten candidate screening process",
+        "relevance": "Improving candidate quality is crucial for maintaining client trust."
+      }
+    }
+  },
+  {
+    "scenario_type": "negative",
+    "input_type": "twitter",
+    "content": "Rapid expansion comes with its challenges. We're actively re-evaluating our team structure and partnerships to ensure alignment with long-term goals. #GrowingPains #TechOps",
+    "actionable": false,
+    "llm_output": null
+  }
+]
