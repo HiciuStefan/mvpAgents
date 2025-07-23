@@ -15,9 +15,9 @@
         "scenario_type": "positive"
       },
       "analysis": {
-        "short_description": "Urgent request for new developer",
+        "short_description": "Urgent request for new developer - high",
         "actionable": true,
-        "opportunity_type": "Client request",
+        "opportunity_type": "New business opportunity",
         "suggested_action": "Source candidates for a Mid-level AI Developer with NLP skills",
         "relevance": "Client has a new, urgent hiring need due to successful expansion."
       }
@@ -27,7 +27,7 @@
         "content": "Hi Mark,\n\nHope you're well! Alex has been performing excellently and has integrated well with our international team.\n\nDue to our rapid expansion success, we need another AI Developer to join our international team. The role is similar to Alex's position:\n\n- Mid-level AI Developer (2-4 years experience)\n- Computer vision and deep learning focus\n- Python, TensorFlow/PyTorch proficiency\n- Natural language processing skills (new requirement)\n- Budget: $75-85K annually\n- Start date: September 15th, 2024\n- Project: Multi-language sentiment analysis for international markets\n\nCan you help us find another strong candidate? We're looking to move quickly on this.\n\nBest regards,\nSarah Chen\nCTO, SolarisProAi"
       },
       "analysis": {
-        "short_description": "Urgent request for new developer",
+        "short_description": "Urgent request for new developer - high",
         "actionable": true,
         "opportunity_type": "Client request",
         "suggested_action": "Source candidates for a Mid-level AI Developer with NLP skills",
@@ -46,11 +46,11 @@
         "content": "Hi Mark,\n\nJust a quick update – our second AI developer, Priya Malhotra, is settling in very well. Her work on the sentiment analysis module has been excellent so far, especially her multilingual NLP enhancements.\n\nThanks again for finding such high-quality talent. We’ll likely need a third developer soon if this growth continues.\n\nBest,\nSarah"
       },
       "analysis": {
-        "short_description": "Potential need for a third AI developer",
+        "short_description": "Potential need for third developer - medium",
         "actionable": true,
         "opportunity_type": "Client request",
         "suggested_action": "Prepare to source candidates for a third AI Developer",
-        "relevance": "Client indicates potential future hiring needs due to growth."
+        "relevance": "Client indicates potential future hiring need due to growth."
       }
     }
   },
@@ -66,18 +66,37 @@
     "scenario_type": "positive",
     "input_type": "twitter",
     "content": "@DigitalExcellence Your work in AI recruitment is impressive! We're a startup looking for top-tier ML engineers. DM us to discuss potential collaboration! #AIJobs #TechRecruitment",
-    "actionable": false,
-    "llm_output_batch": null,
+    "actionable": true,
+    "llm_output_batch": {
+      "original_item": {
+        "type": "twitter",
+        "date": "2025-07-18",
+        "title": "Digital Excellence Partnership Inquiry",
+        "content": "@DigitalExcellence Your work in AI recruitment is impressive! We're a startup looking for top-tier ML engineers. DM us to discuss potential collaboration! #AIJobs #TechRecruitment",
+        "recommendation": {
+          "action": "Respond to DM and schedule a discovery call",
+          "reasoning": "Direct inquiry from a potential client seeking ML engineers. High potential for new business."
+        },
+        "scenario_type": "positive"
+      },
+      "analysis": {
+        "short_description": "Inquiry for ML engineers collaboration - high",
+        "actionable": true,
+        "opportunity_type": "New business opportunity",
+        "suggested_action": "Respond to DM and schedule a discovery call",
+        "relevance": "Direct inquiry from a potential client seeking ML engineers indicates high potential for new business."
+      }
+    },
     "llm_output_individual": {
       "original_item": {
         "content": "@DigitalExcellence Your work in AI recruitment is impressive! We're a startup looking for top-tier ML engineers. DM us to discuss potential collaboration! #AIJobs #TechRecruitment"
       },
       "analysis": {
-        "short_description": "Collaboration opportunity for recruitment",
+        "short_description": "Potential collaboration on AI recruitment - medium",
         "actionable": true,
-        "opportunity_type": "New business opportunity",
+        "opportunity_type": "Client request",
         "suggested_action": "DM the startup to discuss collaboration details",
-        "relevance": "Potential partnership for talent acquisition aligns with our services."
+        "relevance": "Startup seeks collaboration for talent acquisition, aligning with our services."
       }
     }
   },
@@ -85,18 +104,38 @@
     "scenario_type": "positive",
     "input_type": "website",
     "content": "A new AI startup, 'InnovateAI', just filled out our partnership inquiry form on our website. They are looking for talent acquisition solutions for their rapidly expanding ML engineering team. This represents a high-value lead.",
-    "actionable": false,
-    "llm_output_batch": null,
+    "actionable": true,
+    "llm_output_batch": {
+      "original_item": {
+        "type": "website",
+        "date": "2025-07-18",
+        "title": "New Lead: AI Startup Seeking Partnership",
+        "content": "A new AI startup, 'InnovateAI', just filled out our partnership inquiry form on our website. They are looking for talent acquisition solutions for their rapidly expanding ML engineering team. This represents a high-value lead.",
+        "url": "https://www.innovateai.com/partnership-inquiry",
+        "recommendation": {
+          "action": "Follow up with InnovateAI immediately to schedule a meeting",
+          "reasoning": "Direct inquiry from a high-potential client. Prompt action is crucial for conversion."
+        },
+        "scenario_type": "positive"
+      },
+      "analysis": {
+        "short_description": "New high-value lead from InnovateAI - high",
+        "actionable": true,
+        "opportunity_type": "New business opportunity",
+        "suggested_action": "Follow up with InnovateAI immediately to schedule a meeting",
+        "relevance": "Direct inquiry from a high-potential client indicates urgency for follow-up."
+      }
+    },
     "llm_output_individual": {
       "original_item": {
         "content": "A new AI startup, 'InnovateAI', just filled out our partnership inquiry form on our website. They are looking for talent acquisition solutions for their rapidly expanding ML engineering team. This represents a high-value lead."
       },
       "analysis": {
-        "short_description": "New partnership inquiry from InnovateAI",
+        "short_description": "New partnership inquiry from InnovateAI - high",
         "actionable": true,
         "opportunity_type": "New business opportunity",
-        "suggested_action": "Follow up with InnovateAI to discuss talent acquisition solutions",
-        "relevance": "InnovateAI's need aligns with our services and could lead to a valuable partnership."
+        "suggested_action": "Schedule a call to discuss talent acquisition solutions",
+        "relevance": "InnovateAI's need aligns with our services and target market."
       }
     }
   },
@@ -111,11 +150,11 @@
         "content": "Hi Mark,\n\nAs we expand, we've updated our onboarding documentation and travel reimbursement policies. Please make sure future candidates are aware of the revised travel and reporting expectations.\n\nBest,\nSarah"
       },
       "analysis": {
-        "short_description": "Update on onboarding and travel policies",
+        "short_description": "Update on onboarding policies - low",
         "actionable": true,
-        "opportunity_type": "Client request",
-        "suggested_action": "Ensure candidates are informed of new policies",
-        "relevance": "Important for maintaining compliance and candidate experience."
+        "opportunity_type": "Operational update",
+        "suggested_action": "Review and communicate updated policies to candidates",
+        "relevance": "Ensures candidates are informed about new expectations."
       }
     }
   },
@@ -148,14 +187,18 @@
         "to": "partnerships@digitalexcellence.com",
         "subject": "Urgent: Developer Compensation Issue",
         "body": "Hi Mark,\n\nWe have a problem. Alex Rodriguez has requested a significant raise and is threatening to resign if his salary isn’t adjusted by next week. This is causing disruption in our team planning.\n\nCan we discuss his expectations and explore whether a replacement would be feasible if needed?\n\nSarah",
+        "recommendation": {
+          "action": "Initiate retention or replacement planning",
+          "reasoning": "Candidate may leave abruptly. Must prepare contingency plans and address client concerns promptly."
+        },
         "scenario_type": "negative"
       },
       "analysis": {
-        "short_description": "Urgent compensation issue with Alex",
+        "short_description": "Urgent developer compensation issue - high",
         "actionable": true,
         "opportunity_type": "Reputational risk",
-        "suggested_action": "Initiate retention or replacement planning",
-        "relevance": "Potential loss of a key team member could disrupt client projects."
+        "suggested_action": "Initiate retention or replacement planning for Alex Rodriguez",
+        "relevance": "Immediate action required to prevent potential resignation and disruption."
       }
     },
     "llm_output_individual": {
@@ -163,11 +206,11 @@
         "content": "Hi Mark,\n\nWe have a problem. Alex Rodriguez has requested a significant raise and is threatening to resign if his salary isn’t adjusted by next week. This is causing disruption in our team planning.\n\nCan we discuss his expectations and explore whether a replacement would be feasible if needed?\n\nSarah"
       },
       "analysis": {
-        "short_description": "Salary negotiation for Alex Rodriguez",
+        "short_description": "Salary negotiation issue with Alex - high",
         "actionable": true,
         "opportunity_type": "Reputational risk",
-        "suggested_action": "Discuss Alex's salary expectations and potential replacement options",
-        "relevance": "Alex's resignation threat could disrupt team dynamics and project continuity."
+        "suggested_action": "Schedule a meeting to discuss Alex's salary request",
+        "relevance": "Alex's potential resignation could disrupt team operations and impact project delivery."
       }
     }
   },
@@ -184,14 +227,18 @@
         "to": "partnerships@digitalexcellence.com",
         "subject": "Feedback on Recent Candidate",
         "body": "Hi Mark,\n\nThe last candidate you submitted didn’t meet our expectations in terms of communication skills and real-time problem solving. We'd appreciate a tighter screening process moving forward.\n\nBest,\nSarah",
+        "recommendation": {
+          "action": "Review and tighten candidate screening process",
+          "reasoning": "Client trust affected. Must ensure better alignment with expectations to maintain relationship."
+        },
         "scenario_type": "negative"
       },
       "analysis": {
-        "short_description": "Feedback on candidate screening process",
+        "short_description": "Feedback on candidate screening - medium",
         "actionable": true,
         "opportunity_type": "Client request",
         "suggested_action": "Review and tighten candidate screening process",
-        "relevance": "Improving screening can enhance client satisfaction and trust."
+        "relevance": "Client's trust is affected; improving the process is crucial for maintaining the relationship."
       }
     },
     "llm_output_individual": null
@@ -211,15 +258,14 @@
           "action": "Proactively reach out to reaffirm value and adapt services",
           "reasoning": "Potential risk to partnership. Stay visible and offer support to navigate transition period."
         },
-        "reply": "",
         "scenario_type": "negative"
       },
       "analysis": {
-        "short_description": "Potential partnership risk due to team challenges",
+        "short_description": "Potential partnership risk - medium",
         "actionable": true,
         "opportunity_type": "Reputational risk",
         "suggested_action": "Proactively reach out to reaffirm value and adapt services",
-        "relevance": "Addressing challenges can strengthen the partnership and mitigate risks."
+        "relevance": "Signals potential risk to partnership; proactive engagement is essential."
       }
     },
     "llm_output_individual": null

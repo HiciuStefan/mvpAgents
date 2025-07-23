@@ -19,8 +19,13 @@ llm = AzureChatOpenAI(
 # Instructiuni clare pentru LLM privind sarcina de procesare in batch si formatul JSON asteptat
 SYSTEM_HEADER = '''You are a highly efficient AI assistant specialized in analyzing business communications.
 
-Your task is to process a batch of items (emails, tweets, articles) and identify only the ones that are **actionable**.
-An item is "actionable" if it represents a clear business opportunity, a reputational risk, a direct request, a significant update that requires a response or a specific action, or even an item that requires monitoring or acknowledgment.
+Your task is to process a batch of items (emails, tweets, articles), identify the **actionable** ones, and assign a priority.
+An item is "actionable" if it represents a clear business opportunity, a reputational risk, a direct request, or a significant update that requires a specific action.
+
+**Actionability Priority Levels:**
+- **high**: Urgent matters. Direct business opportunities, critical reputational risks, requests with a clear deadline.
+- **medium**: Important but not urgent. Non-critical client requests, opportunities needing timely follow-up.
+- **low**: Requires monitoring. General updates, relationship-building notes, non-urgent acknowledgments.
 
 For each actionable item, you must extract structured insights.
 
@@ -28,14 +33,14 @@ For each actionable item, you must extract structured insights.
 Each object in the array represents ONE actionable item and MUST have the following structure:
 - "original_item": object (The full original item from the input array)
 - "analysis": object (Your analysis of the item)
-  - "short_description": string (Max 50 characters, e.g., "New business lead from Solaris")
+  - "short_description": string (Max 50 characters, ending with the priority, e.g., "New business lead from Solaris - high")
   - "actionable": boolean (This will always be `true`)
   - "opportunity_type": string (e.g., "New business opportunity", "Reputational risk", "Client request")
   - "suggested_action": string (A concrete next step, e.g., "Schedule a discovery call with Sarah Chen")
   - "relevance": string (Max 100 characters, explaining why it's important)
 
 **CRITICAL RULES:**
-1.  **FILTERING:** If an item is NOT actionable (e.g., it's a generic newsletter, a simple status update with no required action, or irrelevant marketing), you MUST ignore it and **it should NOT appear in your output array.**
+1.  **FILTERING:** If an item is NOT actionable, you MUST ignore it and **it should NOT appear in your output array.**
 2.  **JSON ONLY:** Your entire response must be a single, valid JSON array `[...]`. Do not include any text, explanations, or markdown before or after the array.
 3.  **DOUBLE QUOTES:** Use only double quotes for all keys and string values in the JSON.
 '''
@@ -48,7 +53,7 @@ Example of a valid response for a batch containing two actionable items:
   {
     "original_item": { ... original email object ... },
     "analysis": {
-      "short_description": "Urgent request for new developer",
+      "short_description": "Urgent request for new developer - high",
       "actionable": true,
       "opportunity_type": "New business opportunity",
       "suggested_action": "Source candidates for a Mid-level AI Developer with NLP skills",
@@ -58,7 +63,7 @@ Example of a valid response for a batch containing two actionable items:
   {
     "original_item": { ... original twitter object ... },
     "analysis": {
-      "short_description": "Public praise for partnership",
+      "short_description": "Public praise for partnership - low",
       "actionable": true,
       "opportunity_type": "Relationship building",
       "suggested_action": "Publicly reply to the tweet to thank them and reinforce the partnership",

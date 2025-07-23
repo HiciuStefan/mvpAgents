@@ -19,14 +19,6 @@ def get_rag_context(content: str) -> str:
         print("(!) RAG_API_URL sau RAG_API_KEY nu sunt setate in .env. Se returneaza context gol.")
         return ""
 
-def get_rag_context(content: str) -> str:
-    """
-    Interogheaza serviciul RAG pentru a obtine context relevant.
-    """
-    if not RAG_API_URL or not RAG_API_KEY:
-        print("(!) RAG_API_URL sau RAG_API_KEY nu sunt setate in .env. Se returneaza context gol.")
-        return ""
-
     headers = {
         "X-API-key": RAG_API_KEY,  # Am schimbat aici
         "Content-Type": "application/json"
