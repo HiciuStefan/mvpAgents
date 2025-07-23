@@ -67,3 +67,40 @@ Abordarea **individuală** este de aproximativ **2.7 ori mai scumpă** decât ce
 **Google Gemini 1.5 Pro** se dovedește a fi cea mai economică opțiune dintre modelele de înaltă performanță, în timp ce **Anthropic Claude 3 Opus** este cea mai costisitoare pentru acest tip de sarcină.
 
 Indiferent de modelul ales, **abordarea batch rămâne fundamental mai eficientă din punct de vedere economic**.
+
+---
+
+## 6. Extrapolare la Scară Largă (11,000 de iteme)
+
+Pentru a înțelege impactul real într-un scenariu de producție, să extrapolăm analiza la un volum de 1000 de ori mai mare, adică **11,000 de iteme** de dimensiuni similare.
+
+### Recalculare Tokeni (Scenariu Extins)
+
+- **Total Scenarii (11,000 iteme):** ~4,500,000 caractere ≈ **1,125,000 tokeni**
+- **Output (estimare):** Presupunând aceeași rată de iteme acționabile (8/11), vom avea ~8,000 de răspunsuri. 8,000 * 200 tokeni/output = **1,600,000 tokeni**
+
+### Calcul Cost - Abordarea Batch (11,000 iteme)
+
+- **Input Tokens:** 750 (Sistem) + 375 (Context) + 250 (RAG) + 1,125,000 (Iteme) = **1,126,375 tokeni**
+- **Output Tokens:** **1,600,000 tokeni**
+
+### Calcul Cost - Abordarea Individuală (11,000 iteme)
+
+- **Total Input (11,000 apeluri):** 11,000 * 1352 (input mediu per apel) = **14,872,000 tokeni**
+- **Output Tokens (total):** **1,600,000 tokeni**
+
+### Comparație de Prețuri (Scenariu Extins)
+
+| Model                     | Cost Batch (Est.) | Cost Individual (Est.) | Diferență de Cost |
+| ------------------------- | ----------------- | ---------------------- | ----------------- |
+| **OpenAI GPT-4o**         | **$29.63**        | **$98.36**             | **$68.73**        |
+| **Anthropic Claude 3 Opus** | $136.90           | $343.08                | **$206.18**       |
+| **Google Gemini 1.5 Pro** | $9.41             | $26.59                 | **$17.18**        |
+| **OpenAI GPT-4 Turbo**    | $61.26            | $196.72                | **$135.46**       |
+| **OpenAI GPT-3.5 Turbo**  | $3.00             | $9.84                  | **$6.84**         |
+
+**Concluzie Extinsă:**
+
+La o scară mai mare, diferența de cost devine exponențial mai pronunțată. Pentru GPT-4o, economisim aproape **$70** la fiecare 11,000 de iteme procesate prin abordarea batch. Pentru modele mai scumpe precum Claude 3 Opus, economia este de peste **$200**.
+
+Această analiză demonstrează clar că pentru orice aplicație serioasă, care procesează volume mari de date, **optimizarea apelurilor prin procesare batch nu este doar o recomandare, ci o necesitate economică**.
