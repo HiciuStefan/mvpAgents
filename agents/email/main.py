@@ -1,12 +1,12 @@
+import json
 from .email_agent import workflow  # Import the workflow
 import requests
 import os
 from datetime import datetime, timezone
 from dotenv import load_dotenv
 
-
-API_URL = "https://de-dashboard.vercel.app/api/agents/email"  
 load_dotenv()
+EMAIL_AGENT_URL =  os.getenv("EMAIL_AGENT_URL")  
 EMAIL_AGENT_API_KEY = os.getenv("EMAIL_AGENT_API_KEY")
 
 headers = {
@@ -29,7 +29,10 @@ def send_email_payload(email):
             "relevance": email.get("relevance", "")
         }
 
-        response = requests.post(API_URL, json=payload, headers=headers, timeout=10)
+        if EMAIL_AGENT_URL is None:
+            raise ValueError("EMAIL_AGENT_URL environment variable is not set.")
+
+        response = requests.post(EMAIL_AGENT_URL, json=payload, headers=headers, timeout=10)
         response.raise_for_status()  # Raises an exception for 4xx or 5xx responses
         print(f"✅ Sent: {payload['subject']} – Response: {response.status_code}")
 
@@ -42,10 +45,11 @@ def send_email_payload(email):
     except Exception as err:
         print(f"⚠️ Unexpected error for '{email.get('subject', 'Unknown')}': {err}")
 
-
 def delete_payload(emails):
     try:
-        response = requests.delete(API_URL, json=emails, headers=headers, timeout=10)
+        if EMAIL_AGENT_URL is None:
+            raise ValueError("EMAIL_AGENT_URL environment variable is not set.")
+        response = requests.delete(EMAIL_AGENT_URL, json=emails, headers=headers, timeout=10)
         response.raise_for_status()  # Raises an exception for 4xx or 5xx responses
         print(f"✅ Deleted emails: {len(emails)} – Response: {response.status_code}")
 
@@ -60,7 +64,10 @@ def delete_payload(emails):
 
 def get_payload_for_client(client_name):
     try:
-        response = requests.get(f"{API_URL}?limit=10&client_name={client_name}", headers=headers, timeout=10)
+        if EMAIL_AGENT_URL is None:
+            raise ValueError("EMAIL_AGENT_URL environment variable is not set.")
+        
+        response = requests.get(f"{EMAIL_AGENT_URL}?limit=10&client_name={client_name}", headers=headers, timeout=10)
         response.raise_for_status()  # Raises an exception for 4xx or 5xx responses
         emails = response.json().get("data", [])
         print(f"✅ Fetched {len(emails)} emails for {client_name}")
@@ -81,11 +88,14 @@ def get_payload_for_client(client_name):
     except Exception as err:
         print(f"⚠️ Unexpected error during get_payload_for_client: {err}")
 
+        
+
 # Run the workflow
 try:
     # result = workflow.invoke({})
     # emails = result.get("emails", [])
     get_payload_for_client("Anca Irom")
+    # insert_base_context("context/base_context.json")
     # delete_payload(emails)
     # if not emails:
     #     print("ℹ️ No emails returned by workflow.")

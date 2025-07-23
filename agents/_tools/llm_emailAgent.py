@@ -13,9 +13,9 @@ class EmailLabel(BaseModel):
 
 load_dotenv()
 
-endpoint = os.getenv("ENDPOINT_URL")
+endpoint = os.getenv("AZURE_OPENAI_API_BASE")
 subscription_key = os.getenv("AZURE_OPENAI_API_KEY")
-version=os.getenv("API_VERSION")
+version=os.getenv("AZURE_OPENAI_API_VERSION")
 deployment = os.getenv("DEPLOYMENT_NAME")
 FALLBACK_LABEL = EmailLabel(
 			category="Unknown",
@@ -39,7 +39,7 @@ def return_email_label(email_text: str, db_history_text: str) -> EmailLabel:
 			{
 				"role": "system",
 				"content": (
-					"You are an intelligent email processor for business use. Your job is to do the classify each incoming email "
+					"You are an intelligent email processor for business use. Your job is to classify each incoming email "
 					"into one and only one of the following categories, based on the overall meaning and context of the message:\n\n"
 					"{\n"
 					"  \"Actionable\": The email asks the user to take a specific action such as confirming, approving, scheduling, replying, or addressing an issue. These emails usually require a response or follow-up.\n"
