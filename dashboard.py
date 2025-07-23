@@ -63,16 +63,6 @@ def render_question(question_data: Dict, section: str) -> any:
             st.caption(f"💡 Example: {question_data['example']}")
         return value
 
-# def collect_sostac_data() -> Dict:
-    # """Collect all SOSTAC responses from session state"""
-    # sostac_data = {}
-    # for section, section_data in SOSTAC_QUESTIONS.items():
-    #     sostac_data[section] = {}
-    #     for question in section_data["questions"]:
-    #         key = f"{section}_{question['key']}"
-    #         sostac_data[section][question['key']] = st.session_state.get(key, "")
-    # return sostac_data
-
 def dashboard_page():
     """Main dashboard for managing campaigns"""
     st.title("🚀 Marketing Campaign Agent")
@@ -280,15 +270,6 @@ def auto_save_progress():
         # Save to temp file
         save_temp_campaign_data(current_data)
 
-
-n = 0
-def addPrint(s):
-    global n
-    print(n)
-    n += 1
-    print("///////////////////////////// ")
-    print(s)
-    
 def initialize_session_state():
     """Initialize session state with data from files if available"""
     # Load campaigns from file if session state is empty
@@ -362,6 +343,7 @@ def initialize_session_state():
 # auto_save_progress (saves in temp_campaign_data.json) is called automatically on next and previous buttons click
 # save_campaigns_to_file saves to campaigns_data.json on create campaign
 # temp_campaign_data.json is loaded automatically when creating a new campaign if it contains data
+#uses render_question & collect_sostac_data_improved
 def create_campaign_page_improved():
     """Improved campaign creation with better data persistence"""
     st.title("🎯 Create New Campaign")
@@ -521,118 +503,6 @@ def create_campaign_page_improved():
                     st.rerun()
                 else:
                     st.error("Please complete the campaign name and at least one SOSTAC section.")
-
-# Add this to your main() function
-# def main():
-#     """Main application entry point with improved data handling"""
-    
-#     # Initialize session state and load data
-#     initialize_session_state()
-    
-#     # Initialize other session state variables
-#     if 'campaigns' not in st.session_state:
-#         st.session_state.campaigns = {}
-#     if 'current_campaign' not in st.session_state:
-#         st.session_state.current_campaign = None
-#     if 'current_step' not in st.session_state:
-#         st.session_state.current_step = 0
-#     if 'page' not in st.session_state:
-#         st.session_state.page = "dashboard"
-    
-#     # Auto-save campaigns periodically
-#     if st.session_state.campaigns:
-#         save_campaigns_to_file(st.session_state.campaigns)
-    
-#     # Rest of your existing main() function...
-#     # (sidebar navigation, page routing, etc.)
-
-#uses render_question & collect_sostac_data
-# def create_campaign_page():
-    # """Multi-step campaign creation process"""
-    # st.title("🎯 Create New Campaign")
-    
-    # # Progress indicator
-    # steps = ["Basic Info", "Situation", "Objectives", "Strategy", "Tactics", "Actions", "Control", "Review"]
-    # current_step = st.session_state.current_step
-    
-    # # Progress bar
-    # progress = (current_step + 1) / len(steps)
-    # st.progress(progress)
-    
-    # # Step indicator
-    # st.markdown(f"**Step {current_step + 1} of {len(steps)}: {steps[current_step]}**")
-    
-    
-    # if current_step == 0:
-    #     # Basic campaign info
-    #     st.markdown("### Campaign Information")
-        
-    #     campaign_name = st.text_input("Campaign Name", key="campaign_name")
-    #     campaign_description = st.text_area("Campaign Description (Optional)", key="campaign_description")
-        
-    #     if st.button("Next", disabled=not campaign_name):
-    #         st.session_state.current_step = 1
-    #         st.rerun()
-    
-    # elif current_step in [1, 2, 3, 4, 5, 6]:
-    #     # SOSTAC questions
-    #     section_keys = list(SOSTAC_QUESTIONS.keys())
-    #     section_key = section_keys[current_step - 1]
-    #     section_data = SOSTAC_QUESTIONS[section_key]
-        
-    #     st.markdown(f"### {section_data['title']}")
-        
-    #     # Render questions for this section
-    #     for question in section_data["questions"]:
-    #         render_question(question, section_key)
-        
-    #     # Navigation
-    #     col1, col2 = st.columns(2)
-    #     with col1:
-    #         if st.button("Previous") and current_step > 0:
-    #             st.session_state.current_step -= 1
-    #             st.rerun()
-        
-    #     with col2:
-    #         if st.button("Next"):
-    #             st.session_state.current_step += 1
-    #             st.rerun()
-    
-    # elif current_step == 7:
-    #     # Review and create campaign
-    #     st.markdown("### Review Your Campaign")
-        
-    #     # Collect all data
-    #     sostac_data = collect_sostac_data()
-    #     campaign_name = st.session_state.get("campaign_name", "")
-        
-    #     # Display summary
-    #     st.markdown("#### Campaign Summary")
-    #     st.write(f"**Name:** {campaign_name}")
-    #     st.write(f"**Industry:** {sostac_data.get('situation', {}).get('industry', 'N/A')}")
-    #     st.write(f"**Primary Goal:** {sostac_data.get('objectives', {}).get('primary_goal', 'N/A')}")
-    #     st.write(f"**Budget:** {sostac_data.get('objectives', {}).get('budget_range', 'N/A')}")
-    #     st.write(f"**Duration:** {sostac_data.get('objectives', {}).get('campaign_duration', 'N/A')}")
-        
-    #     # Navigation
-    #     col1, col2 = st.columns(2)
-    #     with col1:
-    #         if st.button("Previous"):
-    #             st.session_state.current_step -= 1
-    #             st.rerun()
-        
-    #     with col2:
-    #         if st.button("Create Campaign", type="primary"):
-    #             # Create campaign
-    #             campaign_id = f"campaign_{len(st.session_state.campaigns) + 1}"
-    #             campaign = Campaign(
-    #                 name=campaign_name,
-    #                 sostac_data=sostac_data
-    #             )
-    #             st.session_state.campaigns[campaign_id] = campaign
-    #             st.session_state.current_campaign = campaign_id
-    #             st.session_state.page = "generate_strategy"
-    #             st.rerun()
 
 def generate_strategy_page():
     """Generate campaign strategy using AI"""
@@ -1389,11 +1259,6 @@ def settings_page():
 # Main application logic
 def main():
     """Main application entry point"""
-    
-    # if 'page' not in st.session_state:
-    #     st.session_state.page = "dashboard"
-    # Initialize session state and load data
-    
     initialize_session_state()
 
         # Initialize other session state variables
