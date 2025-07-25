@@ -1011,8 +1011,10 @@ def view_campaign_page():
                 sections = agent.parse_markdown_sections(campaign.deliverables)
                 for idx, sec in enumerate(sections):
                     title = sec.get("title", "Untitled Section")
+
                     content = sec.get("content", "").strip()
                     level = sec.get("level", None)
+                    
                     if not content:
                         # First section, level 1, no content → subheader
                         if idx == 0 and level == 1:

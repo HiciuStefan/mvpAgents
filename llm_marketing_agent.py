@@ -291,11 +291,8 @@ class MarketingAgent:
         return text.strip()
     
     def decode_entities(self, text: str) -> str:
-        # return html.unescape(text.encode('utf-8').decode('unicode_escape'))
-        # return text.encode("latin-1").decode("utf-8")
         return html.unescape(text)
 
-    
     def collapse_whitespace(self, text: str) -> str:
         lines = [line.rstrip() for line in text.strip().splitlines()]
         return "\n".join(lines)
