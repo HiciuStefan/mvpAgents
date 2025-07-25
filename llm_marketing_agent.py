@@ -5,6 +5,8 @@ import os
 import streamlit as st
 import os
 import datetime
+import html
+import re
 from dotenv import load_dotenv
 from langchain_openai import AzureChatOpenAI
 from pydantic import BaseModel, SecretStr, ValidationError
@@ -115,7 +117,7 @@ class MarketingAgent:
         top_queries    = top_q_df.to_dict(orient='records')    if top_q_df    is not None else []
         rising_queries = rising_q_df.to_dict(orient='records') if rising_q_df is not None else []
 
-        return {
+        trending_searches={
             'monthly_total_interest': monthly_total_interest_df,
             'trending_searches': trending_searches,
             'related_topics': related_topics,
@@ -123,6 +125,10 @@ class MarketingAgent:
             'rising_queries': rising_queries
         }
 
+        print("Trending keywords:", keywords)
+        print("Trending searches data:", trending_searches)
+
+        return trending_searches
     
     def analyze_competitors(self, industry: str, competitors: List[str]) -> Dict:
         """Analyze competitor campaigns and strategies"""
@@ -146,47 +152,77 @@ class MarketingAgent:
         }
         return competitor_analysis
     
-    def generate_campaign_strategy(self, sostac_data: Dict, trends: Dict, competitor_analysis: List[str]) -> str:
+    def generate_campaign_strategy(self, sostac_data: Dict, trends: Dict, competitor_analysis: List[str]) -> Dict:
         """Generate comprehensive campaign strategy using LLM"""
         
-        system_prompt = """
-        You are an expert B2C marketing strategist specializing in creating comprehensive campaign strategies.
-        Use the SOSTAC framework analysis, current trends, and competitor insights to create a detailed campaign strategy.
+        objectives = sostac_data.get('objectives', {})
         
-        Focus on:
-        - Strategic positioning and messaging
-        - Channel selection and timing
-        - Content themes and formats
-        - Budget allocation recommendations
-        - Timeline with key milestones
-        - Success metrics and KPIs
+        budget_range = objectives.get('budget_range', '')
+        campaign_duration = objectives.get('campaign_duration', '')
+        target_roi = objectives.get('target_roi', '')
+        key_metrics= ", ".join(objectives.get("key_metrics", []))
+
+        strategy = sostac_data.get('strategy', {})
         
-        Provide a structured, actionable strategy that can be implemented immediately.
+        brand_personality = ", ".join(strategy.get("brand_personality", []))
+        emotional_response = ", ".join(strategy.get("emotional_response", []))
+
+        system_prompt = f"""
+        You are a B2C marketing strategist and copywriter.  
+        Using the inputs provided, cover these strategic dimensions wherever data exists:
+        1. Strategic Positioning  
+        2. Target Audience Segments  
+        3. Key Messages by Segment  
+        4. Channel Strategy & Timeline  
+        5. Content Calendar Overview  
+        6. Budget Allocation  
+        7. Success Metrics & KPIs  
+        8. Risk Mitigation & Contingency Plan  
+        9. Top 3 Thematic Hooks  
+
+        Produce one valid JSON object with two keys:
+
+        • "strategy":  
+            - A JSON-friendly dict (key:value) for each of the above sections—omit any section with no input data.  
+            - Each section: 2-3 sentences for strategic rationales and concise bullet for tactical steps.  
+
+        • "markdown":  
+            - A human-readable Markdown document using the exact heading hierarchy:  
+                # Executive Summary  
+                ## 1. Strategic Positioning  
+                ## 2. Target Audience Segments  
+                …  
+                ## 9. Top 3 Thematic Hooks  
+            - Omit any heading that has no content (i.e., no input data). 
+            - Under each heading: 1-2 sentence “Why” tying it back to the inputs, then bullets for actions.
+
+
+        Respect these constraints:  
+        - Total budget: {budget_range}  
+        - Campaign duration: {campaign_duration}  
+        - Target ROI: {target_roi}  
+
+        Return **only** the JSON—no extra text, no code fences.
         """
-        
+
         user_prompt = f"""
-        Create a comprehensive B2C marketing campaign strategy based on:
-        
-        SOSTAC Analysis:
+        Here are your inputs:
+
+        SOSTAC Data:
         {json.dumps(sostac_data, indent=2)}
-        
-        Current Trends to Leverage:
+
+        Current Trends:
         {json.dumps(trends, indent=2)}
-        
-        Competitors:
-        {', '.join(competitor_analysis)}
-        
-        Provide a detailed strategy with:
-        1. Executive Summary
-        2. Strategic Positioning
-        3. Target Audience Segments
-        4. Key Messages by Segment
-        5. Channel Strategy & Timeline
-        6. Content Calendar Overview
-        7. Budget Allocation
-        8. Success Metrics
-        9. Risk Mitigation
-        10.Top 3 thematic hooks for a marketing campaign.
+
+        # Competitors:
+        # {', '.join(competitor_analysis)}
+
+        Brand Personality: {brand_personality}
+        Emotional Response:  {emotional_response}
+        Value Proposition:   {strategy.get('value_proposition',{})}
+        Key Metrics:         {key_metrics}
+
+        Now generate the JSON outlined in the system instructions above.
         """
         
         try:
@@ -194,51 +230,46 @@ class MarketingAgent:
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
                 ]
+
+            print("Generating strategy with message:")
             if not self.azure_client:
                 return "Azure OpenAI client is not initialized."
             response = self.azure_client.invoke(message)
-                              
-            
-            return str(response.content)
+            return json.loads(response.content)
+        
         except Exception as e:
             return f"Error generating strategy: {e}"
     
-    def generate_deliverables(self, strategy: str, sostac_data: Dict) -> Dict:
+    def generate_deliverables(self, approved_strategy: Dict[str, any]) -> str:
         """Generate specific deliverables based on approved strategy"""
-        
+
+        print("Generating deliverables for strategy:", approved_strategy)
+
         system_prompt = """
-        You are a marketing execution specialist. Based on the approved campaign strategy,
-        generate specific, actionable deliverables for B2C campaigns.
-        
-        Create detailed deliverables including:
-        - Email sequences with subject lines and content
-        - Landing page structures with copy
-        - Social media content calendars
-        - Ad copy variations
-        - Influencer collaboration briefs
-        - Webinar structures if applicable
-        
-        Make everything actionable and ready for implementation.
-        """
-        
+            You are a Marketing Execution Specialist with a knack for turning approved strategies into turnkey campaigns. 
+            You have in front of you an APPROVED campaign strategy in JSON format.
+            Your job: Produce ONLY the execution-ready marketing assets **called for by that strategy**—no extras, no fluff.
+
+            For each asset you generate, include:
+            - A clear, descriptive title in this format:
+              [Channel] – [Primary Audience or Benefit Hook] – [Action]
+            - A brief “Why” tying it to the strategy (e.g. “Supports lead generation goal”)
+            - Full copy or templates/structure (emails, ads, social posts, etc) keeping in mind brand personality and emotional response
+            - Timeline or schedule (dates or sequence slots)
+            - Call-to-Action (what the audience should do next)
+            - Primary KPI(s) to measure success
+            - Constraints: honor the budget, duration, and ROI limits from the strategy
+
+            Return your output in plain Markdown, with headings and sub-headings. No code fences, no JSON.
+            """
+
         user_prompt = f"""
-        Based on this approved strategy:
-        {strategy}
-        
-        And SOSTAC data:
-        {json.dumps(sostac_data, indent=2)}
-        
-        Generate detailed deliverables for:
-        1. Email Marketing Sequence (3-5 emails)
-        2. Landing Page Structure & Copy
-        3. Social Media Content Calendar (2 weeks)
-        4. Ad Copy Variations (3-5 versions)
-        5. Influencer Collaboration Brief
-        6. Performance Tracking Setup
-        
-        Format as JSON with clear sections for each deliverable.
-        """
-        
+            Here is the APPROVED strategy:
+
+            {approved_strategy}
+
+            Only generate the assets the strategy explicitly or implicitly demands.  
+            """
         try:
             if not self.azure_client:
                 return {"error": "Azure OpenAI client is not initialized."}
@@ -246,11 +277,77 @@ class MarketingAgent:
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
                 ]
+            
             response = self.azure_client.invoke(message)
-            return json.loads(str(response.content))
+            # print("Response from Azure OpenAI:", response)
+            sanitized_resp=self.sanitize_llm_output(response.content)
+            return sanitized_resp
+        
         except Exception as e:
             return {"error": f"Error generating deliverables: {e}"}
     
+    def strip_code_fences(self, text: str) -> str:
+        lines = text.strip().splitlines()
+        if lines and lines[0].startswith("```") and lines[-1].startswith("```"):
+            return "\n".join(lines[1:-1]).strip()
+        return text.strip()
+    
+    def decode_entities(self, text: str) -> str:
+        return html.unescape(text.encode('utf-8').decode('unicode_escape'))
+    
+    def collapse_whitespace(self, text: str) -> str:
+        lines = [line.rstrip() for line in text.strip().splitlines()]
+        return "\n".join(lines)
+
+    def fix_numbered_list(self, text: str) -> str:
+        return text.replace("1)", "1.").replace("2)", "2.").replace("3)", "3.")
+    
+    def sanitize_llm_output(self, text: str) -> str:
+        text = self.strip_code_fences(text)
+        text = self.decode_entities(text)
+        text = self.collapse_whitespace(text)
+        text = self.fix_numbered_list(text)
+        return text
+    
+    def parse_markdown_sections(self,md: str) -> List[Dict]:
+        """
+        Splits a Markdown string into sections at headings (#, ##, ###).
+        Returns a list of dicts: { level: int, title: str|None, content: str }.
+        - level:   0 for the global intro, 1 for '#', 2 for '##', 3 for '###'
+        - title:   the heading text (None for the intro)
+        - content: everything up until the next heading
+        """
+        # Normalize line endings
+        md = md.replace('\r\n', '\n').rstrip()
+        
+        # Find all headings of level 1–3
+        pattern = re.compile(r'^(?P<hashes>#{1,3})\s+(?P<title>.+)', re.MULTILINE)
+        matches = list(pattern.finditer(md))
+        sections = []
+        
+        # If there's text before the first heading, capture it as level 0
+        if matches and matches[0].start() > 0:
+            intro = md[: matches[0].start()].strip()
+            if intro:
+                sections.append({"level": 0, "title": None, "content": intro})
+        
+        # Walk through each heading match and slice out its content
+        for idx, m in enumerate(matches):
+            level = len(m.group("hashes"))
+            title = m.group("title").strip()
+            
+            start_body = m.end()
+            end_body = matches[idx + 1].start() if idx + 1 < len(matches) else len(md)
+            
+            body = md[start_body:end_body].strip()
+            sections.append({"level": level, "title": title, "content": body})
+        
+        # If there were no headings at all, treat the whole doc as one section
+        if not matches:
+            sections.append({"level": 0, "title": None, "content": md})
+        
+        return sections
+
     def find_influencers(self, industry: str, country: str, budget_range: str) -> List[Dict]:
         """Find relevant influencers based on campaign parameters"""
         finder = YouTubeInfluencerFinder("YOUR_YOUTUBE_API_KEY")

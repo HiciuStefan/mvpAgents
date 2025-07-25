@@ -522,6 +522,13 @@ def generate_strategy_page():
             keyword = [category] if category else []
             trends = agent.get_trending_topics(keyword)
             st.success(f"Found {len(trends)} trending topics")
+        # Display trends    
+        st.markdown("### Trending Topics")
+        if trends:
+            for trend in trends:
+                st.markdown(f"- **{trend['title']}**: {trend['description']}")
+        else:
+            st.warning("No trending topics found.")
         
         # Analyze competitors
         with st.spinner("Analyzing competitors..."):
@@ -538,10 +545,12 @@ def generate_strategy_page():
                 trends, 
                 competitor_analysis
             )
-        
+
+        strategy_md   = strategy.get("markdown", "")
+
         # Display strategy
         st.markdown("### Generated Strategy")
-        st.markdown(strategy)
+        st.markdown(strategy_md, unsafe_allow_html=False)
         
         # Approval buttons
         col1, col2, col3 = st.columns(3)
@@ -577,16 +586,25 @@ def generate_deliverables_page():
         
         # Generate deliverables
         with st.spinner("Creating detailed deliverables..."):
-            deliverables = agent.generate_deliverables(campaign.strategy, campaign.sostac_data)
+            try:
+                strategy_json = campaign.strategy.get("strategy", {}) 
+                deliverables = agent.generate_deliverables(strategy_json)
+
+            except Exception as e:
+                print("Error loading campaigns: {e}")
+
         
-        # Store deliverables
+       
         campaign.deliverables = deliverables
         
         # Display deliverables
         if "error" not in deliverables:
-            for deliverable_type, content in deliverables.items():
-                with st.expander(f"📄 {deliverable_type.replace('_', ' ').title()}", expanded=True):
-                    st.write(content)
+            sections = agent.parse_markdown_sections(deliverables)
+            for sec in sections:
+                label = sec["title"] or "Overview"
+                indent = "  " * (sec["level"] - 1)  # optional: indent sub‐headings
+                with st.expander(f"{indent}{label}", expanded=(sec["level"] == 1)):
+                    st.markdown(sec["content"])
         else:
             st.error(deliverables["error"])
         
@@ -1002,7 +1020,11 @@ def view_campaign_page():
     """View campaign details and performance"""
     if st.session_state.current_campaign:
         campaign = st.session_state.campaigns[st.session_state.current_campaign]
-        
+        print("Deliverables structure!")
+        print(campaign.deliverables)
+        # Initialize agent
+        agent = MarketingAgent()
+
         st.title(f"📊 {campaign.name}")
         
         # Campaign overview
@@ -1019,15 +1041,30 @@ def view_campaign_page():
         
         with tab1:
             if campaign.strategy:
-                st.markdown(campaign.strategy)
+                st.markdown(campaign.strategy.get("markdown", ""))
             else:
                 st.info("Strategy not generated yet")
         
         with tab2:
             if campaign.deliverables:
-                for deliverable_type, content in campaign.deliverables.items():
-                    with st.expander(f"📄 {deliverable_type.replace('_', ' ').title()}"):
-                        st.write(content)
+                sections = agent.parse_markdown_sections(campaign.deliverables)
+                
+                current_container = st  # Start with Streamlit root container
+
+                for sec in sections:
+                    # Skip the global heading "Marketing Assets..."
+                    if sec["level"] == 1 and not sec["title"].strip().startswith("1. "):
+                        continue
+
+                    # For Level 2 (## ...) start a new top-level expander
+                    if sec["level"] == 2:
+                        current_container = st.expander(sec["title"], expanded=False)
+                    
+                    # For Level 3 (### ...) add nested expanders inside the current Level 2 expander
+                    elif sec["level"] == 3:
+                        current_container.markdown(f"#### {sec['title']}")
+                        if sec["content"]:
+                            current_container.markdown(sec["content"])
             else:
                 st.info("Deliverables not generated yet")
         
