@@ -122,7 +122,7 @@ def load_campaigns_from_file() -> Dict:
     """Load campaigns from local JSON file"""
     try:
         if os.path.exists(CAMPAIGNS_FILE):
-            with open(CAMPAIGNS_FILE, 'r') as f:
+            with open(CAMPAIGNS_FILE, 'r',encoding='utf-8') as f:
                 data = json.load(f)
                 return data
         return {}
@@ -146,8 +146,8 @@ def save_campaigns_to_file(campaigns: Dict) -> bool:
                 "created_at": campaign.created_at
             }
         
-        with open(CAMPAIGNS_FILE, 'w') as f:
-            json.dump(serializable_campaigns, f, indent=2, default=str)
+        with open(CAMPAIGNS_FILE, 'w', encoding='utf-8') as f:
+            json.dump(serializable_campaigns, f, indent=2, default=str, ensure_ascii=False)
         return True
     except Exception as e:
         st.error(f"Error saving campaigns: {e}")
@@ -520,6 +520,9 @@ def generate_strategy_page():
         with st.spinner("Analyzing current trends..."):
             category = campaign.sostac_data.get('situation', {}).get('category', '')
             keyword = [category] if category else []
+            print("CAUTAM DUPA TRENDUL")
+            print(keyword)
+
             trends = agent.get_trending_topics(keyword)
             st.success(f"Found {len(trends)} trending topics")
         # Display trends    
@@ -596,6 +599,7 @@ def generate_deliverables_page():
         
        
         campaign.deliverables = deliverables
+        save_campaigns_to_file(st.session_state.campaigns)
         
         # Display deliverables
         if "error" not in deliverables:
@@ -1044,6 +1048,9 @@ def view_campaign_page():
                 st.markdown(campaign.strategy.get("markdown", ""))
             else:
                 st.info("Strategy not generated yet")
+                if st.button("Generate Strategy", type="primary"):
+                    st.session_state.page = "generate_strategy"
+                    st.rerun()
         
         with tab2:
             if campaign.deliverables:
@@ -1052,6 +1059,8 @@ def view_campaign_page():
                 current_container = st  # Start with Streamlit root container
 
                 for sec in sections:
+                    print("Sectiune: ")
+                    print(sec)
                     # Skip the global heading "Marketing Assets..."
                     if sec["level"] == 1 and not sec["title"].strip().startswith("1. "):
                         continue
@@ -1067,6 +1076,9 @@ def view_campaign_page():
                             current_container.markdown(sec["content"])
             else:
                 st.info("Deliverables not generated yet")
+                if st.button("Generate Deliverables", type="primary"):
+                    st.session_state.page = "generate_deliverables"
+                    st.rerun()
         
         with tab3:
             if campaign.influencers:

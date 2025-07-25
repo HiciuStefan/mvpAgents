@@ -96,37 +96,37 @@ class MarketingAgent:
             )
 
         # 3. Today's trending searches in Romania
-        trending_df = pytrends.trending_searches(pn='romania')
+        #trending_df = pytrends.trending_searches()
         # The result is a single-column DataFrame; grab top 10 as list
-        trending_searches = trending_df[0].head(10).tolist()
+        #trending_searches = trending_df[0].head(10).tolist()
 
         # 4. Related topics (higher-level clusters)
-        topics_dict = pytrends.related_topics().get(keyword, {})
-        top_topics_df = topics_dict.get('top')
-        related_topics = (
-            top_topics_df.reset_index()
-            .rename(columns={'topic_title':'topic', 'value':'score'})
-            .to_dict(orient='records')
-        ) if top_topics_df is not None else []
+        # topics_dict = pytrends.related_topics().get(keyword, {})
+        # top_topics_df = topics_dict.get('top')
+        # related_topics = (
+        #     top_topics_df.reset_index()
+        #     .rename(columns={'topic_title':'topic', 'value':'score'})
+        #     .to_dict(orient='records')
+        # ) if top_topics_df is not None else []
 
         # 5. Related queries (exact search phrases)
-        queries_dict = pytrends.related_queries().get(keyword, {})
-        top_q_df    = queries_dict.get('top')
-        rising_q_df = queries_dict.get('rising')
+        # queries_dict = pytrends.related_queries().get(keyword, {})
+        # top_q_df    = queries_dict.get('top')
+        # rising_q_df = queries_dict.get('rising')
 
-        top_queries    = top_q_df.to_dict(orient='records')    if top_q_df    is not None else []
-        rising_queries = rising_q_df.to_dict(orient='records') if rising_q_df is not None else []
+        # top_queries    = top_q_df.to_dict(orient='records')    if top_q_df    is not None else []
+        # rising_queries = rising_q_df.to_dict(orient='records') if rising_q_df is not None else []
 
         trending_searches={
-            'monthly_total_interest': monthly_total_interest_df,
-            'trending_searches': trending_searches,
-            'related_topics': related_topics,
-            'top_queries': top_queries,
-            'rising_queries': rising_queries
+        #     'monthly_total_interest': monthly_total_interest_df,
+        #    # 'trending_searches': trending_searches,
+        # #    'related_topics': related_topics,
+        #     'top_queries': top_queries,
+        #     'rising_queries': rising_queries
         }
 
         print("Trending keywords:", keywords)
-        print("Trending searches data:", trending_searches)
+      #  print("Trending searches data:", trending_searches)
 
         return trending_searches
     
@@ -260,7 +260,7 @@ class MarketingAgent:
             - Primary KPI(s) to measure success
             - Constraints: honor the budget, duration, and ROI limits from the strategy
 
-            Return your output in plain Markdown, with headings and sub-headings. No code fences, no JSON.
+            Return your output in plain Markdown, with headings and sub-headings. No code fences, no JSON. Do not use any emojis, Unicode symbols, or special characters. Only use standard English letters, numbers, and basic punctuation (.,!?-).
             """
 
         user_prompt = f"""
