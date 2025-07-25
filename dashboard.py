@@ -642,52 +642,6 @@ def generate_deliverables_page():
             st.session_state.page = "dashboard"
             st.rerun()
 
-# def export_campaign_data():
-    # """Export campaign data to various formats"""
-    # if st.session_state.current_campaign:
-    #     campaign = st.session_state.campaigns[st.session_state.current_campaign]
-        
-    #     # Create export data
-    #     export_data = {
-    #         "Campaign Name": campaign.name,
-    #         "Created": campaign.created_at,
-    #         "Status": "Approved" if campaign.approved else "Draft",
-    #         "Industry": campaign.sostac_data.get('situation', {}).get('industry', 'N/A'),
-    #         "Budget": campaign.sostac_data.get('objectives', {}).get('budget_range', 'N/A'),
-    #         "Duration": campaign.sostac_data.get('objectives', {}).get('campaign_duration', 'N/A'),
-    #         "Primary Goal": campaign.sostac_data.get('objectives', {}).get('primary_goal', 'N/A'),
-    #         "Strategy": campaign.strategy or "Not generated",
-    #         "Deliverables": str(campaign.deliverables) if campaign.deliverables else "Not generated"
-    #     }
-        
-    #     # Convert to DataFrame for CSV export
-    #     df = pd.DataFrame([export_data])
-        
-    #     # Export options
-    #     col1, col2, col3 = st.columns(3)
-        
-    #     with col1:
-    #         csv_data = df.to_csv(index=False)
-    #         st.download_button(
-    #             label="📄 Download CSV",
-    #             data=csv_data,
-    #             file_name=f"{campaign.name}_export.csv",
-    #             mime="text/csv"
-    #         )
-        
-    #     with col2:
-    #         json_data = json.dumps(export_data, indent=2)
-    #         st.download_button(
-    #             label="📋 Download JSON",
-    #             data=json_data,
-    #             file_name=f"{campaign.name}_export.json",
-    #             mime="application/json"
-    #         )
-        
-    #     with col3:
-    #         # For PDF, we'd need additional libraries
-    #         st.info("PDF export coming soon!")
-
 def export_campaign_data(campaign_id: str = None):
     """
     Export campaign data to various formats with proper UI integration
@@ -1055,25 +1009,21 @@ def view_campaign_page():
         with tab2:
             if campaign.deliverables:
                 sections = agent.parse_markdown_sections(campaign.deliverables)
-                
-                current_container = st  # Start with Streamlit root container
-
-                for sec in sections:
-                    print("Sectiune: ")
-                    print(sec)
-                    # Skip the global heading "Marketing Assets..."
-                    if sec["level"] == 1 and not sec["title"].strip().startswith("1. "):
-                        continue
-
-                    # For Level 2 (## ...) start a new top-level expander
-                    if sec["level"] == 2:
-                        current_container = st.expander(sec["title"], expanded=False)
-                    
-                    # For Level 3 (### ...) add nested expanders inside the current Level 2 expander
-                    elif sec["level"] == 3:
-                        current_container.markdown(f"#### {sec['title']}")
-                        if sec["content"]:
-                            current_container.markdown(sec["content"])
+                for idx, sec in enumerate(sections):
+                    title = sec.get("title", "Untitled Section")
+                    content = sec.get("content", "").strip()
+                    level = sec.get("level", None)
+                    if not content:
+                        # First section, level 1, no content → subheader
+                        if idx == 0 and level == 1:
+                            st.subheader(title)
+                        else:
+                            # Other sections without content → plain title
+                            st.write(title)
+                    else:
+                        # Any section with content → collapsible expander
+                        with st.expander(title, expanded=False):
+                            st.markdown(content)
             else:
                 st.info("Deliverables not generated yet")
                 if st.button("Generate Deliverables", type="primary"):

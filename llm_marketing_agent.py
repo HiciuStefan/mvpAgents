@@ -243,8 +243,6 @@ class MarketingAgent:
     def generate_deliverables(self, approved_strategy: Dict[str, any]) -> str:
         """Generate specific deliverables based on approved strategy"""
 
-        print("Generating deliverables for strategy:", approved_strategy)
-
         system_prompt = """
             You are a Marketing Execution Specialist with a knack for turning approved strategies into turnkey campaigns. 
             You have in front of you an APPROVED campaign strategy in JSON format.
@@ -293,7 +291,10 @@ class MarketingAgent:
         return text.strip()
     
     def decode_entities(self, text: str) -> str:
-        return html.unescape(text.encode('utf-8').decode('unicode_escape'))
+        # return html.unescape(text.encode('utf-8').decode('unicode_escape'))
+        # return text.encode("latin-1").decode("utf-8")
+        return html.unescape(text)
+
     
     def collapse_whitespace(self, text: str) -> str:
         lines = [line.rstrip() for line in text.strip().splitlines()]
