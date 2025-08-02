@@ -24,7 +24,9 @@ export default async function ClientIntelligence()
 async function ClientIntelligenceContent()
 {
 	const latest_items = await api.processed_items.getLatest({
-		limit: 100
+		limit: 100,
+		channel: 'all',
+		date_range: 'last_30_days'
 	});
 
 	return (

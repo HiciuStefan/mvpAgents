@@ -123,3 +123,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* global.css */
+html body[data-scroll-locked] {
+	overflow-y: scroll !important;
+	margin-right: 0px !important;
+}
