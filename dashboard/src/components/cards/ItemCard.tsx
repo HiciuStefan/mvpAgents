@@ -5,7 +5,7 @@ import type { LatestItem } from "~/server/db/fetch_items";
 
 export function ItemCard({ item } : { item: LatestItem })
 {
-	const { type, data, client_name } = item;
+	const { type, data, client_name, actionable } = item;
 	const { short_description, relevance } = data;
 
 	const suggested_action = 'suggested_action' in data ? data.suggested_action : null;
@@ -21,9 +21,11 @@ export function ItemCard({ item } : { item: LatestItem })
 				<div className="flex flex-col items-start gap-1">
 					<div>
 						<div className="text-lg font-medium">{short_description}</div>
-						<div className="mb-4 text-sm text-gray-500">{relevance}</div>
+						{actionable &&
+							<div className="mb-4 text-sm text-gray-500">{relevance}</div>
+						}
 					</div>
-					{suggested_action &&
+					{suggested_action && actionable &&
 						<div className="flex items-center gap-2 font-medium text-[#1b4fb3]">
 							<SparkleSVG size={16} />
 							<span>{suggested_action}</span>
