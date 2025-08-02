@@ -27,7 +27,8 @@ export const email_router = createTRPCRouter({
 				const [processedItem] = await tx.insert(processed_items).values({
 					type: 'email',
 					client_name: input.client_name,
-					actionable: input.actionable
+					actionable: input.actionable,
+					urgency: input.urgency
 				}).returning();
 
 				if (!processedItem) {
