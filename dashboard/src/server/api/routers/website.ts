@@ -31,7 +31,8 @@ export const website_router = createTRPCRouter({
 				const [processedItem] = await tx.insert(processed_items).values({
 					type: 'website',
 					client_name: input.client_name,
-					actionable: input.actionable
+					actionable: input.actionable,
+					urgency: input.urgency
 				}).returning();
 
 				if (!processedItem) {
