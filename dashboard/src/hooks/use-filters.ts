@@ -22,39 +22,39 @@ export function useFilters() {
 
   // Get current filter values from URL
   const filters: FilterParams = {
-    channel: searchParams.get('channel') || undefined,
-    date_range: searchParams.get('date_range') || undefined,
+    channel: searchParams.get('channel') ?? undefined,
+    date_range: searchParams.get('date_range') ?? undefined,
     priority: searchParams.get('priority') ? Number(searchParams.get('priority')) as PriorityType : undefined,
-    sort: searchParams.get('sort') || undefined,
-    view: searchParams.get('view') || undefined,
-    page: searchParams.get('page') || undefined,
+    sort: searchParams.get('sort') ?? undefined,
+    view: searchParams.get('view') ?? undefined,
+    page: searchParams.get('page') ?? undefined,
   }
 
   // Update a single filter
   const updateFilter = useCallback((key: string, value: string | number | null) => {
     const params = new URLSearchParams(searchParams.toString())
-    
+
     if (value !== null && value !== undefined && value !== '') {
       params.set(key, String(value))
     } else {
       params.delete(key)
     }
-    
+
     // Reset page when filters change (except when updating page itself)
     if (key !== 'page') {
       params.delete('page')
     }
-    
+
     const queryString = params.toString()
     const url = queryString ? `${pathname}?${queryString}` : pathname
-    
+
     router.push(url, { scroll: false })
   }, [searchParams, pathname, router])
 
   // Update multiple filters at once
   const updateFilters = useCallback((newFilters: Partial<FilterParams>) => {
     const params = new URLSearchParams(searchParams.toString())
-    
+
     Object.entries(newFilters).forEach(([key, value]) => {
       if (value !== null && value !== undefined && value !== '') {
         params.set(key, String(value))
@@ -62,15 +62,15 @@ export function useFilters() {
         params.delete(key)
       }
     })
-    
+
     // Reset page when filters change
     if (!('page' in newFilters)) {
       params.delete('page')
     }
-    
+
     const queryString = params.toString()
     const url = queryString ? `${pathname}?${queryString}` : pathname
-    
+
     router.push(url, { scroll: false })
   }, [searchParams, pathname, router])
 
