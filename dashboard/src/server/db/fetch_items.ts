@@ -1,6 +1,10 @@
 import { desc, inArray, eq, and, gte } from 'drizzle-orm';
 import { email, processed_items, twitter, website } from './schema';
 import { db } from '.';
+import { startOfToday } from 'date-fns';
+import { subDays } from 'date-fns';
+import type { DateRangeValueType } from '~/components/filters/date_ranges';
+import type { ChannelValueType } from '~/components/filters/channel_ranges';
 
 // Define types for each table's data
 type WebsiteData = typeof website.$inferSelect;
@@ -25,12 +29,57 @@ export type LatestItem =
 export async function fetch_latest_items({
 	limit = 10,
 	actionable = false,
+	date_range,
+	channel,
+	// priority
+}: {
+	limit: number,
+	actionable: boolean,
+	date_range: DateRangeValueType,
+	channel: ChannelValueType,
+	// priority: number | 'all'
 }): Promise<LatestItem[]> {
+
+
+	console.log(date_range);
+	const now = new Date();
+
+	let dateFilter: Date | undefined;
+	if (date_range === 'today') {
+		dateFilter = startOfToday(); // Midnight today
+	} else if (date_range === 'last_week') {
+		dateFilter = subDays(now, 7);
+	} else if (date_range === 'last_30_days') {
+		dateFilter = subDays(now, 30);
+	}
+
+	// Compose filters
+	const conditions = [];
+
+	if (actionable === true) {
+		conditions.push(eq(processed_items.actionable, true));
+	}
+
+	if (dateFilter) {
+		conditions.push(gte(processed_items.created_at, dateFilter));
+	}
+
+	// Add channel filtering if channel is defined and not "all"
+	if (channel && channel !== 'all') {
+		conditions.push(eq(processed_items.type, channel));
+	}
+
+	// if (priority !== 'all') {
+	// 	conditions.push(eq(processed_items.urgency, priority));
+	// }
+
+
 	// Step 1: Get the latest 10 processed items
 	const latestItems = await db
 		.select()
 		.from(processed_items)
-		.where(actionable === true ? eq(processed_items.actionable, true) : undefined)
+		// .where(actionable === true ? eq(processed_items.actionable, true) : undefined)
+		.where(conditions.length ? and(...conditions) : undefined)
 		.orderBy(desc(processed_items.created_at))
 		.limit(limit);
 

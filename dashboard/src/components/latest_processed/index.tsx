@@ -21,6 +21,7 @@ import {
 	TableRow,
 } from "~/components/ui/table"
 import { ROUTES } from "~/lib/nav_items";
+import { DefaultChannelValue } from "../filters/channel_ranges";
 
 
 
@@ -36,7 +37,9 @@ function get_display_type(type: string)
 export async function LatestProcessed()
 {
 	const latest_items = await api.processed_items.getLatest({
-		limit: 4
+		limit: 4,
+		channel: DefaultChannelValue,
+		date_range: 'last_30_days'
 	});
 
 	return (
