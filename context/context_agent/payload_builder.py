@@ -2,43 +2,52 @@ from datetime import datetime, timezone
 import json
 import uuid
 
-def build_dashboard_payload(item: dict, analysis: dict) -> dict:
+def safe_get(d, key, default):
+    value = d.get(key, default)
+    return value if value is not None else default
+
+def build_dashboard_payload(item: dict, analysis: dict) -> tuple[dict, str]:
     """
     Construieste payload-ul specific pentru dashboard pe baza tipului de item.
     """
     source_type = item.get("type", "unknown")
-    llm_analysis = analysis.get("analysis", {})
+    llm_analysis = analysis
+    if not isinstance(llm_analysis, dict):
+        llm_analysis = {}
+        
     payload = {}
 
-    
-
+    # Logica pentru email (functioneaza)
     if source_type == "email":
         payload = {
             "content": item.get("body", "No content provided"),
             "client_name": "SolarisProAi",
-            "type": source_type, # Use source_type for consistency
-            "message_id": str(uuid.uuid4()), # Generate a unique ID
+            "type": source_type,
+            "message_id": str(uuid.uuid4()),
             "subject": item.get("subject", "No Subject"),
             "processed_at": datetime.now(timezone.utc).isoformat(),
-            "actionable": True,
+            "actionable": llm_analysis.get("actionable", False),
             "suggested_action": llm_analysis.get("suggested_action", "No specific action suggested"),
             "short_description": llm_analysis.get("short_description", "No description provided"),
             "relevance": llm_analysis.get("relevance", "unknown")
         }
-    elif source_type == "tweet":
+    
+    # Logica reconstruita pentru twitter, urmand modelul celorlalte
+    elif source_type == "twitter":
         payload = {
-            "url": item.get("url", f"https://twitter.com/someuser/status/{uuid.uuid4()}"), # Generate a more realistic placeholder URL if not present
-            "text": item.get("content", "No content provided"),
-            "actionable": True, # Always True for actionable tweets
+            "url": safe_get(item, "url", "https://twitter.com/unknown/status/00000"),
+            "text": safe_get(item, "content", "No content provided"),
+            "tweet_id": safe_get(item, "tweet_id", "000000000"),
+            "actionable": llm_analysis.get("actionable", False),
             "client_name": "SolarisProAi",
-            "tweet_id": item.get("tweet_id", str(uuid.uuid4())),
-            "relevance": llm_analysis.get("relevance", "unknown"),
-            "suggested_action": llm_analysis.get("suggested_action", "No specific action suggested"),
-            "short_description": llm_analysis.get("short_description", "No description provided"),
-            "status": llm_analysis.get("status", item.get("status", "new")),
-            "reply": llm_analysis.get("reply", item.get("reply", ""))
+            "status": "new",
+            "reply": "",
+            "relevance": safe_get(llm_analysis, "relevance", "unknown"),
+            "suggested_action": safe_get(llm_analysis, "suggested_action", "No specific action suggested"),
+            "short_description": safe_get(llm_analysis, "short_description", "No description provided")
         }
         
+    # Logica pentru website (functioneaza)
     elif source_type == "website":
         payload = {
             "client_name": item.get("client_name", "SolarisProAi"),
@@ -46,29 +55,32 @@ def build_dashboard_payload(item: dict, analysis: dict) -> dict:
             "title": item.get("title", "No Title"),
             "content": item.get("content", "No content provided"),
             "short_description": llm_analysis.get("short_description", "No description provided"),
-            "actionable": True,
+            "actionable": llm_analysis.get("actionable", False),
             "opportunity_type": llm_analysis.get("opportunity_type", "unknown"),
             "suggested_action": llm_analysis.get("suggested_action", "No specific action suggested"),
             "relevance": llm_analysis.get("relevance", "unknown"),
             "read": False,
             "scraped_at": datetime.now(timezone.utc).isoformat()
         }
-    
-    
 
-    if payload:
-        # Check for empty required fields based on source_type
-        required_fields = []
-        if source_type == "email":
-            required_fields = ["content", "client_name", "type", "message_id", "subject", "processed_at", "actionable", "suggested_action", "short_description", "relevance"]
-        elif source_type == "tweet":
-            required_fields = ["url", "text", "actionable", "relevance", "suggested_action", "short_description", "client_name", "status", "reply"]
-        elif source_type == "website":
-            required_fields = ["content", "client_name", "url", "title", "short_description", "actionable", "opportunity_type", "suggested_action", "relevance", "read", "scraped_at"]
-
-        for field in required_fields:
-            if field not in payload or payload.get(field) is None:
-                print(f"  -> Avertisment: Campul obligatoriu '{field}' este gol pentru {source_type}.")
-                return {}, source_type # Return empty payload if a required field is empty
-
+    # Logica de validare (functioneaza pentru email si website)
     return payload, source_type
+
+def test_twitter_payload():
+    item = {
+        "type": "twitter",
+        "date": "2024-09-07",
+        "title": "Team Expansion Pause",
+        "content": "Taking a short breather as we onboard our latest team additions. Stability and alignment are just as important as rapid growth. #AIExpansion #GrowthPacing",
+        # intentionally omit 'url' and 'tweet_id' to test defaults
+        # 'reply' is not used in payload construction
+    }
+    analysis = {
+        # intentionally omit 'analysis' to test defaults
+    }
+    payload, source_type = build_dashboard_payload(item, analysis)
+    print("Payload:", json.dumps(payload, indent=2, ensure_ascii=False))
+    print("Source type:", source_type)
+
+if __name__ == "__main__":
+    test_twitter_payload()

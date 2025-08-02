@@ -64,7 +64,7 @@ if __name__ == "__main__":
                 item['type'] = 'website'
             else:
                 print(f"Avertisment: Item fara 'type' gasit si nu a putut fi inferat: {item}")
-                continue
+                item['type'] = 'unknown' # Assign a default type instead of skipping
         
         content_for_rag = item.get('body') or item.get('content') or item.get('text')
         if content_for_rag:
@@ -76,63 +76,42 @@ if __name__ == "__main__":
 
     # 3. Apel unic catre LLM
     print("Se trimite intregul batch catre LLM pentru analiza si filtrare...")
-    actionable_items_analysis = get_llm_analysis(user_context, rag_context, all_items)
+    processed_items_analysis = get_llm_analysis(user_context, rag_context, all_items)
 
-    # Create a lookup for actionable items
-    actionable_lookup = {}
-    if actionable_items_analysis:
-        for analysis in actionable_items_analysis:
-            original_item = analysis.get("original_item")
-            if original_item:
-                # Use a tuple of identifiable fields as a key
-                key = (original_item.get('type'), original_item.get('body') or original_item.get('content') or original_item.get('text'))
-                actionable_lookup[key] = analysis
-
-    # 4. Generare rezultate finale
-    full_results = []
-    for item in all_items:
-        key = (item.get('type'), item.get('body') or item.get('content') or item.get('text'))
-        analysis = actionable_lookup.get(key)
-
-        result_item = {
-            "scenario_type": item.get("scenario_type"),
-            "input_type": item.get("type"),
-            "content": key[1],
-            "actionable": bool(analysis),
-            "llm_output_batch": analysis if analysis else None
-        }
-        full_results.append(result_item)
-
-    # 5. Salvare rezultate in fisier
+    # 4. Salvare rezultate in fisier
     output_path = 'context/processed_results.json'
     with open(output_path, 'w', encoding='utf-8') as f:
-        json.dump(full_results, f, indent=2, ensure_ascii=False)
+        json.dump(processed_items_analysis, f, indent=2, ensure_ascii=False)
     print(f"\nProcesare completa. Rezultatele au fost salvate in {output_path}")
 
-    # 6. Procesare iteme actionabile (logica existenta)
-    if actionable_items_analysis:
-        print(f"LLM a identificat {len(actionable_items_analysis)} iteme actionabile. Se proceseaza...")
-        for analysis in actionable_items_analysis:
-            original_item = analysis.get("original_item")
-            if not original_item:
-                print("⚠️ Avertisment: O analiza de la LLM nu contine itemul original. Se ignora.")
+    # 5. Procesare si trimitere iteme la dashboard si RAG
+    if processed_items_analysis:
+        print(f"Se proceseaza {len(processed_items_analysis)} iteme pentru trimitere la dashboard si RAG...")
+        for item_with_analysis in processed_items_analysis:
+            original_item = item_with_analysis.get("original_item")
+            analysis = item_with_analysis.get("analysis")
+
+            if not original_item or not analysis:
+                print("⚠️ Avertisment: Un item din analiza LLM nu contine original_item sau analiza. Se ignora.")
                 continue
 
             payload, source_type = build_dashboard_payload(original_item, analysis)
             if payload:
-                desc = analysis.get('analysis', {}).get('short_description', 'N/A')
+                desc = analysis.get('short_description', 'N/A')
                 print(f"  -> Se trimite '{source_type}' la dashboard: {desc}")
                 send_context_to_dashboard(payload, source_type)
             else:
                 print(f"  -> Eroare: Nu s-a putut construi payload-ul pentru item.")
 
-            print(f"  -> Se indexeaza '{source_type}' in RAG pentru context viitor.")
-            content_to_rag = original_item.get('body') or original_item.get('content') or original_item.get('text')
-            if content_to_rag:
-                send_to_rag({"input": content_to_rag})
-            else:
-                print(f"  -> Avertisment: Nu s-a gasit continut pentru indexare RAG: {original_item}")
+            # Se indexeaza in RAG doar itemele actionable
+            if analysis.get('actionable', False):
+                print(f"  -> Se indexeaza '{source_type}' in RAG pentru context viitor.")
+                content_to_rag = original_item.get('body') or original_item.get('content') or original_item.get('text')
+                if content_to_rag:
+                    send_to_rag({"input": content_to_rag})
+                else:
+                    print(f"  -> Avertisment: Nu s-a gasit continut pentru indexare RAG: {original_item}")
     else:
-        print("LLM nu a identificat niciun item actionabil.")
+        print("Nu s-au gasit rezultate de procesat.")
 
     print("Procesare batch finalizata cu succes!")

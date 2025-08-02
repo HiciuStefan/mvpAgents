@@ -25,30 +25,28 @@ An item is "actionable" if it represents a clear business opportunity, a reputat
 **Actionability Priority Levels:**
 - **high**: Urgent matters. Direct business opportunities, critical reputational risks, requests with a clear deadline.
 - **medium**: Important but not urgent. Non-critical client requests, opportunities needing timely follow-up.
-- **low**: Requires monitoring. General updates, relationship-building notes, non-urgent acknowledgments.
-
-For each actionable item, you must extract structured insights.
+- **low**: Requires monitoring. General updates, relationship-building notes, non-urgent acknowledgments. For ALL actionable items (high, medium, low), you MUST provide a concrete 'suggested_action' and a clear 'relevance'.
 
 **Your output MUST be a valid JSON array of objects.**
-Each object in the array represents ONE actionable item and MUST have the following structure:
+Each object in the array represents ONE item from the input batch and MUST have the following structure:
 - "original_item": object (The full original item from the input array)
 - "analysis": object (Your analysis of the item)
-  - "short_description": string (Max 50 characters, ending with the priority, e.g., "New business lead from Solaris - high")
-  - "actionable": boolean (This will always be `true`)
-  - "opportunity_type": string (e.g., "New business opportunity", "Reputational risk", "Client request")
-  - "suggested_action": string (A concrete next step, e.g., "Schedule a discovery call with Sarah Chen")
-  - "relevance": string (Max 100 characters, explaining why it's important)
+  - "short_description": string (Max 50 characters. For actionable items, end with the priority, e.g., "New business lead from Solaris - high". For non-actionable items, summarize the item and append " - neutral", e.g., "General news update - neutral")
+  - "actionable": boolean (Set to `true` if actionable, `false` otherwise)
+  - "opportunity_type": string (For actionable items: e.g., "New business opportunity", "Reputational risk", "Client request". For non-actionable items: " ")
+  - "suggested_action": string (REQUIRED for actionable items: A concrete next step, e.g., "Schedule a discovery call with Sarah Chen". For non-actionable items: " ")
+  - "relevance": string (Max 100 characters. REQUIRED for actionable items: explaining why it's important. For non-actionable items: " ")
 
 **CRITICAL RULES:**
-1.  **FILTERING:** If an item is NOT actionable, you MUST ignore it and **it should NOT appear in your output array.**
+1.  **ABSOLUTELY NO FILTERING:** You MUST include ALL items from the input batch in your output array. Do NOT omit any items.
 2.  **JSON ONLY:** Your entire response must be a single, valid JSON array `[...]`. Do not include any text, explanations, or markdown before or after the array.
 3.  **DOUBLE QUOTES:** Use only double quotes for all keys and string values in the JSON.
 '''
 
 JSON_INSTRUCTIONS = '''Based on the user profile, the historical context (RAG), and the batch of items provided, analyze each item.
-Return a JSON array containing **only the actionable items** and their analysis.
+Return a JSON array containing **ALL items from the input batch**, including both actionable and non-actionable ones, and their analysis, following the structure defined in SYSTEM_HEADER.
 
-Example of a valid response for a batch containing two actionable items:
+Example of a valid response for a batch containing three items (one high actionable, one low actionable, one non-actionable):
 [
   {
     "original_item": { ... original email object ... },
@@ -68,6 +66,16 @@ Example of a valid response for a batch containing two actionable items:
       "opportunity_type": "Relationship building",
       "suggested_action": "Publicly reply to the tweet to thank them and reinforce the partnership",
       "relevance": "Positive public mention strengthens the brand and relationship with the client."
+    }
+  },
+  {
+    "original_item": { ... original website object ... },
+    "analysis": {
+      "short_description": "General news update about market trends - neutral",
+      "actionable": false,
+      "opportunity_type": " ",
+      "suggested_action": " ",
+      "relevance": " "
     }
   }
 ]
@@ -97,21 +105,73 @@ def get_llm_analysis(user_context: dict, rag_context: str, batch_content: list) 
         response = llm.invoke(prompt, config={'timeout': 180})
         reply = response.content.strip()
 
-        # Ne asiguram ca raspunsul este un array JSON valid
-        if reply.startswith('[') and reply.endswith(']'):
-            parsed = json.loads(reply)
-            if isinstance(parsed, list):
-                return parsed
-            else:
+        parsed_llm_output = []
+        json_string = reply
+
+        # Incercam sa extragem un array JSON din raspuns, in caz ca a adaugat text aditional (e.g., ```json...```)
+        json_match = re.search(r'```json\n(.*)\n```', reply, re.DOTALL)
+        if json_match:
+            json_string = json_match.group(1)
+        
+        try:
+            parsed_llm_output = json.loads(json_string)
+            if not isinstance(parsed_llm_output, list):
                 raise ValueError("LLM did not return a JSON array.")
-        else:
-            # Incercam sa extragem un array JSON din raspuns, in caz ca a adaugat text aditional
-            json_match = re.search(r'\\[.*\\]', reply, re.DOTALL)
-            if json_match:
-                parsed = json.loads(json_match.group(0))
-                if isinstance(parsed, list):
-                    return parsed
-            raise ValueError("LLM response was not a valid JSON array.")
+        except json.JSONDecodeError:
+            # Daca nu a fost un bloc de cod sau parsarea a esuat, incercam sa parsam direct raspunsul
+            try:
+                parsed_llm_output = json.loads(reply)
+                if not isinstance(parsed_llm_output, list):
+                    raise ValueError("LLM did not return a JSON array.")
+            except json.JSONDecodeError:
+                raise ValueError("LLM response was not a valid JSON array.")
+
+        # Create a lookup for LLM-analyzed items based on their original_item content
+        llm_output_map = {}
+        for item in parsed_llm_output:
+            if 'original_item' in item:
+                original_item_from_llm = item['original_item']
+                key = (original_item_from_llm.get('type'), original_item_from_llm.get('body') or original_item_from_llm.get('content') or original_item_from_llm.get('text'))
+                llm_output_map[key] = item
+
+        final_results = []
+        for original_input_item in batch_content:
+            original_item_key = (original_input_item.get('type'), original_input_item.get('body') or original_input_item.get('content') or original_input_item.get('text'))
+            
+            if original_item_key in llm_output_map:
+                # If LLM analyzed this item, use its analysis
+                item_with_analysis = llm_output_map[original_item_key]
+            else:
+                # If LLM did not analyze this item, create a default neutral analysis
+                item_with_analysis = {
+                    "original_item": original_input_item,
+                    "analysis": {
+                        "short_description": "General update - neutral",
+                        "actionable": False,
+                        "opportunity_type": " ",
+                        "suggested_action": " ",
+                        "relevance": " "
+                    }
+                }
+            
+            # Post-processing: Ensure suggested_action and relevance are completed for actionable items
+            analysis = item_with_analysis.get('analysis', {})
+            item_with_analysis['analysis'] = analysis # Ensure analysis dict exists
+
+            if analysis.get('actionable', False):
+                if not analysis.get('suggested_action') or analysis.get('suggested_action').strip() == " ":
+                    analysis['suggested_action'] = "Review and determine next steps."
+                if not analysis.get('relevance') or analysis.get('relevance').strip() == " ":
+                    analysis['relevance'] = "Importance requires further review."
+            else:
+                # Ensure non-actionable items have empty strings for these fields
+                analysis['opportunity_type'] = analysis.get('opportunity_type', " ")
+                analysis['suggested_action'] = analysis.get('suggested_action', " ")
+                analysis['relevance'] = analysis.get('relevance', " ")
+            
+            final_results.append(item_with_analysis)
+        
+        return final_results
 
     except Exception as exc:
         print(f"❌ LLM error or invalid JSON: {exc}\n🔎 Reply was:\n{reply}")

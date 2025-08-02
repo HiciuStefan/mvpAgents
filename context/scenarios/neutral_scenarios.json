@@ -13,6 +13,7 @@
     },
     {
       "type": "website",
+      "url": "https://www.solarisproai.com/news/solarisproai-enhances-internal-ai-training-program",
       "date": "2024-09-05",
       "title": "SolarisProAi Enhances Internal AI Training Program",
       "content": "As we scale, our internal AI team is benefiting from a structured mentorship and training program. While we continue hiring externally, internal growth is equally important. #TechGrowth #AITraining",
@@ -23,11 +24,12 @@
     },
     {
       "type": "twitter",
+      "tweet_id": "1a2b3c4d-5e6f-7890-abcd-ef1234567890",
       "date": "2024-09-07",
       "title": "Team Expansion Pause",
       "content": "Taking a short breather as we onboard our latest team additions. Stability and alignment are just as important as rapid growth. #AIExpansion #GrowthPacing",
       "recommendation": {
-        "action": "Check back in 2\u20133 weeks for new hiring needs",
+        "action": "Check back in 2-3 weeks for new hiring needs",
         "reasoning": "Signals a temporary slowdown. Stay informed and reengage soon."
       },
       "reply": ""

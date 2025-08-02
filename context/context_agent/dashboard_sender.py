@@ -11,7 +11,7 @@ CONFIG_MAPPING = {
         "url": os.getenv("EMAIL_AGENT_URL"),
         "api_key": os.getenv("EMAIL_AGENT_API_KEY"),
     },
-    "tweet": {
+    "twitter": {
         "url": os.getenv("TWITTER_AGENT_URL"),
         "api_key": os.getenv("TWITTER_AGENT_API_KEY"),
     },

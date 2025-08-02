@@ -21,6 +21,7 @@
     },
     {
         "type": "twitter",
+        "tweet_id": "2a3b4c5d-6e7f-8901-2345-67890abcdef1",
         "date": "2024-09-12",
         "title": "SolarisProAi Hiring Momentum",
         "content": "We're building something incredible! ✨ Just added another AI developer to our global vision team. Huge thanks to our recruitment partner for helping us scale with precision. #AITalent #GlobalAI #NLP",
@@ -31,6 +32,7 @@
       },
     {
         "type": "twitter",
+        "tweet_id": "3b4c5d6e-7f8a-9012-3456-7890abcdef23",
         "date": "2025-07-18",
         "title": "Digital Excellence Partnership Inquiry",
         "content": "@DigitalExcellence Your work in AI recruitment is impressive! We're a startup looking for top-tier ML engineers. DM us to discuss potential collaboration! #AIJobs #TechRecruitment",
@@ -41,6 +43,7 @@
     },
     {
         "type": "website",
+        "url": "https://www.innovateai.com/partnership-inquiry",
         "date": "2025-07-18",
         "title": "New Lead: AI Startup Seeking Partnership",
         "content": "A new AI startup, 'InnovateAI', just filled out our partnership inquiry form on our website. They are looking for talent acquisition solutions for their rapidly expanding ML engineering team. This represents a high-value lead.",
