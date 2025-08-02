@@ -51,6 +51,7 @@ export const baseAgentInputSchema = z.object({
 	relevance: z.string(),
 	actionable: z.boolean(),
 	suggested_action: z.string(),
+	urgency: z.number().int().min(0).max(3).default(0),
 });
 
 // Main processed items table
@@ -59,6 +60,7 @@ export const processed_items = createTable('processed_items',
 		id: d.uuid().primaryKey().defaultRandom(),
 		type: processedItemTypeEnum().notNull(),
 		actionable: d.boolean().notNull().default(false),
+		urgency: d.integer().notNull().default(0),
 		client_name: d.text().notNull(),
 		created_at: d
 		.timestamp({ withTimezone: true })
