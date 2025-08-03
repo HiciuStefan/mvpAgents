@@ -14,9 +14,9 @@ type PriorityFilterProps = {
 	setFilter: (filter: PriorityType | null) => void;
 };
 
-// Priority Filter Component
-export function PriorityFilter({ priorities, filter, setFilter }: PriorityFilterProps) {
-	const filterItems = [
+
+export function getPriorityButtonConfigs(priorities: Priorities) {
+	return [
 	  {
 		id: 3,
 		label: "High",
@@ -48,17 +48,23 @@ export function PriorityFilter({ priorities, filter, setFilter }: PriorityFilter
 		activeTextColor: "text-white"
 	  }
 	];
+}
 
-	const newItemClasses = `${styles.rounded_rectangle ?? 'px-4 py-2 rounded-lg cursor-pointer transition-colors'} bg-gray-100 text-gray-600 hover:bg-[#ecedf0]`;
+// Priority Filter Component
+export function PriorityFilter({ priorities, filter, setFilter }: PriorityFilterProps) {
+	const priorityFilterButtons = getPriorityButtonConfigs(priorities);
+
+	const itemClasses = `${styles.rounded_rectangle} select-none px-4 py-2 rounded-lg cursor-pointer transition-colors`;
 
 	return (
 	  <div className={`flex gap-2`}>
-		{filterItems.map(item => {
+		{priorityFilterButtons.map(item => {
 		  const isActive = filter === item.id;
+
 		  return (
 			<div
 			  key={item.id}
-			  className={`${styles.rounded_rectangle ?? 'px-4 py-2 rounded-lg cursor-pointer transition-colors'} ${
+			  className={`${itemClasses} ${
 				isActive
 				  ? `${item.activeBgColor} ${item.activeTextColor}`
 				  : `${item.bgColor} ${item.textColor} ${item.hoverColor}`
@@ -70,7 +76,7 @@ export function PriorityFilter({ priorities, filter, setFilter }: PriorityFilter
 		  );
 		})}
 
-		<div className={newItemClasses} onClick={() => setFilter(null)}>
+		<div className={`${itemClasses} bg-gray-100 text-gray-600 hover:bg-[#ecedf0]`} onClick={() => setFilter(null)}>
 		  New&nbsp;<strong className="text-zinc-950 font-medium">
 			{priorities.new}
 		  </strong>
