@@ -39,9 +39,6 @@ export async function fetch_latest_items({
 	channel: ChannelValueType,
 	// priority: number | 'all'
 }): Promise<LatestItem[]> {
-
-
-	console.log(date_range);
 	const now = new Date();
 
 	let dateFilter: Date | undefined;

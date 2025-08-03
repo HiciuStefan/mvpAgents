@@ -8,7 +8,7 @@ import { zodChannelEnum } from '~/components/filters/channel_ranges';
 const prioritySchema = z.union([
 	z.literal("all"),
 	z.number().int().min(1).max(3),
-  ]);
+]);
 
 export const processed_items_router = createTRPCRouter({
 	getLatest: publicProcedure

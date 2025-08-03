@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { useCallback } from 'react'
 
-type PriorityType = 1 | 2 | 3
+export type PriorityType = 1 | 2 | 3
 
 export interface FilterParams {
   channel?: string
