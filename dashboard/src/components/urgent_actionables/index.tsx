@@ -15,96 +15,17 @@ import { ROUTES } from "~/lib/nav_items";
 import { api } from "~/trpc/server";
 import { formatDistanceToNow } from "date-fns";
 
-type UrgentActionableType = {
-	company: string;
-	reason: string;
-	priority: 'high' | 'medium' | 'low';
-	channel: ProcessedItemType | 'whatsapp';
-	overdueDuration?: string;
-}
-
-const mock_data: UrgentActionableType[] = [
-	{
-		company: 'UI Path',
-		reason: 'SLA overdue 36 h',
-		priority: 'high',
-		channel: 'email'
-	},
-	{
-		company: 'Liverpool FC',
-		reason: 'Prototype request (WhatsApp)',
-		priority: 'high',
-		channel: 'whatsapp'
-	},
-	{
-		company: 'Acme Corp',
-		reason: 'Contract renewal due',
-		priority: 'medium',
-		channel: 'email'
-	},
-	{
-		company: 'Globex Inc',
-		reason: 'Meeting follow-up',
-		priority: 'medium',
-		channel: 'website'
-	},
-	{
-		company: 'Wayne Enterprises',
-		reason: 'Budget approval needed',
-		priority: 'medium',
-		channel: 'email'
-	},
-	{
-		company: 'Stark Industries',
-		reason: 'Technical review',
-		priority: 'low',
-		channel: 'twitter'
-	},
-	{
-		company: 'LexCorp',
-		reason: 'Quarterly check-in',
-		priority: 'low',
-		channel: 'email'
-	},
-	{
-		company: 'Oscorp',
-		reason: 'Documentation update',
-		priority: 'low',
-		channel: 'website'
-	},
-	{
-		company: 'InGen',
-		reason: 'Status report',
-		priority: 'low',
-		channel: 'twitter'
-	}
-];
-
-export async function fetchMockData(): Promise<UrgentActionableType[]> {
-	return new Promise((resolve) => {
-		resolve(mock_data);
-	});
-}
-
-function getPriorityIcon(priority: 'high' | 'medium' | 'low'): string {
+function getPriorityIcon(priority: 3 | 2 | 1): string {
 	switch (priority) {
-		case 'high': return '🔴';
-		case 'medium': return '🟠';
-		case 'low': return '🟡';
+		case 3: return '🔴';
+		case 2: return '🟠';
+		case 1: return '🟡';
 		default: return '⚪';
 	}
 }
 
-const priorities = {
-	low: 0,
-	medium: 0,
-	high: 0,
-	new: 0
-}
 
 export async function UrgentActionables() {
-	const data = await fetchMockData();
-
 	const latest_items = await api.processed_items.getLatest({
 		limit: 100,
 		actionable: true,
