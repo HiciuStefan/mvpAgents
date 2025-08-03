@@ -1,11 +1,11 @@
-import { ItemCard } from "~/components/cards/ItemCard";
 import { api } from "~/trpc/server";
 import { ClientSelect } from "~/components/filters/ClientSelect";
 import { ChannelSelect } from "~/components/filters/ChannelSelect";
 import { type DateRangeValueType, DefaultDateRangeValue } from "~/components/filters/date_ranges";
 import { DateFilter } from "~/components/filters/DateFilter";
 import { DefaultChannelValue, type ChannelValueType } from "~/components/filters/channel_ranges";
-import { PriorityFilter } from "~/components/filters/PriorityFilter";
+import BusinessIntelligenceClient from "./business-intelligence-client";
+import type { PriorityType } from "~/hooks/use-filters";
 
 interface PageProps {
 	searchParams: Promise<{
@@ -20,7 +20,7 @@ function parseFilters(searchParams: Awaited<PageProps['searchParams']>) {
 	return {
 	  channel: searchParams.channel ?? DefaultChannelValue,
 	  date_range: searchParams.date_range ?? DefaultDateRangeValue,
-	  priority: searchParams.priority ? Number(searchParams.priority) as 1 | 2 | 3 : undefined,
+	  priority: searchParams.priority ? Number(searchParams.priority) as PriorityType : undefined,
 	}
   }
 
@@ -79,16 +79,10 @@ export default async function BusinessIntelligence({ searchParams }: PageProps)
 				<ChannelSelect />
 				<DateFilter />
 			</div>
-			<div className="flex items-center gap-1 mt-1 mb-3.5">
-				<PriorityFilter priorities={priorities} />
-			</div>
-			<main className="flex w-5xl flex-col gap-[16px]">
-				{filtered_items.map((item, index) => {
-					return (
-						<ItemCard key={index} item={item} />
-					);
-				})}
-			</main>
+			<BusinessIntelligenceClient
+				items={filtered_items}
+				priorities={priorities}
+			/>
 		</div>
 	);
 }
