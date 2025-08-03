@@ -1,18 +1,31 @@
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { ChannelBadge } from "~/components/ChannelBadge";
 import type { LatestItem } from "~/server/db/fetch_items";
+import { cn } from "~/lib/utils";
+
+const urgencyColorMap: Record<number, string> = {
+	0: "border-l-gray-300",
+	1: "border-l-green-400",
+	2: "border-l-yellow-300",
+	3: "border-l-red-400",
+};
 
 
 export function ItemCard({ item } : { item: LatestItem })
 {
-	const { type, data, client_name, actionable } = item;
+	const { type, data, client_name, actionable, urgency } = item;
 	const { short_description, relevance } = data;
 
 	const suggested_action = 'suggested_action' in data ? data.suggested_action : null;
 
 
 	return (
-		<Card className="flex flex-row w-full">
+		<Card
+			className={cn(
+				"flex flex-row w-full border-l-[5px]",
+				urgencyColorMap[urgency] ?? urgencyColorMap[0]
+			)}
+		>
 			<CardHeader className="w-[200px] shrink-0 flex flex-col items-start h-full py-[5px] gap-3">
 				<CardTitle>{client_name}</CardTitle>
 				<ChannelBadge type={type} />
