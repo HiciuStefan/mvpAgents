@@ -12,6 +12,8 @@ import type { ProcessedItemType } from "~/server/db/schema";
 
 import styles from "./styles.module.css";
 import { ROUTES } from "~/lib/nav_items";
+import { api } from "~/trpc/server";
+import { formatDistanceToNow } from "date-fns";
 
 type UrgentActionableType = {
 	company: string;
@@ -93,23 +95,54 @@ function getPriorityIcon(priority: 'high' | 'medium' | 'low'): string {
 	}
 }
 
+const priorities = {
+	low: 0,
+	medium: 0,
+	high: 0,
+	new: 0
+}
+
 export async function UrgentActionables() {
 	const data = await fetchMockData();
 
-	const highPriorityItems = data.filter(item => item.priority === 'high');
-	const mediumPriorityItems = data.filter(item => item.priority === 'medium');
-	const lowPriorityItems = data.filter(item => item.priority === 'low');
+	const latest_items = await api.processed_items.getLatest({
+		limit: 100,
+		actionable: true,
+		channel: 'all',
+		date_range: 'today',
+	});
 
-	const totalActionable = data.length;
-	const highCount = highPriorityItems.length;
-	const mediumCount = mediumPriorityItems.length;
-	const lowCount = lowPriorityItems.length;
+	const priorities = {
+		low: 0,
+		medium: 0,
+		high: 0,
+		new: 0
+	}
+
+	latest_items.forEach(item => {
+		if (item.urgency === 1) {
+			priorities.low++;
+		}
+		else if (item.urgency === 2) {
+			priorities.medium++;
+		}
+		else if (item.urgency === 3) {
+			priorities.high++;
+		}
+
+		priorities.new++;
+	});
+
+	const latest_item = latest_items.length > 0 ? latest_items[0] : null;
+
+	const highPriorityItems = latest_items.filter(item => item.urgency === 3);
+	const mediumPriorityItems = latest_items.filter(item => item.urgency === 2);
 
 	// Get channel counts
-	const channelCounts = data.reduce((acc, item) => {
-		acc[item.channel] = (acc[item.channel] ?? 0) + 1;
+	const channelCounts = latest_items.reduce((acc, item) => {
+		acc[item.type] = (acc[item.type] ?? 0) + 1;
 		return acc;
-	}, {} as Record<ProcessedItemType | 'whatsapp', number>);
+	}, {} as Record<ProcessedItemType, number>);
 
 	// Get top 3 items to display
 	const topItems = [
@@ -125,7 +158,7 @@ export async function UrgentActionables() {
 						Business Intelligence
 					</CardTitle>
 					<span className="text-[10px] uppercase tracking-wide">
-						Updated 2 min ago
+						{latest_item ? 'Updated ' + formatDistanceToNow(latest_item.created_at, { addSuffix: true }) : 'No items found'}
 					</span>
 				</div>
 				{/* <CardDescription>
@@ -135,13 +168,13 @@ export async function UrgentActionables() {
 					<div className="flex items-center gap-4 mt-1">
 						<div className="flex items-center gap-1.5">
 							<div className={`${styles.some_rounded_thing} bg-red-100 text-red-700`}>
-								2
+								{priorities.high}
 							</div>
 							<div className={`${styles.some_rounded_thing} bg-yellow-100 text-yellow-700`}>
-								3
+								{priorities.medium}
 							</div>
 							<div className={`${styles.some_rounded_thing} bg-green-100 text-green-700`}>
-								4
+								{priorities.low}
 							</div>
 							{/* <div className={`${styles.some_rounded_thing} bg-red-100 text-red-800`}>
 								<Circle className="text-red-500" />2
@@ -153,33 +186,24 @@ export async function UrgentActionables() {
 								<Circle className="text-green-500" />4
 							</div> */}
 						</div>
-						<div>New items: <strong className="text-zinc-950 font-medium">{totalActionable}</strong></div>
+						<div>New items: <strong className="text-zinc-950 font-medium">{priorities.new}</strong></div>
 					</div>
 				</CardDescription>
-				
+
 			</CardHeader>
 			<CardContent className="flex flex-col pr-4 gap-2">
 				<div className="flex flex-col gap-2 font-medium">Urgent items</div>
 				{/* Top urgent items */}
 				<div className="flex flex-col gap-2">
 					{topItems.map((item, index) => (
-						<div key={index} className="flex items-center gap-2 text-sm bg-white p-2 rounded-md bg-zinc-100">
+						<div key={index} className="flex items-center gap-2 text-sm p-2 rounded-md bg-zinc-100">
 							{/* <span>{getPriorityIcon(item.priority)}</span> */}
-							<span className="font-medium">{item.company}</span>
+							<span className="font-medium">{item.client_name}</span>
 							<span className="text-gray-600">–</span>
-							<span className="text-gray-700">{item.reason}</span>
+							<span className="text-gray-700">{item.data.short_description}</span>
 						</div>
 					))}
 				</div>
-
-				{/* Summary figures */}
-				{/* <div className="text-sm text-gray-600 border-t pt-3">
-					<span className="font-medium text-zinc-950">Total actionable {totalActionable}</span>
-					<span className="mx-2">–</span>
-					<span className="text-zinc-950">Medium {mediumCount}</span>
-					<span className="mx-2">–</span>
-					<span className="text-zinc-950">Low {lowCount}</span>
-				</div> */}
 
 				{/* Channel badges */}
 				<div className="flex items-center gap-4 flex-wrap mt-2">
