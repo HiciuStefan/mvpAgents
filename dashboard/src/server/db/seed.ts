@@ -1,11 +1,12 @@
+/* eslint-disable */
 // @ts-nocheck
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import { opportunity_statuses, currencies } from './schema/sales-pipelines';
 import { taxRates, unitsOfMeasure } from './schema/service-catalog';
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 
-dotenv.config();
+// dotenv.config();
 
 // Direct database connection for seeding
 const connection = postgres(process.env.POSTGRES_URL!);
