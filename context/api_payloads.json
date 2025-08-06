@@ -1,0 +1,180 @@
+[
+  {
+    "source": "email",
+    "payload": {
+      "content": "Hi Mark,\n\nHope you're well! Alex has been performing excellently and has integrated well with our international team.\n\nDue to our rapid expansion success, we need another AI Developer to join our international team. The role is similar to Alex's position:\n\n- Mid-level AI Developer (2-4 years experience)\n- Computer vision and deep learning focus\n- Python, TensorFlow/PyTorch proficiency\n- Natural language processing skills (new requirement)\n- Budget: $75-85K annually\n- Start date: September 15th, 2024\n- Project: Multi-language sentiment analysis for international markets\n\nCan you help us find another strong candidate? We're looking to move quickly on this.\n\nBest regards,\nSarah Chen\nCTO, SolarisProAi",
+      "client_name": "SolarisProAi",
+      "type": "email",
+      "message_id": "6c6bfd3d-42bb-4a37-8860-dfee09ed093c",
+      "subject": "Urgent: Additional AI Developer Required",
+      "processed_at": "2025-08-03T09:54:35.395761+00:00",
+      "actionable": true,
+      "suggested_action": "Source candidates for a Mid-level AI Developer with NLP skills",
+      "short_description": "Urgent request for new developer",
+      "relevance": "Client has a new, urgent hiring need due to successful expansion.",
+      "urgency": 3
+    }
+  },
+  {
+    "source": "email",
+    "payload": {
+      "content": "Hi Mark,\n\nJust a quick update – our second AI developer, Priya Malhotra, is settling in very well. Her work on the sentiment analysis module has been excellent so far, especially her multilingual NLP enhancements.\n\nThanks again for finding such high-quality talent. We’ll likely need a third developer soon if this growth continues.\n\nBest,\nSarah",
+      "client_name": "SolarisProAi",
+      "type": "email",
+      "message_id": "28f73ef1-05ca-4169-b406-68f1edadf584",
+      "subject": "Update: Second Developer Performing Well",
+      "processed_at": "2025-08-03T09:54:38.160219+00:00",
+      "actionable": true,
+      "suggested_action": "Acknowledge the update and prepare for potential future hiring needs.",
+      "short_description": "Positive update on developer performance",
+      "relevance": "Positive feedback indicates client satisfaction and future hiring potential.",
+      "urgency": 2
+    }
+  },
+  {
+    "source": "twitter",
+    "payload": {
+      "url": "https://twitter.com/unknown/status/00000",
+      "text": "We're building something incredible! ✨ Just added another AI developer to our global vision team. Huge thanks to our recruitment partner for helping us scale with precision. #AITalent #GlobalAI #NLP",
+      "tweet_id": "2a3b4c5d-6e7f-8901-2345-67890abcdef1",
+      "actionable": true,
+      "client_name": "SolarisProAi",
+      "status": "new",
+      "reply": "",
+      "relevance": "Positive public mention strengthens the brand and relationship with the client.",
+      "suggested_action": "Publicly reply to the tweet to thank them and reinforce the partnership",
+      "short_description": "Public praise for partnership",
+      "urgency": 1
+    }
+  },
+  {
+    "source": "twitter",
+    "payload": {
+      "url": "https://twitter.com/unknown/status/00000",
+      "text": "@DigitalExcellence Your work in AI recruitment is impressive! We're a startup looking for top-tier ML engineers. DM us to discuss potential collaboration! #AIJobs #TechRecruitment",
+      "tweet_id": "3b4c5d6e-7f8a-9012-3456-7890abcdef23",
+      "actionable": true,
+      "client_name": "SolarisProAi",
+      "status": "new",
+      "reply": "",
+      "relevance": "Direct inquiry indicates strong potential for new business collaboration.",
+      "suggested_action": "Respond to the DM and schedule a discovery call to discuss needs.",
+      "short_description": "Inquiry from potential client for ML engineers",
+      "urgency": 3
+    }
+  },
+  {
+    "source": "website",
+    "payload": {
+      "client_name": "SolarisProAi",
+      "url": "https://www.innovateai.com/partnership-inquiry",
+      "title": "New Lead: AI Startup Seeking Partnership",
+      "content": "A new AI startup, 'InnovateAI', just filled out our partnership inquiry form on our website. They are looking for talent acquisition solutions for their rapidly expanding ML engineering team. This represents a high-value lead.",
+      "short_description": "New lead from AI startup InnovateAI",
+      "actionable": true,
+      "opportunity_type": "New business opportunity",
+      "suggested_action": "Follow up with InnovateAI immediately to schedule a meeting.",
+      "relevance": "High-value lead indicates potential for significant business growth.",
+      "read": false,
+      "scraped_at": "2025-08-03T09:54:43.677509+00:00",
+      "urgency": 3
+    }
+  },
+  {
+    "source": "email",
+    "payload": {
+      "content": "Hi Mark,\n\nAs we expand, we've updated our onboarding documentation and travel reimbursement policies. Please make sure future candidates are aware of the revised travel and reporting expectations.\n\nBest,\nSarah",
+      "client_name": "SolarisProAi",
+      "type": "email",
+      "message_id": "10f89079-b3fd-4060-a993-3d0a24bd9216",
+      "subject": "New Onboarding Requirements",
+      "processed_at": "2025-08-03T09:54:45.589877+00:00",
+      "actionable": false,
+      "suggested_action": " ",
+      "short_description": "Update on onboarding requirements",
+      "relevance": " ",
+      "urgency": 0
+    }
+  },
+  {
+    "source": "website",
+    "payload": {
+      "client_name": "SolarisProAi",
+      "url": "https://www.solarisproai.com/news/solarisproai-enhances-internal-ai-training-program",
+      "title": "SolarisProAi Enhances Internal AI Training Program",
+      "content": "As we scale, our internal AI team is benefiting from a structured mentorship and training program. While we continue hiring externally, internal growth is equally important. #TechGrowth #AITraining",
+      "short_description": "Internal training program enhancement news",
+      "actionable": false,
+      "opportunity_type": " ",
+      "suggested_action": " ",
+      "relevance": " ",
+      "read": false,
+      "scraped_at": "2025-08-03T09:54:46.716602+00:00",
+      "urgency": 0
+    }
+  },
+  {
+    "source": "twitter",
+    "payload": {
+      "url": "https://twitter.com/unknown/status/00000",
+      "text": "Taking a short breather as we onboard our latest team additions. Stability and alignment are just as important as rapid growth. #AIExpansion #GrowthPacing",
+      "tweet_id": "1a2b3c4d-5e6f-7890-abcd-ef1234567890",
+      "actionable": false,
+      "client_name": "SolarisProAi",
+      "status": "new",
+      "reply": "",
+      "relevance": " ",
+      "suggested_action": " ",
+      "short_description": "Temporary pause in team expansion",
+      "urgency": 0
+    }
+  },
+  {
+    "source": "email",
+    "payload": {
+      "content": "Hi Mark,\n\nWe have a problem. Alex Rodriguez has requested a significant raise and is threatening to resign if his salary isn’t adjusted by next week. This is causing disruption in our team planning.\n\nCan we discuss his expectations and explore whether a replacement would be feasible if needed?\n\nSarah",
+      "client_name": "SolarisProAi",
+      "type": "email",
+      "message_id": "a1fc323a-38a8-4e04-83c7-6e3bc4e69c14",
+      "subject": "Urgent: Developer Compensation Issue",
+      "processed_at": "2025-08-03T09:54:49.745520+00:00",
+      "actionable": true,
+      "suggested_action": "Discuss Alex's salary expectations and prepare for potential replacement.",
+      "short_description": "Urgent developer compensation issue",
+      "relevance": "Immediate action needed to retain talent and avoid disruption.",
+      "urgency": 3
+    }
+  },
+  {
+    "source": "email",
+    "payload": {
+      "content": "Hi Mark,\n\nThe last candidate you submitted didn’t meet our expectations in terms of communication skills and real-time problem solving. We'd appreciate a tighter screening process moving forward.\n\nBest,\nSarah",
+      "client_name": "SolarisProAi",
+      "type": "email",
+      "message_id": "a4aeaa89-9d5a-4291-8b23-e8592a116d38",
+      "subject": "Feedback on Recent Candidate",
+      "processed_at": "2025-08-03T09:54:52.346466+00:00",
+      "actionable": true,
+      "suggested_action": "Review and improve candidate screening process.",
+      "short_description": "Feedback on candidate performance",
+      "relevance": "Client dissatisfaction needs addressing to maintain trust and future business.",
+      "urgency": 2
+    }
+  },
+  {
+    "source": "twitter",
+    "payload": {
+      "url": "https://twitter.com/unknown/status/00000",
+      "text": "Rapid expansion comes with its challenges. We're actively re-evaluating our team structure and partnerships to ensure alignment with long-term goals. #GrowingPains #TechOps",
+      "tweet_id": "2a3b4c5d-6e7f-8901-2345-67890abcdef2",
+      "actionable": true,
+      "client_name": "SolarisProAi",
+      "status": "new",
+      "reply": "",
+      "relevance": "Addressing challenges proactively can strengthen the partnership.",
+      "suggested_action": "Reach out to discuss how we can support their transition.",
+      "short_description": "Challenges due to rapid expansion",
+      "urgency": 2
+    }
+  }
+]

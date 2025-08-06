@@ -32,7 +32,7 @@ If the item is actionable, you must extract structured insights.
 The object represents the actionable item and MUST have the following structure:
 - "original_item": object (The full original item from the input)
 - "analysis": object (Your analysis of the item)
-  - "short_description": string (Max 50 characters, ending with the priority, e.g., "New business lead from Solaris - high")
+  - "short_description": string (Max 50 characters, e.g., "New business lead from Solaris")
   - "actionable": boolean (This will always be `true`)
   - "opportunity_type": string (e.g., "New business opportunity", "Reputational risk", "Client request")
   - "suggested_action": string (A concrete next step, e.g., "Schedule a discovery call with Sarah Chen")
@@ -51,7 +51,7 @@ Example of a valid response for an actionable item:
 {
   "original_item": { ... original email object ... },
   "analysis": {
-    "short_description": "Urgent request for new developer - high",
+    "short_description": "Urgent request for new developer",
     "actionable": true,
     "opportunity_type": "New business opportunity",
     "suggested_action": "Source candidates for a Mid-level AI Developer with NLP skills",

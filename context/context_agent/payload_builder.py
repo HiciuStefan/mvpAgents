@@ -14,7 +14,17 @@ def build_dashboard_payload(item: dict, analysis: dict) -> tuple[dict, str]:
     llm_analysis = analysis
     if not isinstance(llm_analysis, dict):
         llm_analysis = {}
-        
+
+    # Maparea nivelului de prioritate la o valoare numerica de urgenta
+    priority_mapping = {
+        "neutral": 0,
+        "low": 1,
+        "medium": 2,
+        "high": 3
+    }
+    priority_level = safe_get(llm_analysis, "priority_level", "neutral")
+    urgency = priority_mapping.get(priority_level, 0)
+
     payload = {}
 
     # Logica pentru email (functioneaza)
@@ -29,7 +39,8 @@ def build_dashboard_payload(item: dict, analysis: dict) -> tuple[dict, str]:
             "actionable": llm_analysis.get("actionable", False),
             "suggested_action": llm_analysis.get("suggested_action", "No specific action suggested"),
             "short_description": llm_analysis.get("short_description", "No description provided"),
-            "relevance": llm_analysis.get("relevance", "unknown")
+            "relevance": llm_analysis.get("relevance", "unknown"),
+            "urgency": urgency
         }
     
     # Logica reconstruita pentru twitter, urmand modelul celorlalte
@@ -44,7 +55,8 @@ def build_dashboard_payload(item: dict, analysis: dict) -> tuple[dict, str]:
             "reply": "",
             "relevance": safe_get(llm_analysis, "relevance", "unknown"),
             "suggested_action": safe_get(llm_analysis, "suggested_action", "No specific action suggested"),
-            "short_description": safe_get(llm_analysis, "short_description", "No description provided")
+            "short_description": safe_get(llm_analysis, "short_description", "No description provided"),
+            "urgency": urgency
         }
         
     # Logica pentru website (functioneaza)
@@ -60,7 +72,8 @@ def build_dashboard_payload(item: dict, analysis: dict) -> tuple[dict, str]:
             "suggested_action": llm_analysis.get("suggested_action", "No specific action suggested"),
             "relevance": llm_analysis.get("relevance", "unknown"),
             "read": False,
-            "scraped_at": datetime.now(timezone.utc).isoformat()
+            "scraped_at": datetime.now(timezone.utc).isoformat(),
+            "urgency": urgency
         }
 
     # Logica de validare (functioneaza pentru email si website)
@@ -76,7 +89,8 @@ def test_twitter_payload():
         # 'reply' is not used in payload construction
     }
     analysis = {
-        # intentionally omit 'analysis' to test defaults
+        "priority_level": "medium",
+        "short_description": "Team expansion pause - medium"
     }
     payload, source_type = build_dashboard_payload(item, analysis)
     print("Payload:", json.dumps(payload, indent=2, ensure_ascii=False))

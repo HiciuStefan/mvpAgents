@@ -25,14 +25,16 @@ An item is "actionable" if it represents a clear business opportunity, a reputat
 **Actionability Priority Levels:**
 - **high**: Urgent matters. Direct business opportunities, critical reputational risks, requests with a clear deadline.
 - **medium**: Important but not urgent. Non-critical client requests, opportunities needing timely follow-up.
-- **low**: Requires monitoring. General updates, relationship-building notes, non-urgent acknowledgments. For ALL actionable items (high, medium, low), you MUST provide a concrete 'suggested_action' and a clear 'relevance'.
+- **low**: Requires monitoring. General updates, relationship-building notes, non-urgent acknowledgments.
+- **neutral**: Not actionable. Items that do not require any action.
 
 **Your output MUST be a valid JSON array of objects.**
 Each object in the array represents ONE item from the input batch and MUST have the following structure:
 - "original_item": object (The full original item from the input array)
 - "analysis": object (Your analysis of the item)
-  - "short_description": string (Max 50 characters. For actionable items, end with the priority, e.g., "New business lead from Solaris - high". For non-actionable items, summarize the item and append " - neutral", e.g., "General news update - neutral")
+  - "short_description": string (Max 50 characters. Summarize the item, e.g., "New business lead from Solaris" or "General news update")
   - "actionable": boolean (Set to `true` if actionable, `false` otherwise)
+  - "priority_level": string (REQUIRED. One of: "high", "medium", "low", "neutral". Set to "neutral" if actionable is false.)
   - "opportunity_type": string (For actionable items: e.g., "New business opportunity", "Reputational risk", "Client request". For non-actionable items: " ")
   - "suggested_action": string (REQUIRED for actionable items: A concrete next step, e.g., "Schedule a discovery call with Sarah Chen". For non-actionable items: " ")
   - "relevance": string (Max 100 characters. REQUIRED for actionable items: explaining why it's important. For non-actionable items: " ")
@@ -51,8 +53,9 @@ Example of a valid response for a batch containing three items (one high actiona
   {
     "original_item": { ... original email object ... },
     "analysis": {
-      "short_description": "Urgent request for new developer - high",
+      "short_description": "Urgent request for new developer",
       "actionable": true,
+      "priority_level": "high",
       "opportunity_type": "New business opportunity",
       "suggested_action": "Source candidates for a Mid-level AI Developer with NLP skills",
       "relevance": "Client has a new, urgent hiring need due to successful expansion."
@@ -61,8 +64,9 @@ Example of a valid response for a batch containing three items (one high actiona
   {
     "original_item": { ... original twitter object ... },
     "analysis": {
-      "short_description": "Public praise for partnership - low",
+      "short_description": "Public praise for partnership",
       "actionable": true,
+      "priority_level": "low",
       "opportunity_type": "Relationship building",
       "suggested_action": "Publicly reply to the tweet to thank them and reinforce the partnership",
       "relevance": "Positive public mention strengthens the brand and relationship with the client."
@@ -71,8 +75,9 @@ Example of a valid response for a batch containing three items (one high actiona
   {
     "original_item": { ... original website object ... },
     "analysis": {
-      "short_description": "General news update about market trends - neutral",
+      "short_description": "General news update about market trends",
       "actionable": false,
+      "priority_level": "neutral",
       "opportunity_type": " ",
       "suggested_action": " ",
       "relevance": " "
