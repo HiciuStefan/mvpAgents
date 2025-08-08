@@ -2,6 +2,7 @@ import "~/styles/globals.css";
 
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
+import { Suspense } from "react";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { SidebarProvider } from "~/components/ui/sidebar";
@@ -26,7 +27,9 @@ export default function RootLayout({
 		<html lang="en" className={`${geist.variable}`}>
 			<body>
 				<SidebarProvider>
-					<AppSidebar />
+					<Suspense fallback={null}>
+						<AppSidebar />
+					</Suspense>
 					<TRPCReactProvider>
 						{children}
 					</TRPCReactProvider>

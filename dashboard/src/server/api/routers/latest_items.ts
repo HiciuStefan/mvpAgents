@@ -1,9 +1,12 @@
 import z from 'zod';
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
-import { fetch_latest_items, fetch_latest_items_by_type } from '~/server/db/fetch_items';
+import { fetch_latest_items, fetch_latest_items_by_type, fetch_item_by_id } from '~/server/db/fetch_items';
 import { processedItemTypeEnum } from '~/server/db/schema';
 import { zodDateRangeEnum } from '~/components/filters/date_ranges';
 import { zodChannelEnum } from '~/components/filters/channel_ranges';
+import { eq } from 'drizzle-orm';
+import { processed_items } from '~/server/db/schema';
+import { revalidatePath } from 'next/cache';
 
 const prioritySchema = z.union([
 	z.literal("all"),
@@ -51,5 +54,27 @@ export const processed_items_router = createTRPCRouter({
 			});
 
 			return items;
+		}),
+
+	getById: publicProcedure
+		.input(z.object({ id: z.string().uuid() }))
+		.query(async ({ input }) => {
+			const item = await fetch_item_by_id(input.id);
+			return item;
+		}),
+
+	updateUrgency: publicProcedure
+		.input(z.object({ id: z.string().uuid(), urgency: z.number().int().min(0).max(3) }))
+		.mutation(async ({ ctx, input }) => {
+			await ctx.db.update(processed_items)
+				.set({ urgency: input.urgency })
+				.where(eq(processed_items.id, input.id));
+
+			// Revalidate list pages
+			revalidatePath('/business-intelligence');
+			revalidatePath('/latest-items', 'layout');
+			revalidatePath(`/items/${input.id}`);
+
+			return { success: true };
 		}),
 });

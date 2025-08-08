@@ -7,6 +7,9 @@ import { DefaultChannelValue, type ChannelValueType } from "~/components/filters
 import BusinessIntelligenceClient from "./business-intelligence-client";
 import type { PriorityType } from "~/hooks/use-filters";
 
+
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
 	searchParams: Promise<{
 	  channel?: ChannelValueType

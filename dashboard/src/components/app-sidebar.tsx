@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 import {
 	Sidebar,
 	SidebarContent,
@@ -41,11 +41,22 @@ const items = [
 export function AppSidebar()
 {
 	const pathname = usePathname()
+	const searchParams = useSearchParams()
+	const ref = searchParams.get('ref')
 
 	const isActive = (itemUrl: string) => {
+		// If we have a ref, prefer it
+		if ('/' + ref === ROUTES.BUSINESS_INTELLIGENCE && itemUrl === ROUTES.BUSINESS_INTELLIGENCE) {
+			return true
+		}
+		if ('/' + ref === ROUTES.LATEST_ITEMS && itemUrl === ROUTES.LATEST_ITEMS) {
+			return true
+		}
+
 		if (itemUrl === ROUTES.HOME) {
 			return pathname === itemUrl
 		}
+
 		return pathname.startsWith(itemUrl)
 	}
 

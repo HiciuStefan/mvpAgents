@@ -1,7 +1,11 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { ChannelBadge } from "~/components/ChannelBadge";
 import type { LatestItem } from "~/server/db/fetch_items";
 import { cn } from "~/lib/utils";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const urgencyColorMap: Record<number, string> = {
 	0: "border-l-gray-300",
@@ -11,18 +15,28 @@ const urgencyColorMap: Record<number, string> = {
 };
 
 
-export function ItemCard({ item } : { item: LatestItem })
+export function ItemCard({ item, origin }: { item: LatestItem; origin?: string })
 {
-	const { type, data, client_name, actionable, urgency } = item;
+	const pathname = usePathname();
+	const derivedOrigin = pathname ? pathname.replace(/^\//, "") : undefined;
+
+	const { id, type, data, client_name, actionable, urgency } = item;
 	const { short_description, relevance } = data;
 
 	const suggested_action = 'suggested_action' in data ? data.suggested_action : null;
 
 
+
+	const originParam = origin ?? derivedOrigin;
+	const href = originParam ? `/items/${id}?ref=${encodeURIComponent(originParam)}` : `/items/${id}`;
+
 	return (
-		<Card
+		<Link href={href} className="block">
+			<Card
 			className={cn(
 				"flex flex-row w-full border-l-[5px]",
+				"hover:bg-zinc-50",
+				"cursor-pointer",
 				urgencyColorMap[urgency] ?? urgencyColorMap[0]
 			)}
 		>
@@ -47,11 +61,12 @@ export function ItemCard({ item } : { item: LatestItem })
 				</div>
 			</CardContent>
 		</Card>
+		</Link>
 	);
 }
 
 
-function SparkleSVG({ size = 24 })
+export function SparkleSVG({ size = 24 })
 {
 	const sizePx = `${size}px`;
 
