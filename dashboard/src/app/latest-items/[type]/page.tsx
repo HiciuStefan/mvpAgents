@@ -3,6 +3,10 @@ import { ItemCard } from "~/components/cards/ItemCard";
 import { api } from "~/trpc/server";
 import { processedItemTypeEnum, type ProcessedItemType } from "~/server/db/schema";
 
+
+
+export const dynamic = 'force-dynamic';
+
 export default async function LatestItemsByType({
 	params,
 }: {

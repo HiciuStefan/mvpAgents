@@ -193,3 +193,34 @@ export async function fetch_latest_items_by_type({
 
 	return [];
 }
+
+export async function fetch_item_by_id(id: string): Promise<LatestItem | null> {
+	const items = await db
+		.select()
+		.from(processed_items)
+		.where(eq(processed_items.id, id))
+		.limit(1);
+
+	const [found] = items;
+	if (!found) return null;
+
+	const item = found;
+
+	if (item.type === 'website') {
+		const data = await db.select().from(website).where(eq(website.processed_item_id, id)).limit(1);
+		if (data.length === 0) return null;
+		return { ...item, type: 'website', data: data[0] } as LatestItem;
+	}
+	if (item.type === 'email') {
+		const data = await db.select().from(email).where(eq(email.processed_item_id, id)).limit(1);
+		if (data.length === 0) return null;
+		return { ...item, type: 'email', data: data[0] } as LatestItem;
+	}
+	if (item.type === 'twitter') {
+		const data = await db.select().from(twitter).where(eq(twitter.processed_item_id, id)).limit(1);
+		if (data.length === 0) return null;
+		return { ...item, type: 'twitter', data: data[0] } as LatestItem;
+	}
+
+	return null;
+}

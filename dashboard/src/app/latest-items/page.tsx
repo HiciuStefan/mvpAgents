@@ -3,6 +3,9 @@ import { ItemCard } from "~/components/cards/ItemCard";
 import { api } from "~/trpc/server";
 
 
+
+export const dynamic = 'force-dynamic';
+
 export default async function ClientIntelligence()
 {
 	return (

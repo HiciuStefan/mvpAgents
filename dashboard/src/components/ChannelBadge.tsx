@@ -87,7 +87,7 @@ export function ChannelBadgeNoLabel({ type, className }: ChannelBadgeProps)
 }
 
 
-function XSVG({ size = 24 })
+export function XSVG({ size = 24 })
 {
 	const original_size = {
 		width: 1200,
