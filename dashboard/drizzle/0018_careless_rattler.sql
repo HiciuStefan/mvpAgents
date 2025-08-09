@@ -1,6 +1,0 @@
-ALTER TABLE "deai_email" ALTER COLUMN "processed_item_id" SET NOT NULL;--> statement-breakpoint
-ALTER TABLE "deai_twitter" ALTER COLUMN "processed_item_id" SET NOT NULL;--> statement-breakpoint
-ALTER TABLE "deai_website" ALTER COLUMN "processed_item_id" SET NOT NULL;--> statement-breakpoint
-ALTER TABLE "deai_email" ADD CONSTRAINT "deai_email_processed_item_id_deai_processed_items_id_fk" FOREIGN KEY ("processed_item_id") REFERENCES "public"."deai_processed_items"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
-ALTER TABLE "deai_twitter" ADD CONSTRAINT "deai_twitter_processed_item_id_deai_processed_items_id_fk" FOREIGN KEY ("processed_item_id") REFERENCES "public"."deai_processed_items"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
-ALTER TABLE "deai_website" ADD CONSTRAINT "deai_website_processed_item_id_deai_processed_items_id_fk" FOREIGN KEY ("processed_item_id") REFERENCES "public"."deai_processed_items"("id") ON DELETE cascade ON UPDATE cascade;

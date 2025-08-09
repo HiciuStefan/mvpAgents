@@ -1,1 +1,0 @@
-ALTER TABLE "deai_twitter" RENAME COLUMN "reply" TO "suggested_reply";

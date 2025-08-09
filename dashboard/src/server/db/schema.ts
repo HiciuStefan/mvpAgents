@@ -36,6 +36,7 @@ export function create_agent_table<
 		short_description: d.text().notNull(),
 		relevance: d.text(),
 		suggested_action: d.text(),
+		suggested_reply: d.text().notNull().default(''),
 		...extraColumns(d),
 	}));
 }
@@ -51,6 +52,7 @@ export const baseAgentInputSchema = z.object({
 	relevance: z.string(),
 	actionable: z.boolean(),
 	suggested_action: z.string(),
+	suggested_reply: z.string(),
 	urgency: z.number().int().min(0).max(3).default(0),
 });
 
@@ -75,8 +77,6 @@ export const processed_tweets_schema = baseAgentInputSchema.extend({
 	tweet_id: z.string().min(1, 'Tweet ID is required'),
 	url: z.string().url('Must be a valid URL'),
 	text: z.string().min(1, 'Text is required'),
-	status: z.string().min(1, 'Status is required'),
-	suggested_reply: z.string(),
 });
 
 export const twitter = create_agent_table('twitter',
@@ -84,8 +84,6 @@ export const twitter = create_agent_table('twitter',
 		tweet_id: d.text().notNull(),
 		url: d.text().notNull(),
 		text: d.text().notNull(),
-		status: d.text().notNull(), // 'pending', 'posted', or 'rejected'
-		suggested_reply: d.text().notNull().default(''),
 	}),
 	// (t) => [index('name_idx').on(t.name)]
 );

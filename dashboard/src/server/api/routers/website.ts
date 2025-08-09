@@ -49,7 +49,8 @@ export const website_router = createTRPCRouter({
 					scraped_at,
 					suggested_action,
 					short_description,
-					relevance
+					relevance,
+					suggested_reply
 				} = input;
 
 				const [item] = await tx.insert(website).values({
@@ -62,7 +63,8 @@ export const website_router = createTRPCRouter({
 					scraped_at,
 					suggested_action,
 					short_description,
-					relevance
+					relevance,
+					suggested_reply
 				}).returning();
 
 				return {
@@ -93,7 +95,8 @@ export const website_router = createTRPCRouter({
 					scraped_at: website.scraped_at,
 					suggested_action: website.suggested_action,
 					short_description: website.short_description,
-					relevance: website.relevance
+					relevance: website.relevance,
+					suggested_reply: website.suggested_reply
 				})
 				.from(processed_items)
 				.innerJoin(website, eq(website.processed_item_id, processed_items.id))
