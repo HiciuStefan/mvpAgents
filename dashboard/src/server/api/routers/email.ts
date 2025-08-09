@@ -67,7 +67,6 @@ export const email_router = createTRPCRouter({
 					};
 				});
 
-				console.log('✅ Transaction committed:', result);
 				return result;
 
 			} catch (err) {
