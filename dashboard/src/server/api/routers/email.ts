@@ -8,63 +8,74 @@ export const email_router = createTRPCRouter({
 	create: publicProcedure
 		.input(processed_emails_schema)
 		.mutation(async ({ ctx, input }) => {
-			return await ctx.db.transaction(async (tx) => {
-				const existing = await tx
-					.select()
-					.from(email)
-					.where(
-						eq(email.message_id, input.message_id)
-					)
-					.limit(1);
+			try {
+				const result = await ctx.db.transaction(async (tx) => {
+					const existing = await tx
+						.select()
+						.from(email)
+						.where(
+							eq(email.message_id, input.message_id)
+						)
+						.limit(1);
 
-				if (existing.length > 0) {
-					throw new TRPCError({
-						code: 'CONFLICT',
-						message: 'Message ID already processed',
-					});
-				}
+					if (existing.length > 0) {
+						throw new TRPCError({
+							code: 'CONFLICT',
+							message: 'Message ID already processed',
+						});
+					}
 
-				const [processedItem] = await tx.insert(processed_items).values({
-					type: 'email',
-					client_name: input.client_name,
-					actionable: input.actionable,
-					urgency: input.urgency
-				}).returning();
+					const [processedItem] = await tx.insert(processed_items).values({
+						type: 'email',
+						client_name: input.client_name,
+						actionable: input.actionable,
+						urgency: input.urgency
+					}).returning();
 
-				if (!processedItem) {
-					throw new Error('Failed to insert processed item');
-				}
+					if (!processedItem) {
+						throw new Error('Failed to insert processed item');
+					}
 
-				const {
-					message_id,
-					subject,
-					content,
-					type,
-					processed_at,
-					suggested_action,
-					short_description,
-					relevance,
-					suggested_reply
-				} = input;
+					const {
+						message_id,
+						subject,
+						content,
+						type,
+						processed_at,
+						suggested_action,
+						short_description,
+						relevance,
+						suggested_reply
+					} = input;
 
-				const [item] = await tx.insert(email).values({
-					processed_item_id: processedItem.id,
-					message_id,
-					subject,
-					content,
-					type,
-					processed_at,
-					suggested_action,
-					short_description,
-					relevance,
-					suggested_reply
-				}).returning();
+					const [item] = await tx.insert(email).values({
+						processed_item_id: processedItem.id,
+						message_id,
+						subject,
+						content,
+						type,
+						processed_at,
+						suggested_action,
+						short_description,
+						relevance,
+						suggested_reply
+					}).returning();
 
-				return {
-					processedItem,
-					item,
-				};
-			});
+					return {
+						processedItem,
+						item,
+					};
+				});
+
+				console.log('✅ Transaction committed:', result);
+				return result;
+
+			} catch (err) {
+				// @ts-expect-error - This is a Drizzle error
+				console.error('❌ Transaction rolled back:', err.message);
+
+				return null; // or throw again if you want the client to see error
+			}
 		}),
 
 	getLatest: publicProcedure
