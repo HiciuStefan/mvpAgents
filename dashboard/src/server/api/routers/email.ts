@@ -43,7 +43,8 @@ export const email_router = createTRPCRouter({
 					processed_at,
 					suggested_action,
 					short_description,
-					relevance
+					relevance,
+					suggested_reply
 				} = input;
 
 				const [item] = await tx.insert(email).values({
@@ -55,7 +56,8 @@ export const email_router = createTRPCRouter({
 					processed_at,
 					suggested_action,
 					short_description,
-					relevance
+					relevance,
+					suggested_reply
 				}).returning();
 
 				return {
@@ -85,7 +87,8 @@ export const email_router = createTRPCRouter({
 					processed_at: email.processed_at,
 					suggested_action: email.suggested_action,
 					short_description: email.short_description,
-					relevance: email.relevance
+					relevance: email.relevance,
+					suggested_reply: email.suggested_reply
 				})
 				.from(processed_items)
 				.innerJoin(email, eq(email.processed_item_id, processed_items.id))
