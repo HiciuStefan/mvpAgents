@@ -40,7 +40,7 @@ export const twitter_router = createTRPCRouter({
 					url,
 					text,
 					status,
-					reply,
+					suggested_reply,
 					suggested_action,
 					short_description,
 					relevance
@@ -52,7 +52,7 @@ export const twitter_router = createTRPCRouter({
 					url,
 					text,
 					status,
-					reply,
+					suggested_reply,
 					suggested_action,
 					short_description,
 					relevance
@@ -82,7 +82,7 @@ export const twitter_router = createTRPCRouter({
 					url: twitter.url,
 					text: twitter.text,
 					status: twitter.status,
-					reply: twitter.reply,
+					suggested_reply: twitter.suggested_reply,
 					suggested_action: twitter.suggested_action,
 					short_description: twitter.short_description,
 					relevance: twitter.relevance

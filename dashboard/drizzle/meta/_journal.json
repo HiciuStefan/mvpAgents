@@ -169,6 +169,13 @@
       "when": 1754126349857,
       "tag": "0026_steady_chat",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1754740805381,
+      "tag": "0024_lying_true_believers",
+      "breakpoints": true
     }
   ]
 }
