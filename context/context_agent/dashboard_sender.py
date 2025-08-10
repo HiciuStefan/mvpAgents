@@ -79,6 +79,9 @@ def send_context_to_dashboard(data: dict, source_type: str):
     try:
         print(f"\n?? Payload trimis la dashboard ({source_type}):\n{json.dumps(data, indent=2)}\n")
         response = requests.post(api_endpoint, json=data, headers=headers)
+        print(f"📡 Response Status: {response.status_code}")
+        print(f"📡 Response Headers: {dict(response.headers)}")
+        print(f"📡 Response Body: {response.text}")
         response.raise_for_status()
         print(f"?? Datele trimise cu succes la dashboard ({source_type}).")
     except requests.exceptions.RequestException as e:

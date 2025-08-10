@@ -1,6 +1,7 @@
 [
     {
       "type": "email",
+      "message_id": "negative_email_1",
       "date": "2024-09-15",
       "from": "sarah.chen@solarisproai.com",
       "to": "partnerships@digitalexcellence.com",
@@ -13,6 +14,7 @@
     },
     {
       "type": "email",
+      "message_id": "negative_email_2",
       "date": "2024-09-18",
       "from": "sarah.chen@solarisproai.com",
       "to": "partnerships@digitalexcellence.com",

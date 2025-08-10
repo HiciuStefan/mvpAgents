@@ -5,6 +5,7 @@
       "from": "sarah.chen@solarisproai.com",
       "to": "partnerships@digitalexcellence.com",
       "subject": "New Onboarding Requirements",
+      "message_id": "neutral_email_1",
       "body": "Hi Mark,\n\nAs we expand, we've updated our onboarding documentation and travel reimbursement policies. Please make sure future candidates are aware of the revised travel and reporting expectations.\n\nBest,\nSarah",
       "recommendation": {
         "action": "Update candidate briefing process",
@@ -12,7 +13,8 @@
       }
     },
     {
-      "type": "website",
+      "type": "website", 
+      "id": "neutral_website_1",
       "url": "https://www.solarisproai.com/news/solarisproai-enhances-internal-ai-training-program",
       "date": "2024-09-05",
       "title": "SolarisProAi Enhances Internal AI Training Program",

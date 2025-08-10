@@ -1,6 +1,6 @@
 # Analiza Comparativă a Costurilor: Procesare Batch vs. Individuală
 
-Acest document analizează diferențele de cost între cele două abordări de procesare a celor 11 iteme din scenarii, folosind modelul GPT-4o prin Azure OpenAI.
+Acest document analizează diferențele de cost între cele două abordări de procesare a celor 11 iteme din scenarii, folosind modele lingvistice de la OpenAI și alți furnizori.
 
 ## 1. Modelul de Preț
 
@@ -39,12 +39,12 @@ Pentru a calcula costurile, vom estima numărul de tokeni pentru fiecare compone
 - **Context RAG (estimare):** Să presupunem că RAG returnează un context de ~1000 caractere per căutare ≈ **250 tokeni**.
 - **Output (estimare):** Să presupunem că LLM returnează în medie 200 de tokeni per item acționabil. Estimăm 8 iteme acționabile.
 
-### Calcul Cost - Abordarea Batch
+### Calcul Tokeni - Abordarea Batch
 
 - **Input Tokens:** 750 + 375 + 250 + 1125 = **2500 tokeni**
 - **Output Tokens:** 8 * 200 = **1600 tokeni**
 
-### Calcul Cost - Abordarea Individuală
+### Calcul Tokeni - Abordarea Individuală
 
 - **Input Tokens (per apel):** 625 + 375 + 250 + (1125 / 11) ≈ **1352 tokeni**
 - **Total Input (11 apeluri):** 11 * 1352 = **14,872 tokeni**
@@ -54,17 +54,19 @@ Pentru a calcula costurile, vom estima numărul de tokeni pentru fiecare compone
 
 | Model                     | Preț Input ($/1M) | Preț Output ($/1M) | Cost Batch (Est.) | Cost Individual (Est.) |
 | ------------------------- | ----------------- | ------------------ | ----------------- | ---------------------- |
-| **OpenAI GPT-4o**         | **$5.00**         | **$15.00**         | **$0.0365**       | **$0.0984**            |
-| **Anthropic Claude 3 Opus** | $15.00            | $75.00             | $0.1575           | $0.3431                |
-| **Google Gemini 1.5 Pro** | $1.25             | $5.00              | $0.0111           | $0.0266                |
-| **OpenAI GPT-4 Turbo**    | $10.00            | $30.00             | $0.0730           | $0.1967                |
+| **OpenAI GPT-4o mini**    | **$0.15**         | **$0.60**          | **$0.0013**       | **$0.0032**            |
 | **OpenAI GPT-3.5 Turbo**  | $0.50             | $1.50              | $0.0037           | $0.0098                |
+| **Google Gemini 1.5 Pro** | $1.25             | $5.00              | $0.0111           | $0.0266                |
+| **OpenAI GPT-4o**         | $5.00             | $15.00             | $0.0365           | $0.0984                |
+| **OpenAI GPT-4 Turbo**    | $10.00            | $30.00             | $0.0730           | $0.1967                |
+| **Anthropic Claude 3 Opus** | $15.00            | $75.00             | $0.1575           | $0.3431                |
+
 
 **Concluzie Finală:**
 
-Abordarea **individuală** este de aproximativ **2.7 ori mai scumpă** decât cea **batch** pentru acest scenariu specific, folosind GPT-4o. Această diferență de cost se menține, și chiar se accentuează, la majoritatea modelelor de top.
+Abordarea **individuală** este de aproximativ **2.5 ori mai scumpă** decât cea **batch** pentru acest scenariu specific, folosind noul GPT-4o mini. 
 
-**Google Gemini 1.5 Pro** se dovedește a fi cea mai economică opțiune dintre modelele de înaltă performanță, în timp ce **Anthropic Claude 3 Opus** este cea mai costisitoare pentru acest tip de sarcină.
+**OpenAI GPT-4o mini** se dovedește a fi, de departe, cea mai economică opțiune, fiind semnificativ mai ieftin chiar și decât GPT-3.5 Turbo.
 
 Indiferent de modelul ales, **abordarea batch rămâne fundamental mai eficientă din punct de vedere economic**.
 
@@ -79,12 +81,12 @@ Pentru a înțelege impactul real într-un scenariu de producție, să extrapol�
 - **Total Scenarii (11,000 iteme):** ~4,500,000 caractere ≈ **1,125,000 tokeni**
 - **Output (estimare):** Presupunând aceeași rată de iteme acționabile (8/11), vom avea ~8,000 de răspunsuri. 8,000 * 200 tokeni/output = **1,600,000 tokeni**
 
-### Calcul Cost - Abordarea Batch (11,000 iteme)
+### Calcul Tokeni - Abordarea Batch (11,000 iteme)
 
 - **Input Tokens:** 750 (Sistem) + 375 (Context) + 250 (RAG) + 1,125,000 (Iteme) = **1,126,375 tokeni**
 - **Output Tokens:** **1,600,000 tokeni**
 
-### Calcul Cost - Abordarea Individuală (11,000 iteme)
+### Calcul Tokeni - Abordarea Individuală (11,000 iteme)
 
 - **Total Input (11,000 apeluri):** 11,000 * 1352 (input mediu per apel) = **14,872,000 tokeni**
 - **Output Tokens (total):** **1,600,000 tokeni**
@@ -93,14 +95,15 @@ Pentru a înțelege impactul real într-un scenariu de producție, să extrapol�
 
 | Model                     | Cost Batch (Est.) | Cost Individual (Est.) | Diferență de Cost |
 | ------------------------- | ----------------- | ---------------------- | ----------------- |
-| **OpenAI GPT-4o**         | **$29.63**        | **$98.36**             | **$68.73**        |
-| **Anthropic Claude 3 Opus** | $136.90           | $343.08                | **$206.18**       |
-| **Google Gemini 1.5 Pro** | $9.41             | $26.59                 | **$17.18**        |
-| **OpenAI GPT-4 Turbo**    | $61.26            | $196.72                | **$135.46**       |
-| **OpenAI GPT-3.5 Turbo**  | $3.00             | $9.84                  | **$6.84**         |
+| **OpenAI GPT-4o mini**    | **$1.13**         | **$3.19**              | **$2.06**         |
+| **OpenAI GPT-3.5 Turbo**  | $3.00             | $9.84                  | $6.84             |
+| **Google Gemini 1.5 Pro** | $9.41             | $26.59                 | $17.18            |
+| **OpenAI GPT-4o**         | $29.63            | $98.36                 | $68.73            |
+| **OpenAI GPT-4 Turbo**    | $61.26            | $196.72                | $135.46           |
+| **Anthropic Claude 3 Opus** | $136.90           | $343.08                | $206.18           |
 
 **Concluzie Extinsă:**
 
-La o scară mai mare, diferența de cost devine exponențial mai pronunțată. Pentru GPT-4o, economisim aproape **$70** la fiecare 11,000 de iteme procesate prin abordarea batch. Pentru modele mai scumpe precum Claude 3 Opus, economia este de peste **$200**.
+La o scară mai mare, diferența de cost devine exponențial mai pronunțată. Pentru **GPT-4o mini**, economisim peste **$2** la fiecare 11,000 de iteme procesate prin abordarea batch. Comparația cu modelele mai scumpe este și mai dramatică.
 
-Această analiză demonstrează clar că pentru orice aplicație serioasă, care procesează volume mari de date, **optimizarea apelurilor prin procesare batch nu este doar o recomandare, ci o necesitate economică**.
+Această analiză demonstrează clar că pentru orice aplicație serioasă, care procesează volume mari de date, **optimizarea apelurilor prin procesare batch nu este doar o recomandare, ci o necesitate economică**. Utilizarea **GPT-4o mini** în acest mod oferă un echilibru excepțional între performanță și cost.

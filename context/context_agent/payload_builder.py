@@ -33,11 +33,12 @@ def build_dashboard_payload(item: dict, analysis: dict) -> tuple[dict, str]:
             "content": item.get("body", "No content provided"),
             "client_name": "SolarisProAi",
             "type": source_type,
-            "message_id": str(uuid.uuid4()),
+            "message_id": safe_get(item, "message_id", str(uuid.uuid4())),
             "subject": item.get("subject", "No Subject"),
             "processed_at": datetime.now(timezone.utc).isoformat(),
             "actionable": llm_analysis.get("actionable", False),
             "suggested_action": llm_analysis.get("suggested_action", "No specific action suggested"),
+            "suggested_reply": llm_analysis.get("suggested_reply", ""),
             "short_description": llm_analysis.get("short_description", "No description provided"),
             "relevance": llm_analysis.get("relevance", "unknown"),
             "urgency": urgency
@@ -51,10 +52,9 @@ def build_dashboard_payload(item: dict, analysis: dict) -> tuple[dict, str]:
             "tweet_id": safe_get(item, "tweet_id", "000000000"),
             "actionable": llm_analysis.get("actionable", False),
             "client_name": "SolarisProAi",
-            "status": "new",
-            "reply": "",
             "relevance": safe_get(llm_analysis, "relevance", "unknown"),
             "suggested_action": safe_get(llm_analysis, "suggested_action", "No specific action suggested"),
+            "suggested_reply": llm_analysis.get("suggested_reply", ""),
             "short_description": safe_get(llm_analysis, "short_description", "No description provided"),
             "urgency": urgency
         }
@@ -70,6 +70,7 @@ def build_dashboard_payload(item: dict, analysis: dict) -> tuple[dict, str]:
             "actionable": llm_analysis.get("actionable", False),
             "opportunity_type": llm_analysis.get("opportunity_type", "unknown"),
             "suggested_action": llm_analysis.get("suggested_action", "No specific action suggested"),
+            "suggested_reply": llm_analysis.get("suggested_reply", ""),
             "relevance": llm_analysis.get("relevance", "unknown"),
             "read": False,
             "scraped_at": datetime.now(timezone.utc).isoformat(),

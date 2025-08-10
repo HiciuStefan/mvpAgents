@@ -6,8 +6,8 @@
       "from": "sarah.chen@solarisproai.com",
       "to": "partnerships@digitalexcellence.com",
       "subject": "Urgent: Additional AI Developer Required",
-      "body": "Hi Mark,\n\nHope you're well! Alex has been performing excellently and has integrated well with our international team.\n\nDue to our rapid expansion success, we need another AI Developer to join our international team. The role is similar to Alex's position:\n\n- Mid-level AI Developer (2-4 years experience)\n- Computer vision and deep learning focus\n- Python, TensorFlow/PyTorch proficiency\n- Natural language processing skills (new requirement)\n- Budget: $75-85K annually\n- Start date: September 15th, 2024\n- Project: Multi-language sentiment analysis for international markets\n\nCan you help us find another strong candidate? We're looking to move quickly on this.\n\nBest regards,\nSarah Chen\nCTO, SolarisProAi",
-      "scenario_type": "positive"
+      "message_id": "positive_email_1",
+      "body": "Hi Mark,\n\nHope you're well! Alex has been performing excellently and has integrated well with our international team.\n\nDue to our rapid expansion success, we need another AI Developer to join our international team. The role is similar to Alex's position:\n\n- Mid-level AI Developer (2-4 years experience)\n- Computer vision and deep learning focus\n- Python, TensorFlow/PyTorch proficiency\n- Natural language processing skills (new requirement)\n- Budget: $75-85K annually\n- Start date: September 15th, 2024\n- Project: Multi-language sentiment analysis for international markets\n\nCan you help us find another strong candidate? We're looking to move quickly on this.\n\nBest regards,\nSarah Chen\nCTO, SolarisProAi"
     },
     "analysis": {
       "short_description": "Urgent request for new developer",
@@ -15,7 +15,8 @@
       "priority_level": "high",
       "opportunity_type": "New business opportunity",
       "suggested_action": "Source candidates for a Mid-level AI Developer with NLP skills",
-      "relevance": "Client has a new, urgent hiring need due to successful expansion."
+      "relevance": "Client has a new, urgent hiring need due to successful expansion.",
+      "suggested_reply": "Subject: Re: Urgent: Additional AI Developer Required\n\nHi Sarah,\n\nThank you for reaching out. We understand the urgency and are happy to help. We are starting the search for a Mid-level AI Developer with NLP skills immediately and will send you the first batch of qualified candidates within the next 48 hours.\n\nBest regards,\nMark"
     }
   },
   {
@@ -25,20 +26,17 @@
       "from": "sarah.chen@solarisproai.com",
       "to": "partnerships@digitalexcellence.com",
       "subject": "Update: Second Developer Performing Well",
-      "body": "Hi Mark,\n\nJust a quick update – our second AI developer, Priya Malhotra, is settling in very well. Her work on the sentiment analysis module has been excellent so far, especially her multilingual NLP enhancements.\n\nThanks again for finding such high-quality talent. We’ll likely need a third developer soon if this growth continues.\n\nBest,\nSarah",
-      "recommendation": {
-        "action": "Thank for feedback and prepare pipeline for future developer roles",
-        "reasoning": "Positive performance feedback and a hint at future needs. Maintain readiness to respond quickly with new candidates."
-      },
-      "scenario_type": "positive"
+      "message_id": "positive_email_2",
+      "body": "Hi Mark,\n\nJust a quick update – our second AI developer, Priya Malhotra, is settling in very well. Her work on the sentiment analysis module has been excellent so far, especially her multilingual NLP enhancements.\n\nThanks again for finding such high-quality talent. We’ll likely need a third developer soon if this growth continues.\n\nBest,\nSarah"
     },
     "analysis": {
       "short_description": "Positive update on developer performance",
       "actionable": true,
       "priority_level": "medium",
       "opportunity_type": "Client request",
-      "suggested_action": "Acknowledge the update and prepare for potential future hiring needs.",
-      "relevance": "Positive feedback indicates client satisfaction and future hiring potential."
+      "suggested_action": "Thank for feedback and prepare pipeline for future developer roles",
+      "relevance": "Positive performance feedback and a hint at future needs. Maintain readiness to respond quickly with new candidates.",
+      "suggested_reply": "Subject: Re: Update: Second Developer Performing Well\n\nHi Sarah,\n\nThank you for the update! I'm glad to hear Priya is performing well. We will keep an eye on your future hiring needs and be ready to assist when you're looking for a third developer.\n\nBest regards,\nMark"
     }
   },
   {
@@ -47,12 +45,7 @@
       "tweet_id": "2a3b4c5d-6e7f-8901-2345-67890abcdef1",
       "date": "2024-09-12",
       "title": "SolarisProAi Hiring Momentum",
-      "content": "We're building something incredible! ✨ Just added another AI developer to our global vision team. Huge thanks to our recruitment partner for helping us scale with precision. #AITalent #GlobalAI #NLP",
-      "recommendation": {
-        "action": "Acknowledge the tweet and reinforce partnership",
-        "reasoning": "Public recognition of successful placement. Opportunity to stay top-of-mind and strengthen brand association."
-      },
-      "scenario_type": "positive"
+      "content": "We're building something incredible! ✨ Just added another AI developer to our global vision team. Huge thanks to our recruitment partner for helping us scale with precision. #AITalent #GlobalAI #NLP"
     },
     "analysis": {
       "short_description": "Public praise for partnership",
@@ -60,7 +53,8 @@
       "priority_level": "low",
       "opportunity_type": "Relationship building",
       "suggested_action": "Publicly reply to the tweet to thank them and reinforce the partnership",
-      "relevance": "Positive public mention strengthens the brand and relationship with the client."
+      "relevance": "Positive public mention strengthens the brand and relationship with the client.",
+      "suggested_reply": "@SolarisProAi We're thrilled to have you as a partner! Thank you for the kind words. Looking forward to achieving great things together. #Partnership #Success"
     }
   },
   {
@@ -69,42 +63,35 @@
       "tweet_id": "3b4c5d6e-7f8a-9012-3456-7890abcdef23",
       "date": "2025-07-18",
       "title": "Digital Excellence Partnership Inquiry",
-      "content": "@DigitalExcellence Your work in AI recruitment is impressive! We're a startup looking for top-tier ML engineers. DM us to discuss potential collaboration! #AIJobs #TechRecruitment",
-      "recommendation": {
-        "action": "Respond to DM and schedule a discovery call",
-        "reasoning": "Direct inquiry from a potential client seeking ML engineers. High potential for new business."
-      },
-      "scenario_type": "positive"
+      "content": "@DigitalExcellence Your work in AI recruitment is impressive! We're a startup looking for top-tier ML engineers. DM us to discuss potential collaboration! #AIJobs #TechRecruitment"
     },
     "analysis": {
-      "short_description": "Inquiry from potential client for ML engineers",
+      "short_description": "Inquiry for ML engineers collaboration",
       "actionable": true,
       "priority_level": "high",
       "opportunity_type": "New business opportunity",
-      "suggested_action": "Respond to the DM and schedule a discovery call to discuss needs.",
-      "relevance": "Direct inquiry indicates strong potential for new business collaboration."
+      "suggested_action": "Respond to DM and schedule a discovery call",
+      "relevance": "Direct inquiry from a potential client seeking ML engineers. High potential for new business.",
+      "suggested_reply": "DM: Thank you for your interest! We’d love to discuss how we can assist you in finding top-tier ML engineers. When are you available for a call?"
     }
   },
   {
     "original_item": {
       "type": "website",
-      "url": "https://www.innovateai.com/partnership-inquiry",
+      "id": "4c5d6e7f-8a9b-0123-4567-890abcdef345",
       "date": "2025-07-18",
       "title": "New Lead: AI Startup Seeking Partnership",
       "content": "A new AI startup, 'InnovateAI', just filled out our partnership inquiry form on our website. They are looking for talent acquisition solutions for their rapidly expanding ML engineering team. This represents a high-value lead.",
-      "recommendation": {
-        "action": "Follow up with InnovateAI immediately to schedule a meeting",
-        "reasoning": "Direct inquiry from a high-potential client. Prompt action is crucial for conversion."
-      },
-      "scenario_type": "positive"
+      "url": "https://www.innovateai.com/partnership-inquiry"
     },
     "analysis": {
-      "short_description": "New lead from AI startup InnovateAI",
+      "short_description": "New lead from InnovateAI",
       "actionable": true,
       "priority_level": "high",
       "opportunity_type": "New business opportunity",
-      "suggested_action": "Follow up with InnovateAI immediately to schedule a meeting.",
-      "relevance": "High-value lead indicates potential for significant business growth."
+      "suggested_action": "Follow up with InnovateAI immediately to schedule a meeting",
+      "relevance": "Direct inquiry from a high-potential client. Prompt action is crucial for conversion.",
+      "suggested_reply": "Subject: Partnership Inquiry from InnovateAI\n\nHi InnovateAI Team,\n\nThank you for reaching out! We’re excited about the opportunity to assist you with your talent acquisition needs. Can we schedule a meeting to discuss this further?\n\nBest regards,\nMark"
     }
   },
   {
@@ -114,12 +101,8 @@
       "from": "sarah.chen@solarisproai.com",
       "to": "partnerships@digitalexcellence.com",
       "subject": "New Onboarding Requirements",
-      "body": "Hi Mark,\n\nAs we expand, we've updated our onboarding documentation and travel reimbursement policies. Please make sure future candidates are aware of the revised travel and reporting expectations.\n\nBest,\nSarah",
-      "recommendation": {
-        "action": "Update candidate briefing process",
-        "reasoning": "Neutral update but important operational detail. Ensures smooth onboarding for future hires."
-      },
-      "scenario_type": "neutral"
+      "message_id": "neutral_email_1",
+      "body": "Hi Mark,\n\nAs we expand, we've updated our onboarding documentation and travel reimbursement policies. Please make sure future candidates are aware of the revised travel and reporting expectations.\n\nBest,\nSarah"
     },
     "analysis": {
       "short_description": "Update on onboarding requirements",
@@ -127,29 +110,27 @@
       "priority_level": "neutral",
       "opportunity_type": " ",
       "suggested_action": " ",
-      "relevance": " "
+      "relevance": " ",
+      "suggested_reply": " "
     }
   },
   {
     "original_item": {
       "type": "website",
+      "id": "neutral_website_1",
       "url": "https://www.solarisproai.com/news/solarisproai-enhances-internal-ai-training-program",
       "date": "2024-09-05",
       "title": "SolarisProAi Enhances Internal AI Training Program",
-      "content": "As we scale, our internal AI team is benefiting from a structured mentorship and training program. While we continue hiring externally, internal growth is equally important. #TechGrowth #AITraining",
-      "recommendation": {
-        "action": "Monitor balance between internal training vs. external hiring",
-        "reasoning": "Signals a potential shift in hiring strategy. May reduce external demand slightly over time."
-      },
-      "scenario_type": "neutral"
+      "content": "As we scale, our internal AI team is benefiting from a structured mentorship and training program. While we continue hiring externally, internal growth is equally important. #TechGrowth #AITraining"
     },
     "analysis": {
-      "short_description": "Internal training program enhancement news",
+      "short_description": "General update on training program",
       "actionable": false,
       "priority_level": "neutral",
       "opportunity_type": " ",
       "suggested_action": " ",
-      "relevance": " "
+      "relevance": " ",
+      "suggested_reply": " "
     }
   },
   {
@@ -158,67 +139,56 @@
       "tweet_id": "1a2b3c4d-5e6f-7890-abcd-ef1234567890",
       "date": "2024-09-07",
       "title": "Team Expansion Pause",
-      "content": "Taking a short breather as we onboard our latest team additions. Stability and alignment are just as important as rapid growth. #AIExpansion #GrowthPacing",
-      "recommendation": {
-        "action": "Check back in 2-3 weeks for new hiring needs",
-        "reasoning": "Signals a temporary slowdown. Stay informed and reengage soon."
-      },
-      "reply": "",
-      "scenario_type": "neutral"
+      "content": "Taking a short breather as we onboard our latest team additions. Stability and alignment are just as important as rapid growth. #AIExpansion #GrowthPacing"
     },
     "analysis": {
-      "short_description": "Temporary pause in team expansion",
+      "short_description": "Update on team expansion pace",
       "actionable": false,
       "priority_level": "neutral",
       "opportunity_type": " ",
       "suggested_action": " ",
-      "relevance": " "
+      "relevance": " ",
+      "suggested_reply": " "
     }
   },
   {
     "original_item": {
       "type": "email",
+      "message_id": "negative_email_1",
       "date": "2024-09-15",
       "from": "sarah.chen@solarisproai.com",
       "to": "partnerships@digitalexcellence.com",
       "subject": "Urgent: Developer Compensation Issue",
-      "body": "Hi Mark,\n\nWe have a problem. Alex Rodriguez has requested a significant raise and is threatening to resign if his salary isn’t adjusted by next week. This is causing disruption in our team planning.\n\nCan we discuss his expectations and explore whether a replacement would be feasible if needed?\n\nSarah",
-      "recommendation": {
-        "action": "Initiate retention or replacement planning",
-        "reasoning": "Candidate may leave abruptly. Must prepare contingency plans and address client concerns promptly."
-      },
-      "scenario_type": "negative"
+      "body": "Hi Mark,\n\nWe have a problem. Alex Rodriguez has requested a significant raise and is threatening to resign if his salary isn’t adjusted by next week. This is causing disruption in our team planning.\n\nCan we discuss his expectations and explore whether a replacement would be feasible if needed?\n\nSarah"
     },
     "analysis": {
-      "short_description": "Urgent developer compensation issue",
+      "short_description": "Urgent compensation issue with developer",
       "actionable": true,
       "priority_level": "high",
       "opportunity_type": "Reputational risk",
-      "suggested_action": "Discuss Alex's salary expectations and prepare for potential replacement.",
-      "relevance": "Immediate action needed to retain talent and avoid disruption."
+      "suggested_action": "Initiate retention or replacement planning",
+      "relevance": "Candidate may leave abruptly. Must prepare contingency plans and address client concerns promptly.",
+      "suggested_reply": "Immediate phone call required to address this sensitive issue."
     }
   },
   {
     "original_item": {
       "type": "email",
+      "message_id": "negative_email_2",
       "date": "2024-09-18",
       "from": "sarah.chen@solarisproai.com",
       "to": "partnerships@digitalexcellence.com",
       "subject": "Feedback on Recent Candidate",
-      "body": "Hi Mark,\n\nThe last candidate you submitted didn’t meet our expectations in terms of communication skills and real-time problem solving. We'd appreciate a tighter screening process moving forward.\n\nBest,\nSarah",
-      "recommendation": {
-        "action": "Review and tighten candidate screening process",
-        "reasoning": "Client trust affected. Must ensure better alignment with expectations to maintain relationship."
-      },
-      "scenario_type": "negative"
+      "body": "Hi Mark,\n\nThe last candidate you submitted didn’t meet our expectations in terms of communication skills and real-time problem solving. We'd appreciate a tighter screening process moving forward.\n\nBest,\nSarah"
     },
     "analysis": {
       "short_description": "Feedback on candidate performance",
       "actionable": true,
       "priority_level": "medium",
       "opportunity_type": "Client request",
-      "suggested_action": "Review and improve candidate screening process.",
-      "relevance": "Client dissatisfaction needs addressing to maintain trust and future business."
+      "suggested_action": "Review and tighten candidate screening process",
+      "relevance": "Client trust affected. Must ensure better alignment with expectations to maintain relationship.",
+      "suggested_reply": "Subject: Re: Feedback on Recent Candidate\n\nHi Sarah,\n\nThank you for your feedback. We will review our screening process to ensure that future candidates meet your expectations. Your trust is important to us.\n\nBest regards,\nMark"
     }
   },
   {
@@ -227,21 +197,16 @@
       "tweet_id": "2a3b4c5d-6e7f-8901-2345-67890abcdef2",
       "date": "2024-09-20",
       "title": "Team Challenges",
-      "content": "Rapid expansion comes with its challenges. We're actively re-evaluating our team structure and partnerships to ensure alignment with long-term goals. #GrowingPains #TechOps",
-      "recommendation": {
-        "action": "Proactively reach out to reaffirm value and adapt services",
-        "reasoning": "Potential risk to partnership. Stay visible and offer support to navigate transition period."
-      },
-      "reply": "",
-      "scenario_type": "negative"
+      "content": "Rapid expansion comes with its challenges. We're actively re-evaluating our team structure and partnerships to ensure alignment with long-term goals. #GrowingPains #TechOps"
     },
     "analysis": {
-      "short_description": "Challenges due to rapid expansion",
+      "short_description": "Challenges during rapid expansion",
       "actionable": true,
       "priority_level": "medium",
       "opportunity_type": "Reputational risk",
-      "suggested_action": "Reach out to discuss how we can support their transition.",
-      "relevance": "Addressing challenges proactively can strengthen the partnership."
+      "suggested_action": "Proactively reach out to reaffirm value and adapt services",
+      "relevance": "Potential risk to partnership. Stay visible and offer support to navigate transition period.",
+      "suggested_reply": "DM: We understand the challenges of rapid growth. We're here to support you and ensure alignment with your goals. Let's discuss how we can assist."
     }
   }
 ]

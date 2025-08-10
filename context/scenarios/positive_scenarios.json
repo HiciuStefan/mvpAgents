@@ -5,6 +5,7 @@
         "from": "sarah.chen@solarisproai.com",
         "to": "partnerships@digitalexcellence.com",
         "subject": "Urgent: Additional AI Developer Required",
+        "message_id": "positive_email_1",
         "body": "Hi Mark,\n\nHope you're well! Alex has been performing excellently and has integrated well with our international team.\n\nDue to our rapid expansion success, we need another AI Developer to join our international team. The role is similar to Alex's position:\n\n- Mid-level AI Developer (2-4 years experience)\n- Computer vision and deep learning focus\n- Python, TensorFlow/PyTorch proficiency\n- Natural language processing skills (new requirement)\n- Budget: $75-85K annually\n- Start date: September 15th, 2024\n- Project: Multi-language sentiment analysis for international markets\n\nCan you help us find another strong candidate? We're looking to move quickly on this.\n\nBest regards,\nSarah Chen\nCTO, SolarisProAi"
       },
     {
@@ -13,6 +14,7 @@
         "from": "sarah.chen@solarisproai.com",
         "to": "partnerships@digitalexcellence.com",
         "subject": "Update: Second Developer Performing Well",
+        "message_id": "positive_email_2",
         "body": "Hi Mark,\n\nJust a quick update – our second AI developer, Priya Malhotra, is settling in very well. Her work on the sentiment analysis module has been excellent so far, especially her multilingual NLP enhancements.\n\nThanks again for finding such high-quality talent. We’ll likely need a third developer soon if this growth continues.\n\nBest,\nSarah",
         "recommendation": {
           "action": "Thank for feedback and prepare pipeline for future developer roles",
@@ -43,7 +45,7 @@
     },
     {
         "type": "website",
-        "url": "https://www.innovateai.com/partnership-inquiry",
+        "id": "4c5d6e7f-8a9b-0123-4567-890abcdef345",
         "date": "2025-07-18",
         "title": "New Lead: AI Startup Seeking Partnership",
         "content": "A new AI startup, 'InnovateAI', just filled out our partnership inquiry form on our website. They are looking for talent acquisition solutions for their rapidly expanding ML engineering team. This represents a high-value lead.",

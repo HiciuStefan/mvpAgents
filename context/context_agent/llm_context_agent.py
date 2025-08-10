@@ -38,11 +38,14 @@ Each object in the array represents ONE item from the input batch and MUST have 
   - "opportunity_type": string (For actionable items: e.g., "New business opportunity", "Reputational risk", "Client request". For non-actionable items: " ")
   - "suggested_action": string (REQUIRED for actionable items: A concrete next step, e.g., "Schedule a discovery call with Sarah Chen". For non-actionable items: " ")
   - "relevance": string (Max 100 characters. REQUIRED for actionable items: explaining why it's important. For non-actionable items: " ")
+  - "suggested_reply": string (REQUIRED for actionable items: A draft reply. If the item is an email or article, format as an email. If it's a tweet, format as a tweet. For non-actionable items: " ")
 
 **CRITICAL RULES:**
 1.  **ABSOLUTELY NO FILTERING:** You MUST include ALL items from the input batch in your output array. Do NOT omit any items.
 2.  **JSON ONLY:** Your entire response must be a single, valid JSON array `[...]`. Do not include any text, explanations, or markdown before or after the array.
 3.  **DOUBLE QUOTES:** Use only double quotes for all keys and string values in the JSON.
+4.  **REPLY FORMATTING:** For the `suggested_reply` field, generate a draft in the appropriate format: an email for emails/articles, and a tweet for tweets. For non-actionable items, this MUST be an empty string.
+5.  **URGENT/SENSITIVE REPLIES:** If an item is classified with `priority_level: "high"` AND `opportunity_type: "Reputational risk"` or involves a similarly urgent and sensitive issue, the `suggested_reply` MUST be: `"Immediate phone call required to address this sensitive issue."`
 '''
 
 JSON_INSTRUCTIONS = '''Based on the user profile, the historical context (RAG), and the batch of items provided, analyze each item.
@@ -58,7 +61,8 @@ Example of a valid response for a batch containing three items (one high actiona
       "priority_level": "high",
       "opportunity_type": "New business opportunity",
       "suggested_action": "Source candidates for a Mid-level AI Developer with NLP skills",
-      "relevance": "Client has a new, urgent hiring need due to successful expansion."
+      "relevance": "Client has a new, urgent hiring need due to successful expansion.",
+      "suggested_reply": "Subject: Re: Urgent need for AI Developer\n\nHi [Client Name],\n\nThank you for reaching out. We understand the urgency and are happy to help. We are starting the search for a Mid-level AI Developer with NLP skills immediately and will send you the first batch of qualified candidates within the next 48 hours.\n\nBest regards,\n[Your Name]"
     }
   },
   {
@@ -69,7 +73,8 @@ Example of a valid response for a batch containing three items (one high actiona
       "priority_level": "low",
       "opportunity_type": "Relationship building",
       "suggested_action": "Publicly reply to the tweet to thank them and reinforce the partnership",
-      "relevance": "Positive public mention strengthens the brand and relationship with the client."
+      "relevance": "Positive public mention strengthens the brand and relationship with the client.",
+      "suggested_reply": "@[Client's Twitter Handle] We're thrilled to have you as a partner! Thank you for the kind words. Looking forward to achieving great things together. #Partnership #Success"
     }
   },
   {
@@ -80,7 +85,8 @@ Example of a valid response for a batch containing three items (one high actiona
       "priority_level": "neutral",
       "opportunity_type": " ",
       "suggested_action": " ",
-      "relevance": " "
+      "relevance": " ",
+      "suggested_reply": " "
     }
   }
 ]
@@ -155,7 +161,8 @@ def get_llm_analysis(user_context: dict, rag_context: str, batch_content: list) 
                         "actionable": False,
                         "opportunity_type": " ",
                         "suggested_action": " ",
-                        "relevance": " "
+                        "relevance": " ",
+                        "suggested_reply": " "
                     }
                 }
             
@@ -168,11 +175,14 @@ def get_llm_analysis(user_context: dict, rag_context: str, batch_content: list) 
                     analysis['suggested_action'] = "Review and determine next steps."
                 if not analysis.get('relevance') or analysis.get('relevance').strip() == " ":
                     analysis['relevance'] = "Importance requires further review."
+                if not analysis.get('suggested_reply') or analysis.get('suggested_reply').strip() == " ":
+                    analysis['suggested_reply'] = "Review and draft a reply."
             else:
                 # Ensure non-actionable items have empty strings for these fields
                 analysis['opportunity_type'] = analysis.get('opportunity_type', " ")
                 analysis['suggested_action'] = analysis.get('suggested_action', " ")
                 analysis['relevance'] = analysis.get('relevance', " ")
+                analysis['suggested_reply'] = analysis.get('suggested_reply', " ")
             
             final_results.append(item_with_analysis)
         
@@ -181,3 +191,4 @@ def get_llm_analysis(user_context: dict, rag_context: str, batch_content: list) 
     except Exception as exc:
         print(f"❌ LLM error or invalid JSON: {exc}\n🔎 Reply was:\n{reply}")
         return error_response
+
