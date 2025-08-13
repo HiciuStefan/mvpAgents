@@ -2,7 +2,7 @@ import z from 'zod';
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
 import { fetch_latest_items, fetch_latest_items_by_type, fetch_item_by_id } from '~/server/db/fetch_items';
 import { processedItemTypeEnum } from '~/server/db/schema';
-import { zodDateRangeEnum } from '~/components/filters/date_ranges';
+import { dateRangeValues, zodDateRangeEnum } from '~/components/filters/date_ranges';
 import { zodChannelEnum } from '~/components/filters/channel_ranges';
 import { eq } from 'drizzle-orm';
 import { processed_items } from '~/server/db/schema';
@@ -36,6 +36,33 @@ export const processed_items_router = createTRPCRouter({
 			});
 
 			return items;
+		}),
+
+	getLatestAvailable: publicProcedure
+		.input(z.object({
+			limit: z.number().min(1).default(10),
+			actionable: z.boolean().default(false),
+			channel: zodChannelEnum,
+			// priority: prioritySchema
+		}))
+		.query(async ({ input }) => {
+			const { limit, actionable, channel /* , priority */ } = input;
+
+			for (const range of dateRangeValues) {
+				const items = await fetch_latest_items({
+					limit,
+					actionable,
+					date_range: range,
+					channel,
+					// priority
+				});
+
+				if (items && items.length > 0) {
+					return items;
+				}
+			}
+
+			return [];
 		}),
 
 	getLatestByType: publicProcedure

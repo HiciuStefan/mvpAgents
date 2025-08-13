@@ -6,7 +6,7 @@ import { Suspense } from "react";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { SidebarProvider } from "~/components/ui/sidebar";
-import { AppSidebar } from "~/components/app-sidebar";
+import { AppSidebar } from "~/components/sidebar/app-sidebar";
 
 export const metadata: Metadata = {
 	title: "AI APP",
