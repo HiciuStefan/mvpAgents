@@ -26,11 +26,10 @@ function getPriorityIcon(priority: 3 | 2 | 1): string {
 
 
 export async function UrgentActionables() {
-	const latest_items = await api.processed_items.getLatest({
-		limit: 100,
+	const latest_items = await api.processed_items.getLatestAvailable({
+		limit: 20,
 		actionable: true,
 		channel: 'all',
-		date_range: 'today',
 	});
 
 	const priorities = {
