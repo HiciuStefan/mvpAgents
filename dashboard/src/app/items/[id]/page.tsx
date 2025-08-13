@@ -9,6 +9,7 @@ import { CopyButton } from "~/components/CopyButton";
 import { CollapsibleText } from "~/components/CollapsibleText";
 import { Globe, Mail, Info } from "lucide-react";
 import { SparkleSVG } from "~/components/cards/ItemCard";
+import SuggestedReplySection from "./SuggestedReplySection";
 
 
 export const dynamic = 'force-dynamic';
@@ -70,14 +71,7 @@ export default async function ItemDetailPage({ params, searchParams }: { params:
 								{item.actionable && item.data.relevance && (
 									<CollapsibleText text={item.data.relevance} collapsedLines={6} />
 								)}
-								{item.actionable && "suggested_action" in item.data && item.data.suggested_action && (
-									<div className="p-3 rounded-md bg-blue-50 text-blue-700 flex items-center gap-2">
-										<SparkleSVG	size={16} />
-										<span>{item.data.suggested_action}</span>
-									</div>
-								)}
 							</div>
-
 
 							{/* Type-specific details */}
 							<div className="rounded-lg border bg-white">
@@ -122,8 +116,22 @@ export default async function ItemDetailPage({ params, searchParams }: { params:
 								</div>
 							</div>
 						</div>
+
+						{item.actionable && "suggested_action" in item.data && item.data.suggested_action && (
+							<div className="p-3 rounded-md bg-blue-50 flex items-center gap-2 text-[#1b4fb3] font-medium text-md">
+								<SparkleSVG	size={16} />
+								<span>{item.data.suggested_action}</span>
+							</div>
+						)}
 					</div>
 				</CardContent>
+
+				{/* Suggested Reply Section */}
+				{item.data?.suggested_reply && (
+					<div className="px-6 pb-6">
+						<SuggestedReplySection item={item} />
+					</div>
+				)}
 
 				<CardFooter className="border-t justify-start gap-2">
 					<button className="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground px-4 h-9 text-sm font-medium opacity-60 cursor-not-allowed" disabled>
@@ -133,4 +141,4 @@ export default async function ItemDetailPage({ params, searchParams }: { params:
 			</Card>
 		</div>
 	);
-} 
+}

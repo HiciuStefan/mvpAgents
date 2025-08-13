@@ -21,4 +21,4 @@ export function CollapsibleText({ text, collapsedLines = 6 }: { text: string; co
 			)} */}
 		</div>
 	);
-} 
+}
