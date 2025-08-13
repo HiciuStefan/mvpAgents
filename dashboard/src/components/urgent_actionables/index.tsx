@@ -116,8 +116,9 @@ export async function UrgentActionables() {
 				{/* Top urgent items */}
 				<div className="flex flex-col gap-2">
 					{topItems.map((item, index) => (
-						<Link href={`/items/${item.id}?ref=business-intelligence`} key={index} className="flex items-center gap-2 text-sm p-2 rounded-md bg-zinc-100">
+						<Link href={`/items/${item.id}?ref=business-intelligence`} key={index} className="flex items-center gap-2 text-sm p-2 rounded-md bg-zinc-100 hover:bg-[#EEEFF0] transition-background">
 							{/* <span>{getPriorityIcon(item.priority)}</span> */}
+							<span className="size-6 text-gray-600"><ChannelBadgeNoLabel type={item.type} className="text-xs" /></span>
 							<span className="font-medium">{item.client_name}</span>
 							<span className="text-gray-600">–</span>
 							<span className="text-gray-700">{item.data.short_description}</span>
