@@ -17,7 +17,7 @@ import {
 import { Logo } from "~/components/digital_excellence_logo"
 import { ROUTES } from "~/lib/nav_items"
 import { Home, Newspaper, TrendingUp } from "lucide-react"
-
+import { NavUser } from "~/components/sidebar/nav-user"
 
 // Menu items.
 const items = [
@@ -90,7 +90,9 @@ export function AppSidebar()
 						</SidebarGroupContent>
 					</SidebarGroup>
 				</SidebarContent>
-			<SidebarFooter />
+			<SidebarFooter>
+				<NavUser />
+			</SidebarFooter>
 		</Sidebar>
 	)
 }
