@@ -127,7 +127,7 @@ export default async function ItemDetailPage({ params, searchParams }: { params:
 				</CardContent>
 
 				{/* Suggested Reply Section */}
-				{item.data?.suggested_reply && (
+				{item.data?.actionable && (
 					<div className="px-6 pb-6">
 						<SuggestedReplySection item={item} />
 					</div>
