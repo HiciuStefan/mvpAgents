@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname, useSearchParams } from "next/navigation"
+import { usePathname } from "next/navigation"
 import {
 	Sidebar,
 	SidebarContent,
@@ -18,6 +18,7 @@ import { Logo } from "~/components/digital_excellence_logo"
 import { ROUTES } from "~/lib/nav_items"
 import { Home, Newspaper, TrendingUp } from "lucide-react"
 import { NavUser } from "~/components/sidebar/nav-user"
+
 
 // Menu items.
 const items = [
@@ -38,11 +39,10 @@ const items = [
 	}
 ];
 
-export function AppSidebar()
+export function AppSidebar({ refParam }: { refParam?: string })
 {
+	const ref = refParam ?? ''
 	const pathname = usePathname()
-	const searchParams = useSearchParams()
-	const ref = searchParams.get('ref')
 
 	const isActive = (itemUrl: string) => {
 		// If we have a ref, prefer it
@@ -60,6 +60,7 @@ export function AppSidebar()
 		return pathname.startsWith(itemUrl)
 	}
 
+
 	return (
 		<Sidebar className="!border-0">
 			<SidebarHeader className="pl-3">
@@ -73,17 +74,17 @@ export function AppSidebar()
 							<SidebarMenu>
 							{items.map((item) => (
 								<SidebarMenuItem key={item.title}>
-								<SidebarMenuButton
-									asChild
-									isActive={isActive(item.url)}
-									size="default"
-									className="rounded-full h-10 pl-5 text-[15px] [&>svg]:size-4 data-[active=true]:bg-[#d3efff]"
-								>
-									<Link href={item.url}>
-										<item.icon />
-										<span>{item.title}</span>
-									</Link>
-								</SidebarMenuButton>
+									<SidebarMenuButton
+										asChild
+										isActive={isActive(item.url)}
+										size="default"
+										className="rounded-full h-10 pl-5 text-[15px] [&>svg]:size-4 data-[active=true]:bg-[#d3efff]"
+									>
+										<Link href={item.url}>
+											<item.icon />
+											<span>{item.title}</span>
+										</Link>
+									</SidebarMenuButton>
 								</SidebarMenuItem>
 							))}
 							</SidebarMenu>
