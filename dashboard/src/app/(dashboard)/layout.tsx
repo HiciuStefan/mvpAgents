@@ -1,5 +1,4 @@
 import { SidebarProvider } from "~/components/ui/sidebar";
-import { AppSidebar } from "~/components/sidebar/app-sidebar";
 
 export default function DashboardLayout({
 	children,
@@ -8,8 +7,7 @@ export default function DashboardLayout({
 }) {
 	return (
 		<SidebarProvider>
-			<AppSidebar />
-			{children}
+			<>{children}</>
 		</SidebarProvider>
 	);
 }

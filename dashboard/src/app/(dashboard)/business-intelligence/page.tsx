@@ -6,6 +6,7 @@ import { DateFilter } from "~/components/filters/DateFilter";
 import { DefaultChannelValue, type ChannelValueType } from "~/components/filters/channel_ranges";
 import BusinessIntelligenceClient from "./business-intelligence-client";
 import type { PriorityType } from "~/hooks/use-filters";
+import { AppSidebar } from "~/components/sidebar/app-sidebar";
 
 
 export const dynamic = 'force-dynamic';
@@ -15,8 +16,9 @@ interface PageProps {
 	  channel?: ChannelValueType
 	  date_range?: DateRangeValueType
 	  priority?: string
+	  ref?: string
 	}>
-  }
+}
 
 // Server-side filter parser
 function parseFilters(searchParams: Awaited<PageProps['searchParams']>) {
@@ -25,11 +27,12 @@ function parseFilters(searchParams: Awaited<PageProps['searchParams']>) {
 	  date_range: searchParams.date_range ?? DefaultDateRangeValue,
 	  priority: searchParams.priority ? Number(searchParams.priority) as PriorityType : undefined,
 	}
-  }
+}
 
 export default async function BusinessIntelligence({ searchParams }: PageProps)
 {
 	const resolvedSearchParams = await searchParams;
+	const ref = resolvedSearchParams.ref;
 	const filters = parseFilters(resolvedSearchParams);
 
 	const latest_items = await api.processed_items.getLatest({
@@ -72,20 +75,23 @@ export default async function BusinessIntelligence({ searchParams }: PageProps)
 	});
 
 	return (
-		<div className="flex flex-col align-middle p-20 pt-8 pr-8 font-[family-name:var(--font-geist-sans)]">
-			<h1 className="text-2xl font-semibold text-[26px]">Business Intelligence</h1>
-			<p className="text-zinc-500 text-[17px] mb-6">
-				Focus on what matters most with filtered insights for smarter business decisions.
-			</p>
-			<div className="flex space-x-4 mb-8">
-				<ClientSelect clients={clientOptions} />
-				<ChannelSelect />
-				<DateFilter />
+		<>
+			<AppSidebar refParam={ref} />
+			<div className="flex flex-col align-middle p-20 pt-8 pr-8 font-[family-name:var(--font-geist-sans)]">
+				<h1 className="text-2xl font-semibold text-[26px]">Business Intelligence</h1>
+				<p className="text-zinc-500 text-[17px] mb-6">
+					Focus on what matters most with filtered insights for smarter business decisions.
+				</p>
+				<div className="flex space-x-4 mb-8">
+					<ClientSelect clients={clientOptions} />
+					<ChannelSelect />
+					<DateFilter />
+				</div>
+				<BusinessIntelligenceClient
+					items={filtered_items}
+					priorities={priorities}
+				/>
 			</div>
-			<BusinessIntelligenceClient
-				items={filtered_items}
-				priorities={priorities}
-			/>
-		</div>
+		</>
 	);
 }

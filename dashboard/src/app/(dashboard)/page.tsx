@@ -2,16 +2,18 @@ import { api, HydrateClient } from "~/trpc/server";
 
 
 import { ActionableItems } from "~/components/actionable_items";
-import { BusinessIntelligence } from "~/components/business_intelligence";
 import { LatestProcessed } from "~/components/latest_processed";
 import { CenteredDailyUpdates } from "~/components/daily_updates/centered";
 import Header from "~/components/header";
 import { UrgentActionables } from "~/components/urgent_actionables";
+import { AppSidebar } from "~/components/sidebar/app-sidebar";
 // import BusinessIntelligenceCard2 from "./something";
 
 
-export default async function Home()
+export default async function Home({ searchParams }: { searchParams: Promise<{ ref: string }> })
 {
+	const ref = (await searchParams).ref;
+
 	void api.email.get_today_count.prefetch();
 	void api.twitter.get_today_count.prefetch();
 	void api.website.get_today_count.prefetch();
@@ -36,6 +38,7 @@ export default async function Home()
 
 	return (
 		<HydrateClient>
+			<AppSidebar refParam={ref} />
 			<div className="flex w-full justify-center align-top pb-16 pt-21 px-4 font-[family-name:var(--font-geist-sans)]">
 				<main className="flex flex-col gap-[24px]">
 					<Header />
@@ -62,8 +65,3 @@ export default async function Home()
 		</HydrateClient>
 	);
 }
-
-
-
-
-
