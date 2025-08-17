@@ -2,11 +2,11 @@ import "~/styles/globals.css";
 
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
-import { Suspense } from "react";
-
+import {
+	ClerkProvider,
+} from "@clerk/nextjs";
 import { TRPCReactProvider } from "~/trpc/react";
-import { SidebarProvider } from "~/components/ui/sidebar";
-import { AppSidebar } from "~/components/sidebar/app-sidebar";
+
 
 export const metadata: Metadata = {
 	title: "AI APP",
@@ -25,15 +25,12 @@ export default function RootLayout({
 {
 	return (
 		<html lang="en" className={`${geist.variable}`}>
-			<body>
-				<SidebarProvider>
-					<Suspense fallback={null}>
-						<AppSidebar />
-					</Suspense>
+			<body suppressHydrationWarning={true}>
+				<ClerkProvider>
 					<TRPCReactProvider>
 						{children}
 					</TRPCReactProvider>
-				</SidebarProvider>
+				</ClerkProvider>
 			</body>
 		</html>
 	);

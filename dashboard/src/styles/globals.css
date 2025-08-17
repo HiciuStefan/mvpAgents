@@ -124,7 +124,8 @@
 }
 
 body {
-	overflow-y: scroll;
+	overflow-y: scroll !important;
+	padding-right: 0px !important;
 }
 
 /* global.css */
