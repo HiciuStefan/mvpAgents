@@ -38,7 +38,7 @@ export default async function Home()
 		<HydrateClient>
 			<div className="flex w-full justify-center align-top pb-16 pt-21 px-4 font-[family-name:var(--font-geist-sans)]">
 				<main className="flex flex-col gap-[24px]">
-					{/* <Header /> */}
+					<Header />
 					<div className="flex flex-row gap-[24px]">
 						<div className="flex flex-col gap-[24px]">
 							<CenteredDailyUpdates data={daily_data} />

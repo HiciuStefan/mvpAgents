@@ -1,4 +1,4 @@
-import styles from "~/app/business-intelligence/styles.module.css";
+import styles from "~/app/(dashboard)/business-intelligence/styles.module.css";
 import type { PriorityType } from "~/hooks/use-filters";
 
 export type Priorities = {
