@@ -1,14 +1,23 @@
 {
     "type": "object",
     "properties": {
+        "client_name": {"type": "string"},
+        "tweet_id": {"type": "string"},
         "url": {"type": "string", "format": "uri"},
         "text": {"type": "string"},
         "actionable": {"type": "boolean"},
         "relevance": {"type": "string"},
         "suggested_action": {"type": "string"},
-        "short_description": {"type": "string"},
-        "status": {"type": "string"},
-        "reply": {"type": "string"}
+        "short_description": {"type": "string"}
     },
-    "required": ["url", "text", "actionable", "relevance", "suggested_action", "short_description", "status", "reply"]
+    "required": [
+        "client_name",
+        "tweet_id",
+        "url",
+        "text",
+        "actionable",
+        "relevance",
+        "suggested_action",
+        "short_description"
+    ]
 }

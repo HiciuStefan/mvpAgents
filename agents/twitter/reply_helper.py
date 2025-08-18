@@ -18,7 +18,7 @@ def prepare_reply(tweet_url: str, reply_text: str) -> None:
 
 # Direct test (optional)
 if __name__ == "__main__":
-    test_tweet_url = "https://x.com/Lica2216/status/1923667226961355122"
+    test_tweet_url = "https://x.com/Lica2216/status/1956273442841330103"
     test_reply_text = "Thanks for sharing this insight!"
     
     print("Running test for prepare_reply...")

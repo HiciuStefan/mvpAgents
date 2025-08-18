@@ -31,7 +31,7 @@ def build_dashboard_payload(item: dict, analysis: dict) -> tuple[dict, str]:
     if source_type == "email":
         payload = {
             "content": item.get("body", "No content provided"),
-            "client_name": "SolarisProAi",
+            "client_name": item.get("client_name", "SolarisProAi"),
             "type": source_type,
             "message_id": safe_get(item, "message_id", str(uuid.uuid4())),
             "subject": item.get("subject", "No Subject"),
@@ -51,7 +51,7 @@ def build_dashboard_payload(item: dict, analysis: dict) -> tuple[dict, str]:
             "text": safe_get(item, "content", "No content provided"),
             "tweet_id": safe_get(item, "tweet_id", "000000000"),
             "actionable": llm_analysis.get("actionable", False),
-            "client_name": "SolarisProAi",
+            "client_name": item.get("client_name", "SolarisProAi"),
             "relevance": safe_get(llm_analysis, "relevance", "unknown"),
             "suggested_action": safe_get(llm_analysis, "suggested_action", "No specific action suggested"),
             "suggested_reply": llm_analysis.get("suggested_reply", ""),

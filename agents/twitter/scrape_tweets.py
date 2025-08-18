@@ -44,12 +44,12 @@ def scrape_new_tweets(processed_ids: set) -> list:
         time.sleep(3)
 
         username_input = browser.find_element(By.NAME, "text")
-        username_input.send_keys(TWITTER_USER)
+        username_input.send_keys(TWITTER_USER or "")
         username_input.send_keys(Keys.RETURN)
         time.sleep(3)
 
         password_input = browser.find_element(By.CSS_SELECTOR, 'input[type="password"]')
-        password_input.send_keys(TWITTER_PASS)
+        password_input.send_keys(TWITTER_PASS or "")
         password_input.send_keys(Keys.RETURN)
         time.sleep(5)
 
@@ -96,6 +96,30 @@ def scrape_new_tweets(processed_ids: set) -> list:
                 except Exception as e:
                     print(f"⚠️ Tweet invalid: {e}")
                     continue
+
+        # Persist results for context agent consumption
+        try:
+            project_root = os.path.dirname(os.path.dirname(SCRIPT_DIR))
+            scenarios_dir = os.path.join(project_root, "context", "scenarios")
+            os.makedirs(scenarios_dir, exist_ok=True)
+            output_path = os.path.join(scenarios_dir, "twitter_scraped.json")
+
+            items_for_context = []
+            for t in all_tweets:
+                items_for_context.append({
+                    "type": "twitter",
+                    "client_name": t.get("client_name", "SolarisProAi"),
+                    "tweet_id": t.get("tweet_id", "000000000"),
+                    "url": t.get("url", "https://twitter.com/unknown/status/00000"),
+                    # context_agent payload_builder asteapta "content" pentru twitter
+                    "content": t.get("text", "")
+                })
+
+            with open(output_path, 'w', encoding='utf-8') as f:
+                json.dump(items_for_context, f, indent=2, ensure_ascii=False)
+            print(f"Scraped tweets saved to {output_path}")
+        except Exception as e:
+            print(f"⚠️ Failed to save scraped tweets for context agent: {e}")
 
         return all_tweets
 

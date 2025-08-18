@@ -13,13 +13,26 @@ from agents.config.config_loader import load_user_profile
 # 4) Prompt building (includes client context)
 # ---------------------------------------------------------------------------
 SYSTEM_HEADER = (
-    "You are an AI assistant that analyzes tweets to determine whether they "
-    "are actionable for a specific business user."
+    "You are a highly efficient AI assistant specialized in analyzing tweets for business actionability.\n"
+    "Your goal is to determine whether the tweet is actionable and produce a compact analysis with the fields below."
 )
 
 JSON_INSTRUCTIONS = (
-    "Respond **only** with a JSON object like this (no markdown, no extra keys):\n"
-    "{\n  \"actionable\": true | false,\n  \"relevance\": \"...\",\n  \"suggested_action\": \"...\"\n}"
+    "Respond ONLY with a single JSON object using DOUBLE QUOTES for all strings/keys. No markdown, no extra text.\n"
+    "The JSON object MUST have EXACTLY these keys:\n"
+    "{\n"
+    "  \"short_description\": \"Max 50 characters\",\n"
+    "  \"actionable\": true | false,\n"
+    "  \"priority_level\": \"high|medium|low|neutral\",\n"
+    "  \"opportunity_type\": \"For actionable items (e.g., New business opportunity). For non-actionable: \u0020\",\n"
+    "  \"suggested_action\": \"For actionable items: a concrete next step. For non-actionable: \u0020\",\n"
+    "  \"relevance\": \"For actionable: why it matters (<=100 chars). For non-actionable: \u0020\",\n"
+    "  \"suggested_reply\": \"For actionable: a short tweet reply. For non-actionable: \u0020\"\n"
+    "}\n\n"
+    "Rules:\n"
+    "- If actionable is false, set priority_level to \"neutral\" and use a single space (\u0020) for opportunity_type, suggested_action, relevance, suggested_reply.\n"
+    "- The suggested_reply must be formatted as a tweet when actionable is true.\n"
+    "- Output must be valid JSON with only the keys above."
 )
 
 
@@ -42,12 +55,8 @@ def _build_prompt(
 
     return (
         f"{SYSTEM_HEADER}\n\n"
-        "Step 1 – Decide if the tweet is actionable **for this specific user**. "
-        "A tweet is actionable if it relates to any of the user's industries, "
-        "products, services, goals, ICP or clear business opportunities.\n\n"
-        "Step 2 – If actionable, answer:\n"
-        "- What is the business relevance of this tweet? (max 100 chars)\n"
-        "- What is the suggested action? (e.g. \"Contact client\")\n\n"
+        "Decide if the tweet is actionable for this specific user.\n"
+        "A tweet is actionable if it relates to the user's industries, products, services, goals, ICP, or a clear business opportunity.\n\n"
         f"{user_section}\n\n"
         f"{context_section}\n\n"
         f"Tweet: \"{tweet_text}\"\n\n"
@@ -65,27 +74,74 @@ def classify_tweet(
     client_name: Optional[str] = None,
     context_provider=get_client_context,
 ) -> Dict[str, Any]:
-    """Classify tweet as actionable / not‑actionable for a user with respect to a given client."""
+    """Analyze the tweet and return fields aligned with llm_context_agent's analysis schema."""
+
+    # Load user profile if not provided (best-effort)
+    if user_profile is None:
+        try:
+            user_profile = load_user_profile()
+        except Exception:
+            user_profile = None
 
     fetched_context = context_provider(client_name) if client_name else ""
-
     prompt = _build_prompt(tweet_text, user_profile, fetched_context)
 
+    raw_reply = ""
     try:
-        reply = llm.invoke(prompt).content.strip()
-        parsed = json.loads(reply)
+        response = llm.invoke(prompt)
+        raw_content = response.content
+        raw_reply = raw_content if isinstance(raw_content, str) else json.dumps(raw_content, ensure_ascii=False)
+        json_string = raw_reply
+        # Extract fenced json if present
+        if json_string.startswith("```"):
+            start = json_string.find("```json")
+            end = json_string.rfind("```")
+            if start != -1 and end != -1 and end > start:
+                json_string = json_string[start + len("```json"):end].strip()
+            elif json_string.startswith("```") and json_string.endswith("```"):
+                json_string = json_string.strip("`").strip()
+        parsed = json.loads(json_string)
     except Exception as exc:
-        print(f"⚠️  classify_tweet error: {exc}")
-        return {"actionable": False, "relevance": "", "suggested_action": ""}
+        print(f"⚠️  classify_tweet error: {exc}\n🔎 Reply was:\n{raw_reply}")
+        parsed = {}
 
+    # Ensure dict structure
     if not isinstance(parsed, dict):
-        return {"actionable": False, "relevance": "", "suggested_action": ""}
+        parsed = {}
 
+    # Normalize fields and apply defaults consistent with llm_context_agent
     actionable = bool(parsed.get("actionable", False))
+    short_description = parsed.get("short_description") or (tweet_text[:47] + "..." if len(tweet_text) > 50 else tweet_text)
+    priority_level = parsed.get("priority_level") or ("neutral" if not actionable else "low")
+    opportunity_type = parsed.get("opportunity_type")
+    suggested_action = parsed.get("suggested_action")
+    relevance = parsed.get("relevance")
+    suggested_reply = parsed.get("suggested_reply")
+
+    if actionable:
+        if not suggested_action or suggested_action.strip() == "":
+            suggested_action = "Review and determine next steps."
+        if not relevance or relevance.strip() == "":
+            relevance = "Importance requires further review."
+        if not suggested_reply or suggested_reply.strip() == "":
+            suggested_reply = "Thank you for the update!"
+        if not opportunity_type or opportunity_type.strip() == "":
+            opportunity_type = "General business opportunity"
+    else:
+        priority_level = "neutral"
+        opportunity_type = " "
+        suggested_action = " "
+        relevance = " "
+        suggested_reply = " "
+
     return {
+        "short_description": short_description[:50],
         "actionable": actionable,
-        "relevance": parsed.get("relevance", "") if actionable else "",
-        "suggested_action": parsed.get("suggested_action", "") if actionable else "",
+        "priority_level": priority_level,
+        "opportunity_type": opportunity_type,
+        "suggested_action": suggested_action,
+        "relevance": relevance,
+        "suggested_reply": suggested_reply,
     }
 
 
@@ -99,7 +155,8 @@ Summary:"""
 
     try:
         result = llm.invoke(prompt)
-        return result.content.strip()
+        content = result.content
+        return content.strip() if isinstance(content, str) else str(content)
     except Exception as e:
         return f"(Error: {e})"
 
@@ -112,7 +169,8 @@ Tweet: "{tweet_text}"
 Reply:"""
     try:
         response = llm.invoke(prompt)
-        return response.content.strip()
+        content = response.content
+        return content.strip() if isinstance(content, str) else str(content)
     except Exception as e:
         print(f"❌ Eroare la generarea răspunsului GPT: {e}")
         return "Thank you for sharing your thoughts!"

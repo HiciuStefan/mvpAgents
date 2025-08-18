@@ -4,6 +4,7 @@ from agents._tools.llm_twitterAgent import classify_tweet
 from agents.common.api_sender import ApiClient
 from agents._tools.llm_twitterAgent import generate_summary
 from agents.common.json_validator import validate_json
+from agents.twitter.payload_builder import build_twitter_payload
 import json
 
 
@@ -19,7 +20,7 @@ def main():
         api_key_env="TWITTER_AGENT_API_KEY"
     )
 
-    all_new_tweets = scrape_new_tweets([])
+    all_new_tweets = scrape_new_tweets(set())
 
     if not all_new_tweets:
         print("✅ Nu există tweeturi noi.")
@@ -27,14 +28,13 @@ def main():
 
     grouped = {}
     for tweet in all_new_tweets:
-        classification = classify_tweet(tweet["text"])
-        tweet["actionable"] = classification["actionable"]
-        tweet["relevance"] = classification["relevance"]
-        tweet["suggested_action"] = classification["suggested_action"]
+        classification = classify_tweet(tweet["text"], client_name=tweet.get("client_name"))
 
-        tweet["short_description"] = generate_summary(tweet["text"])
-        tweet["status"] = "new"
-        tweet["reply"] = ""
+        # Construim payload-ul standardizat pentru API
+        payload = build_twitter_payload(tweet, classification)
+
+        # Pastreaza payload-ul in tweet pentru fluxul existent de grupare si trimitere
+        tweet.update(payload)
         account = extract_account_from_url(tweet["url"])
         if account not in grouped:
             grouped[account] = {
@@ -45,7 +45,8 @@ def main():
 
     for account, data in grouped.items():
         texts = [t["text"] for t in data["tweets"]]
-        summary = generate_summary(texts)
+        joined = " \n".join(texts)
+        summary = generate_summary(joined)
         grouped[account]["summary"] = summary
         print(f"Pe contul @{account} am gasit {len(data['tweets'])} tweeturi noi.")
         print(f"Sumar AI: {summary}")

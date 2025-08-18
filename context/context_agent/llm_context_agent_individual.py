@@ -1,6 +1,7 @@
 import os
 import json
 import re
+import sys
 from dotenv import load_dotenv
 from langchain_openai import AzureChatOpenAI
 
@@ -63,6 +64,17 @@ Example of a valid response for a non-actionable item:
 {}
 '''
 
+def safe_print(text, prefix=""):
+    """
+    Safely print text that may contain Unicode characters
+    """
+    try:
+        print(f"{prefix}{text}")
+    except UnicodeEncodeError:
+        # Fallback: encode with replacement characters
+        safe_text = text.encode('utf-8', errors='replace').decode('utf-8')
+        print(f"{prefix}{safe_text}")
+
 def get_llm_analysis_individual(user_context: dict, rag_context: str, item_content: dict) -> dict:
     """
     Construieste prompt-ul, obtine analiza de la LLM pentru un singur item
@@ -103,5 +115,5 @@ def get_llm_analysis_individual(user_context: dict, rag_context: str, item_conte
             raise ValueError("LLM response was not a valid JSON object.")
 
     except Exception as exc:
-        print(f"❌ LLM error or invalid JSON: {exc}\n🔎 Reply was:\n{reply}")
+        safe_print(f"❌ LLM error or invalid JSON: {exc}\n🔎 Reply was:\n{reply}", "LLM Error: ")
         return error_response

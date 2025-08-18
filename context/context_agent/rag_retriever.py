@@ -1,6 +1,18 @@
 import os
 import requests
+import sys
 from dotenv import load_dotenv
+
+def safe_print(text, prefix=""):
+    """
+    Safely print text that may contain Unicode characters
+    """
+    try:
+        print(f"{prefix}{text}")
+    except UnicodeEncodeError:
+        # Fallback: encode with replacement characters
+        safe_text = text.encode('utf-8', errors='replace').decode('utf-8')
+        print(f"{prefix}{safe_text}")
 
 # Citim URL-ul si cheia API dedicate pentru RAG din .env
 # Incarcam variabilele de mediu doar daca nu suntem in modul de testare
@@ -16,7 +28,7 @@ def get_rag_context(content: str) -> str:
     Interogheaza serviciul RAG pentru a obtine context relevant.
     """
     if not RAG_API_URL or not RAG_API_KEY:
-        print("(!) RAG_API_URL sau RAG_API_KEY nu sunt setate in .env. Se returneaza context gol.")
+        safe_print("(!) RAG_API_URL sau RAG_API_KEY nu sunt setate in .env. Se returneaza context gol.")
         return ""
 
     headers = {
@@ -26,7 +38,7 @@ def get_rag_context(content: str) -> str:
     params = {"text": content}
 
     try:
-        print(f"\n>> Interogare RAG (GET) cu parametrul 'text': {content.encode('utf-8')}")
+        safe_print(f"\n>> Interogare RAG (GET) cu parametrul 'text': {content.encode('utf-8')}")
         response = requests.get(RAG_API_URL, headers=headers, params=params)
         response.raise_for_status()
         response_data = response.json()
@@ -34,13 +46,13 @@ def get_rag_context(content: str) -> str:
         context_list = [doc.get("content", "") for doc in documents]
         return "\n".join(context_list)
     except requests.exceptions.RequestException as e:
-        print(f"(!) Eroare la preluarea contextului din RAG: {e}")
+        safe_print(f"(!) Eroare la preluarea contextului din RAG: {e}")
         return ""
 
 # Cod pentru testare directa
 if __name__ == "__main__":
     test_query = "AI in banking"
-    print(f">> Rulam testul pentru rag_retriever cu interogarea: '{test_query}'")
+    safe_print(f">> Rulam testul pentru rag_retriever cu interogarea: '{test_query}'")
     context = get_rag_context(test_query)
-    print("\n<< Contextul returnat de RAG:")
-    print(context)
+    safe_print("\n<< Contextul returnat de RAG:")
+    safe_print(context)

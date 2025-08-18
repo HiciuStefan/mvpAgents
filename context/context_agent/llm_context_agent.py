@@ -2,6 +2,7 @@
 import os
 import json
 import re
+import sys
 from dotenv import load_dotenv
 from langchain_openai import AzureChatOpenAI
 
@@ -62,7 +63,12 @@ Example of a valid response for a batch containing three items (one high actiona
       "opportunity_type": "New business opportunity",
       "suggested_action": "Source candidates for a Mid-level AI Developer with NLP skills",
       "relevance": "Client has a new, urgent hiring need due to successful expansion.",
-      "suggested_reply": "Subject: Re: Urgent need for AI Developer\n\nHi [Client Name],\n\nThank you for reaching out. We understand the urgency and are happy to help. We are starting the search for a Mid-level AI Developer with NLP skills immediately and will send you the first batch of qualified candidates within the next 48 hours.\n\nBest regards,\n[Your Name]"
+      "suggested_reply": "Hi [Client Name],
+
+Thank you for reaching out. We understand the urgency and are happy to help. We are starting the search for a Mid-level AI Developer with NLP skills immediately and will send you the first batch of qualified candidates within the next 48 hours.
+
+Best regards,
+[Your Name]"
     }
   },
   {
@@ -92,6 +98,17 @@ Example of a valid response for a batch containing three items (one high actiona
 ]
 '''
 
+def safe_print(text, prefix=""):
+    """
+    Safely print text that may contain Unicode characters
+    """
+    try:
+        print(f"{prefix}{text}")
+    except UnicodeEncodeError:
+        # Fallback: encode with replacement characters
+        safe_text = text.encode('utf-8', errors='replace').decode('utf-8')
+        print(f"{prefix}{safe_text}")
+
 def get_llm_analysis(user_context: dict, rag_context: str, batch_content: list) -> list:
     """
     Construieste promptul, obtine analiza de la LLM pentru un intreg batch
@@ -113,7 +130,7 @@ def get_llm_analysis(user_context: dict, rag_context: str, batch_content: list) 
     try:
         # Apelam LLM-ul si curatam raspunsul
         # Adaugam un timeout mai mare pentru procesarea batch-urilor
-        response = llm.invoke(prompt, config={'timeout': 180})
+        response = llm.invoke(prompt, config={"timeout": 180})
         reply = response.content.strip()
 
         parsed_llm_output = []
@@ -189,6 +206,6 @@ def get_llm_analysis(user_context: dict, rag_context: str, batch_content: list) 
         return final_results
 
     except Exception as exc:
-        print(f"❌ LLM error or invalid JSON: {exc}\n🔎 Reply was:\n{reply}")
+        safe_print(f"❌ LLM error or invalid JSON: {exc}\n🔎 Reply was:\n{reply}")
         return error_response
 

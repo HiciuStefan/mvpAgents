@@ -24,6 +24,8 @@ class ApiClient:
         self.api_key = os.getenv(api_key_env)
         if not self.api_endpoint or not self.api_key:
             raise ValueError(f"Variabilele de mediu {api_endpoint_env} și/sau {api_key_env} nu sunt setate.")
+        
+        # At this point, both values are guaranteed to be strings due to the check above
 
     def send_data(self, data: dict, retries: int = 3, delay: int = 2) -> bool:
         """
@@ -58,11 +60,19 @@ class ApiClient:
                         return True
                 elif 400 <= response.status_code < 600:
                     print(f"⚠️ API a răspuns cu status {response.status_code} (încercarea {attempt}). Eroare irecuperabilă, oprire reîncercări.")
-                    print(f"Info: Răspuns API: {response.text}")
+                    try:
+                        print(f"Info: Răspuns API: {response.text}")
+                    except UnicodeEncodeError:
+                        safe_text = response.text.encode('utf-8', errors='replace').decode('utf-8')
+                        print(f"Info: Răspuns API: {safe_text}")
                     return False # Stop retrying for client/server errors
                 else:
                     print(f"⚠️ API a răspuns cu status {response.status_code} (încercarea {attempt})")
-                    print(f"Info: Răspuns API: {response.text}")
+                    try:
+                        print(f"Info: Răspuns API: {response.text}")
+                    except UnicodeEncodeError:
+                        safe_text = response.text.encode('utf-8', errors='replace').decode('utf-8')
+                        print(f"Info: Răspuns API: {safe_text}")
 
             except requests.RequestException as e:
                 print(f"❌ Eroare la trimiterea item-ului {item_id} (încercarea {attempt}): {e}")

@@ -1,69 +1,67 @@
+import os
 import json
+import sys
 from datetime import datetime, timezone
 import uuid
+from .payload_builder import build_dashboard_payload
 
-# --- Function copied directly from payload_builder.py for isolated testing ---
-def build_dashboard_payload(item: dict, analysis: dict) -> dict:
-    source_type = item.get("type", "unknown")
-    llm_analysis = analysis.get("analysis", {})
-    if not isinstance(llm_analysis, dict):
-        llm_analysis = {}
-        
-    payload = {}
+def safe_print(text, prefix=""):
+    """
+    Safely print text that may contain Unicode characters
+    """
+    try:
+        print(f"{prefix}{text}")
+    except UnicodeEncodeError:
+        # Fallback: encode with replacement characters
+        safe_text = text.encode('utf-8', errors='replace').decode('utf-8')
+        print(f"{prefix}{safe_text}")
 
-    if source_type == "tweet":
-        payload = {
-            "url": item.get("url", "https://twitter.com/placeholder/status/12345"),
-            "text": item.get("content", "No content provided"),
-            "actionable": True,
-            "client_name": "SolarisProAi",
-            "tweet_id": item.get("tweet_id", "123456789"),
-            "relevance": llm_analysis.get("relevance", "unknown"),
-            "suggested_action": llm_analysis.get("suggested_action", "No specific action suggested"),
-            "short_description": llm_analysis.get("short_description", "No description provided"),
-            "status": "new",
-            "reply": ""
-        }
-
-    if payload:
-        required_fields = ["url", "text", "actionable", "relevance", "suggested_action", "short_description", "client_name", "status", "reply", "tweet_id"]
-        
-        print("--- DEBUG: Payload content before validation ---")
-        print(json.dumps(payload, indent=2))
-
-        for field in required_fields:
-            if payload.get(field) is None:
-                print(f"  -> DEBUG: Validation failed. Required field '{field}' is missing or None.")
-                return {}, source_type
-
-    return payload, source_type
-# --- End of copied function ---
-
-# 1. Sample Twitter item
-test_tweet_item = {
-    "type": "twitter",
-    "content": "This is a test tweet!"
-}
-
-# 2. Mock analysis from LLM
-mock_analysis = {
-    "analysis": {
-        "short_description": "Test tweet - high",
-        "suggested_action": "Test action",
-        "relevance": "Test relevance"
+def test_payload_builder():
+    """
+    Testeaza functia build_dashboard_payload cu date de test.
+    """
+    # Date de test pentru un email
+    test_email = {
+        "type": "email",
+        "subject": "Test Subject",
+        "body": "Test email body content",
+        "from": "test@example.com",
+        "to": "recipient@example.com",
+        "date": "2024-01-01T00:00:00Z"
     }
-}
 
-# 3. Call the function
-payload, source_type = build_dashboard_payload(test_tweet_item, mock_analysis)
+    # Analiza LLM simulata
+    test_analysis = {
+        "short_description": "Test email analysis",
+        "actionable": True,
+        "priority_level": "medium",
+        "opportunity_type": "Test opportunity",
+        "suggested_action": "Test action",
+        "relevance": "Test relevance",
+        "suggested_reply": "Test reply"
+    }
 
-# 4. Print the final output
-print("\n--- Final Generated Payload ---")
-print(json.dumps(payload, indent=2))
+    try:
+        # Construieste payload-ul
+        payload, source_type = build_dashboard_payload(test_email, test_analysis)
+        
+        if payload:
+            safe_print("✅ Payload construit cu succes!")
+            safe_print(f"Tip sursa: {source_type}")
+            safe_print(f"Payload: {json.dumps(payload, indent=2, ensure_ascii=False)}")
+            
+            # Valideaza campurile obligatorii
+            required_fields = ['content', 'type', 'actionable']
+            for field in required_fields:
+                if field not in payload or payload[field] is None:
+                    safe_print(f"  -> DEBUG: Validation failed. Required field '{field}' is missing or None.")
+                else:
+                    safe_print(f"  -> DEBUG: Field '{field}' is valid: {payload[field]}")
+        else:
+            safe_print("❌ Eroare: Nu s-a putut construi payload-ul.")
+            
+    except Exception as e:
+        safe_print(f"❌ Eroare la testarea payload builder: {e}")
 
-if not payload:
-    print("\n--- Result ---")
-    print("🔴 The payload is EMPTY.")
-else:
-    print("\n--- Result ---")
-    print("🟢 The payload was generated successfully.")
+if __name__ == "__main__":
+    test_payload_builder()
