@@ -9,6 +9,8 @@ import { UrgentActionables } from "~/components/urgent_actionables";
 import { AppSidebar } from "~/components/sidebar/app-sidebar";
 // import BusinessIntelligenceCard2 from "./something";
 
+export const dynamic = "force-dynamic";
+
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ ref: string }> })
 {
