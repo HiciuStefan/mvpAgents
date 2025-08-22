@@ -1,0 +1,35 @@
+# Build outputs
+.next/
+out/
+dist/
+build/
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Logs
+*.log
+
+# Database
+*.db
+*.sqlite
+
+# Environment files
+.env*
+!.env.example
+
+# Generated files
+*.tsbuildinfo
+next-env.d.ts
+
+# Lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Migration files (preserve formatting)
+src/server/db/migrations/
+
+# Config files that should maintain their format
+tsconfig.json 

@@ -5,8 +5,10 @@ import { processedItemTypeEnum } from '~/server/db/schema';
 import { dateRangeValues, zodDateRangeEnum } from '~/components/filters/date_ranges';
 import { zodChannelEnum } from '~/components/filters/channel_ranges';
 import { eq } from 'drizzle-orm';
-import { processed_items } from '~/server/db/schema';
+import { processedItems } from '~/server/db/schema';
 import { revalidatePath } from 'next/cache';
+
+
 
 const prioritySchema = z.union([
 	z.literal("all"),
@@ -93,9 +95,9 @@ export const processed_items_router = createTRPCRouter({
 	updateUrgency: publicProcedure
 		.input(z.object({ id: z.string().uuid(), urgency: z.number().int().min(0).max(3) }))
 		.mutation(async ({ ctx, input }) => {
-			await ctx.db.update(processed_items)
+			await ctx.db.update(processedItems)
 				.set({ urgency: input.urgency })
-				.where(eq(processed_items.id, input.id));
+				.where(eq(processedItems.id, input.id));
 
 			// Revalidate list pages
 			revalidatePath('/business-intelligence');

@@ -17,11 +17,11 @@ interface WebsiteData {
   title: string;
   url: string;
   content: string;
-  opportunity_type: string;
+  opportunityType: string;
   read: boolean;
-  scraped_at: Date;
-  suggested_reply: string;
-  short_description: string;
+  scrapedAt: Date;
+  suggestedReply: string;
+  shortDescription: string;
   [key: string]: unknown;
 }
 
@@ -29,10 +29,10 @@ interface EmailData {
   subject: string;
   content: string;
   type: string;
-  message_id: string;
-  processed_at: Date;
-  suggested_reply: string;
-  short_description: string;
+  messageId: string;
+  processedAt: Date;
+  suggestedReply: string;
+  shortDescription: string;
   [key: string]: unknown;
 }
 
@@ -79,11 +79,11 @@ function openEmailReply(item: LatestItem, replyText: string) {
 }
 
 export default function SuggestedReplySection({ item }: SuggestedReplySectionProps) {
-  const [suggestedReply, setSuggestedReply] = useState(item.data?.suggested_reply ?? "");
+  const [suggestedReply, setSuggestedReply] = useState(item.data?.suggestedReply ?? "");
 
   const handleReplyToTweet = () => {
-    if (item.type === "twitter" && item.data?.tweet_id) {
-      const tweetId = item.data.tweet_id;
+    if (item.type === "twitter" && item.data?.tweetId) {
+      const tweetId = item.data.tweetId;
       if (tweetId) {
         openTwitterReply(tweetId, suggestedReply);
       } else {
@@ -109,7 +109,7 @@ export default function SuggestedReplySection({ item }: SuggestedReplySectionPro
       const emailData = item.data as EmailData;
       subject += emailData.subject ?? emailData.short_description ?? "";
     } else {
-      subject += item.data?.short_description ?? "";
+      subject += item.data?.shortDescription ?? "";
     }
     openEmailCompose(subject, suggestedReply);
   };

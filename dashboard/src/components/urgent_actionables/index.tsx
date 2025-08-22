@@ -78,7 +78,7 @@ export async function UrgentActionables() {
 						Business Intelligence
 					</CardTitle>
 					<span className="text-[10px] uppercase tracking-wide">
-						{latest_item ? 'Updated ' + formatDistanceToNow(latest_item.created_at, { addSuffix: true }) : 'No items found'}
+						{latest_item ? 'Updated ' + formatDistanceToNow(latest_item.createdAt, { addSuffix: true }) : 'No items found'}
 					</span>
 				</div>
 				{/* <CardDescription>
@@ -119,9 +119,9 @@ export async function UrgentActionables() {
 						<Link href={`/items/${item.id}?ref=business-intelligence`} key={index} className="flex items-center gap-2 text-sm p-2 rounded-md bg-zinc-100 hover:bg-[#EEEFF0] transition-background">
 							{/* <span>{getPriorityIcon(item.priority)}</span> */}
 							<span className="size-6 text-gray-600"><ChannelBadgeNoLabel type={item.type} className="text-xs" /></span>
-							<span className="font-medium">{item.client_name}</span>
+							<span className="font-medium">{item.clientName}</span>
 							<span className="text-gray-600">–</span>
-							<span className="text-gray-700">{item.data.short_description}</span>
+							<span className="text-gray-700">{item.data.shortDescription}</span>
 						</Link>
 					))}
 				</div>

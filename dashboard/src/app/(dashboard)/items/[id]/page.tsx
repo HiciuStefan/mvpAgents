@@ -24,7 +24,7 @@ export default async function ItemDetailPage({ params, searchParams }: { params:
 		notFound();
 	}
 
-	const createdAt = item.created_at ? new Date(item.created_at) : undefined;
+	const createdAt = item.createdAt ? new Date(item.createdAt) : undefined;
 	const readableDate = createdAt ? format(createdAt, "PPpp") : "";
 
 	const urgencyLabel = ["None", "Low", "Medium", "High"][item.urgency] ?? "None";
@@ -40,7 +40,7 @@ export default async function ItemDetailPage({ params, searchParams }: { params:
 					<CardHeader className="border-b">
 						<div className="flex items-start justify-between">
 							<div className="flex items-center gap-3">
-								<CardTitle className="text-xl">{item.client_name}</CardTitle>
+								<CardTitle className="text-xl">{item.clientName}</CardTitle>
 								<ChannelBadge type={item.type} />
 							</div>
 							<CardDescription>{readableDate}</CardDescription>
@@ -69,7 +69,7 @@ export default async function ItemDetailPage({ params, searchParams }: { params:
 								<div className="space-y-3">
 									<div className="text-lg font-medium flex items-center gap-2">
 										<Info className="size-4 text-gray-500" />
-										<span>{item.data.short_description}</span>
+										<span>{item.data.shortDescription}</span>
 									</div>
 									{item.actionable && item.data.relevance && (
 										<CollapsibleText text={item.data.relevance} collapsedLines={6} />
@@ -120,17 +120,17 @@ export default async function ItemDetailPage({ params, searchParams }: { params:
 								</div>
 							</div>
 
-							{item.actionable && "suggested_action" in item.data && item.data.suggested_action && (
+							{item.actionable && "suggestedAction" in item.data && item.data.suggestedAction && (
 								<div className="p-3 rounded-md bg-blue-50 flex items-center gap-2 text-[#1b4fb3] font-medium text-md">
 									<SparkleSVG	size={16} />
-									<span>{item.data.suggested_action}</span>
+									<span>{item.data.suggestedAction}</span>
 								</div>
 							)}
 						</div>
 					</CardContent>
 
 					{/* Suggested Reply Section */}
-					{item.actionable &&item.data?.suggested_action && (
+					{item.actionable &&item.data?.suggestedAction && (
 						<div className="px-6 pb-6">
 							<SuggestedReplySection item={item} />
 						</div>
