@@ -8,18 +8,15 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-# Construiește calea către fișierul de configurare
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-CONFIG_FILE = os.path.join(SCRIPT_DIR, "..", "config", "twitter_config.json")
+from supabase_retriever import load_json_from_supabase
 
 def load_monitored_urls():
-    """Încarcă URL-urile monitorizate din fișierul JSON."""
-    if not os.path.exists(CONFIG_FILE):
-        print(f"Fișierul de configurare {CONFIG_FILE} nu a fost găsit.")
-        return []
-    with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
-        data = json.load(f)
-        return data.get("monitored_urls", [])
+    """Încarcă URL-urile monitorizate din Supabase (item 'twitter_config')."""
+    config = load_json_from_supabase('twitter_config')
+    if config and 'monitored_urls' in config:
+        return config.get('monitored_urls', [])
+    print("Configurația pentru Twitter nu a fost găsită în Supabase sau nu conține 'monitored_urls'.")
+    return []
 
 load_dotenv()
 TWITTER_USER = os.getenv("TWITTER_USER")

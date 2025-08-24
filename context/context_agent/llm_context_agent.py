@@ -5,6 +5,8 @@ import re
 import sys
 from dotenv import load_dotenv
 from langchain_openai import AzureChatOpenAI
+from pydantic import ValidationError
+from .schema import LLMOutputItem
 
 load_dotenv()
 
@@ -39,14 +41,18 @@ Each object in the array represents ONE item from the input batch and MUST have 
   - "opportunity_type": string (For actionable items: e.g., "New business opportunity", "Reputational risk", "Client request". For non-actionable items: " ")
   - "suggested_action": string (REQUIRED for actionable items: A concrete next step, e.g., "Schedule a discovery call with Sarah Chen". For non-actionable items: " ")
   - "relevance": string (Max 100 characters. REQUIRED for actionable items: explaining why it's important. For non-actionable items: " ")
-  - "suggested_reply": string (REQUIRED for actionable items: A draft reply. If the item is an email or article, format as an email. If it's a tweet, format as a tweet. For non-actionable items: " ")
+  - "suggested_reply": string (REQUIRED for actionable items: A draft reply following the format rules below. For non-actionable items: " ")
 
 **CRITICAL RULES:**
 1.  **ABSOLUTELY NO FILTERING:** You MUST include ALL items from the input batch in your output array. Do NOT omit any items.
 2.  **JSON ONLY:** Your entire response must be a single, valid JSON array `[...]`. Do not include any text, explanations, or markdown before or after the array.
 3.  **DOUBLE QUOTES:** Use only double quotes for all keys and string values in the JSON.
-4.  **REPLY FORMATTING:** For the `suggested_reply` field, generate a draft in the appropriate format: an email for emails/articles, and a tweet for tweets. For non-actionable items, this MUST be an empty string.
-5.  **URGENT/SENSITIVE REPLIES:** If an item is classified with `priority_level: "high"` AND `opportunity_type: "Reputational risk"` or involves a similarly urgent and sensitive issue, the `suggested_reply` MUST be: `"Immediate phone call required to address this sensitive issue."`
+4.  **REPLY FORMATTING:** For the `suggested_reply` field, generate a draft in the appropriate format based on the original item's type.
+5.  **REPLY STYLE:**
+    - **For emails or articles:** The reply should be a professional, well-structured email.
+    - **For tweets:** The reply MUST be a concise, engaging tweet under 280 characters. It should use a very informal, direct, and modern tone, like a casual conversation. It MAY include relevant hashtags or user mentions (@). **ABSOLUTELY NO email-style greetings (e.g., "Hi [Name],", "Dear [Name],") or closings (e.g., "Best regards,"). For example, a reply should NEVER start with "Hi SolarisProAi,". Think social media, not corporate email.**
+    - For non-actionable items, this MUST be an empty string.
+6.  **URGENT/SENSITIVE REPLIES:** If an item is classified with `priority_level: "high"` AND `opportunity_type: "Reputational risk"` or involves a similarly urgent and sensitive issue, the `suggested_reply` MUST be: `"Immediate phone call required to address this sensitive issue."`
 '''
 
 JSON_INSTRUCTIONS = '''Based on the user profile, the historical context (RAG), and the batch of items provided, analyze each item.
@@ -153,6 +159,16 @@ def get_llm_analysis(user_context: dict, rag_context: str, batch_content: list) 
                     raise ValueError("LLM did not return a JSON array.")
             except json.JSONDecodeError:
                 raise ValueError("LLM response was not a valid JSON array.")
+
+        # --- Pydantic Validation Step ---
+        try:
+            # Validate each item in the parsed list. .model_dump() ensures the rest of the function gets a dict.
+            validated_output = [LLMOutputItem.model_validate(item).model_dump() for item in parsed_llm_output]
+            parsed_llm_output = validated_output # Replace the original list with the validated one
+        except ValidationError as e:
+            # If validation fails, we raise an error to be caught by the outer exception handler.
+            raise ValueError(f"Pydantic validation failed: {e}")
+        # --- End Pydantic Validation ---
 
         # Create a lookup for LLM-analyzed items based on their original_item content
         llm_output_map = {}

@@ -1,9 +1,9 @@
-
 import os
 import json
 import sys
 from dotenv import load_dotenv
 from .rag_sender import send_to_rag
+from supabase_retriever import load_json_from_supabase
 
 def safe_print(text, prefix=""):
     """
@@ -18,62 +18,47 @@ def safe_print(text, prefix=""):
 
 load_dotenv()
 
-# Calea catre fisierul de context de baza
-BASE_CONTEXT_PATH = 'context/digital_excellence.json'
-
 def main():
     """
     Functia principala care trimite contextul de baza catre RAG.
     """
-    # Verificam daca fisierul de context de baza exista
-    if not os.path.exists(BASE_CONTEXT_PATH):
-        safe_print(f"(!) Eroare: Fisierul {BASE_CONTEXT_PATH} nu a fost gasit.")
+    # Incarcam contextul de baza din Supabase
+    base_context_data = load_json_from_supabase('base_context')
+
+    if not base_context_data or 'context' not in base_context_data:
+        safe_print("(!) Eroare: Nu s-a putut încărca base_context sau formatul este invalid.")
         return
 
-    try:
-        # Incarcam contextul de baza
-        with open(BASE_CONTEXT_PATH, 'r', encoding='utf-8') as f:
-            base_context = json.load(f)
-    except json.JSONDecodeError:
-        safe_print(f"(!) Eroare: Fisierul {BASE_CONTEXT_PATH} nu este un JSON valid.")
-        return
+    entries_to_send = []
+    for item in base_context_data['context']:
+        # Construct the input string from the item's content
+        input_text = f"Type: {item.get('type', 'N/A')}\n"
+        if 'title' in item:
+            input_text += f"Title: {item.get('title', 'N/A')}\n"
+        if 'content' in item:
+            input_text += f"Content: {item.get('content', 'N/A')}\n"
+        if 'body' in item:
+            input_text += f"Body: {item.get('body', 'N/A')}\n"
+        if 'recommendation' in item:
+            recommendation = item.get('recommendation', {})
+            input_text += f"Recommendation Action: {recommendation.get('action', 'N/A')}\n"
+            input_text += f"Recommendation Reasoning: {recommendation.get('reasoning', 'N/A')}"
 
-    # Extragem intrari specifice pentru SolarisProAi
-    solaris_pro_ai_entries = []
-    
-    # Adaugam informatii despre companie
-    company_info = {
-        "input": f"Company: {base_context.get('company', 'N/A')} - {base_context.get('tagline', 'N/A')}",
-        "metadata": {"type": "company_info", "source": "digital_excellence.json"}
-    }
-    solaris_pro_ai_entries.append(company_info)
-    
-    # Adaugam misiunea si viziunea
-    mission_vision = {
-        "input": f"Mission: {base_context.get('mission', 'N/A')} Vision: {base_context.get('vision', 'N/A')}",
-        "metadata": {"type": "mission_vision", "source": "digital_excellence.json"}
-    }
-    solaris_pro_ai_entries.append(mission_vision)
-    
-    # Adaugam serviciile
-    services = base_context.get('services', [])
-    if services:
-        services_text = "Services: " + "; ".join(services)
-        services_entry = {
-            "input": services_text,
-            "metadata": {"type": "services", "source": "digital_excellence.json"}
+        entry = {
+            "input": input_text,
+            "metadata": {"type": item.get("type", "general"), "source": "base_context"}
         }
-        solaris_pro_ai_entries.append(services_entry)
+        entries_to_send.append(entry)
 
-    safe_print(f"Se trimit {len(solaris_pro_ai_entries)} intrari SolarisProAi catre RAG...")
-    
+    safe_print(f"Se trimit {len(entries_to_send)} intrari din base_context catre RAG...")
+
     # Trimitem fiecare intrare catre RAG
     success_count = 0
-    for entry in solaris_pro_ai_entries:
+    for entry in entries_to_send:
         if send_to_rag(entry):
             success_count += 1
-    
-    safe_print(f"Trimitere completa. {success_count}/{len(solaris_pro_ai_entries)} intrari trimise cu succes.")
+
+    safe_print(f"Trimitere completa. {success_count}/{len(entries_to_send)} intrari trimise cu succes.")
 
 if __name__ == "__main__":
     main()

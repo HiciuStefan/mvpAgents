@@ -1,10 +1,11 @@
-import json
-from pathlib import Path
 from typing import Any, Dict
-
-CONFIG_PATH = Path(__file__).resolve().parent / "user_config.json"
+# Presupunem că supabase_retriever este în PYTHONPATH
+from supabase_retriever import load_json_from_supabase
 
 def load_user_profile() -> Dict[str, Any]:
-    """Load the user JSON profile from agents/config/user_config.json."""
-    with open(CONFIG_PATH, encoding="utf-8") as fp:
-        return json.load(fp)
+    """Încarcă profilul utilizatorului din Supabase (item-ul 'user_config')."""
+    user_config = load_json_from_supabase('user_config')
+    if user_config:
+        return user_config
+    # Returnează un dicționar gol dacă nu se găsește configurația pentru a evita erorile
+    return {}

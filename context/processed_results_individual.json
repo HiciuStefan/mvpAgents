@@ -14,10 +14,10 @@
       "short_description": "Urgent request for new developer",
       "actionable": true,
       "priority_level": "high",
-      "opportunity_type": "New business opportunity",
+      "opportunity_type": "Client request",
       "suggested_action": "Source candidates for a Mid-level AI Developer with NLP skills",
       "relevance": "Client has a new, urgent hiring need due to successful expansion.",
-      "suggested_reply": "Hi Sarah,\n\nThank you for reaching out. We understand the urgency and are happy to help. We are starting the search for a Mid-level AI Developer with NLP skills immediately and will send you the first batch of qualified candidates within the next 48 hours.\n\nBest regards,\nMark"
+      "suggested_reply": "Hi Sarah,\n\nThank you for reaching out! I will start sourcing candidates for the Mid-level AI Developer position immediately and keep you updated on the progress.\n\nBest,\nMark"
     }
   },
   {
@@ -36,13 +36,13 @@
       "scenario_type": "positive"
     },
     "analysis": {
-      "short_description": "Positive update on developer performance",
+      "short_description": "Update on developer performance",
       "actionable": true,
       "priority_level": "medium",
       "opportunity_type": "Client request",
-      "suggested_action": "Acknowledge the feedback and prepare for future hiring needs.",
-      "relevance": "Positive feedback indicates satisfaction and potential future hiring.",
-      "suggested_reply": "Hi Sarah,\n\nThank you for the update! I'm glad to hear Priya is performing well. We will keep an eye on future hiring needs and be ready to assist when you're ready for the next developer.\n\nBest,\nMark"
+      "suggested_action": "Prepare candidate pipeline for future developer roles",
+      "relevance": "Client indicates potential future hiring needs due to growth.",
+      "suggested_reply": "Hi Sarah,\n\nThank you for the update on Priya's performance! I'm glad to hear she's doing well. I'll start preparing a candidate pipeline for the potential third developer role. Let’s keep the momentum going!\n\nBest,\nMark"
     }
   },
   {
@@ -59,13 +59,13 @@
       "scenario_type": "positive"
     },
     "analysis": {
-      "short_description": "Public praise for partnership",
+      "short_description": "Acknowledgment of hiring success",
       "actionable": true,
       "priority_level": "low",
-      "opportunity_type": "Relationship building",
-      "suggested_action": "Publicly reply to the tweet to thank them and reinforce the partnership",
-      "relevance": "Positive public mention strengthens the brand and relationship with the client.",
-      "suggested_reply": "@SolarisProAi We're thrilled to have you as a partner! Thank you for the kind words. Looking forward to achieving great things together. #Partnership #Success"
+      "opportunity_type": "Relationship-building note",
+      "suggested_action": "Reply to the tweet to acknowledge the hiring.",
+      "relevance": "Strengthening partnership visibility and brand association.",
+      "suggested_reply": "Congrats on the new hire! 🎉 Excited to see how your team grows! #Partnership #AI"
     }
   },
   {
@@ -86,9 +86,9 @@
       "actionable": true,
       "priority_level": "high",
       "opportunity_type": "New business opportunity",
-      "suggested_action": "Schedule a discovery call with the startup to discuss their needs.",
-      "relevance": "Direct inquiry indicates a potential new client relationship.",
-      "suggested_reply": "Thanks for reaching out! We'd love to discuss how we can assist you in finding top-tier ML engineers. Let's set up a time to chat!"
+      "suggested_action": "Respond to DM and schedule a discovery call",
+      "relevance": "Potential client seeking collaboration for ML recruitment.",
+      "suggested_reply": "Thanks for reaching out! Let's chat about your needs for ML engineers. DM me to set up a time!"
     }
   },
   {
@@ -106,13 +106,13 @@
       "scenario_type": "positive"
     },
     "analysis": {
-      "short_description": "New lead from AI startup",
+      "short_description": "New lead from InnovateAI for partnership",
       "actionable": true,
       "priority_level": "high",
       "opportunity_type": "New business opportunity",
-      "suggested_action": "Follow up with InnovateAI immediately to schedule a meeting.",
-      "relevance": "High-value lead indicates potential for new business.",
-      "suggested_reply": "Hi InnovateAI,\n\nThank you for reaching out! We’re excited to discuss how we can assist you with your talent acquisition needs. Let’s schedule a meeting to explore this further.\n\nBest,\nMark"
+      "suggested_action": "Follow up with InnovateAI immediately to schedule a meeting",
+      "relevance": "Direct inquiry from a high-potential client. Prompt action is crucial for conversion.",
+      "suggested_reply": "Thank you for your inquiry, InnovateAI! We're excited to explore partnership opportunities with you. Let's schedule a meeting to discuss your talent acquisition needs for your ML engineering team. Please let us know your availability."
     }
   },
   {
@@ -131,7 +131,7 @@
       "scenario_type": "neutral"
     },
     "analysis": {
-      "short_description": "Update on onboarding policies",
+      "short_description": "Updated onboarding policies notification",
       "actionable": false,
       "priority_level": "neutral",
       "opportunity_type": " ",
@@ -155,7 +155,7 @@
       "scenario_type": "neutral"
     },
     "analysis": {
-      "short_description": "General update on internal training program",
+      "short_description": "General update on AI training program",
       "actionable": false,
       "priority_level": "neutral",
       "opportunity_type": " ",
@@ -179,7 +179,7 @@
       "scenario_type": "neutral"
     },
     "analysis": {
-      "short_description": "Update on team expansion pace",
+      "short_description": "Team expansion update",
       "actionable": false,
       "priority_level": "neutral",
       "opportunity_type": " ",
@@ -208,8 +208,8 @@
       "actionable": true,
       "priority_level": "high",
       "opportunity_type": "Reputational risk",
-      "suggested_action": "Discuss Alex's compensation and prepare for potential replacement.",
-      "relevance": "Immediate action required to retain talent and avoid disruption.",
+      "suggested_action": "Discuss Alex's salary expectations and potential replacement options.",
+      "relevance": "Alex's resignation could disrupt team operations and client projects.",
       "suggested_reply": "Immediate phone call required to address this sensitive issue."
     }
   },
@@ -229,13 +229,13 @@
       "scenario_type": "negative"
     },
     "analysis": {
-      "short_description": "Feedback on candidate quality",
+      "short_description": "Feedback on candidate screening process",
       "actionable": true,
       "priority_level": "medium",
       "opportunity_type": "Client request",
       "suggested_action": "Review and improve the candidate screening process.",
-      "relevance": "Feedback indicates a need for improvement to maintain client trust.",
-      "suggested_reply": "Hi Sarah,\n\nThank you for your feedback. We take this seriously and will review our screening process to ensure we align better with your expectations moving forward.\n\nBest,\nMark"
+      "relevance": "Client's trust is at stake; improvements needed to meet expectations.",
+      "suggested_reply": "Hi Sarah,\n\nThank you for your feedback regarding the candidate. I will review our screening process to ensure we better align with your expectations moving forward. Please let me know if there are specific areas you would like us to focus on.\n\nBest,\nMark"
     }
   },
   {
@@ -253,13 +253,13 @@
       "scenario_type": "negative"
     },
     "analysis": {
-      "short_description": "Challenges during expansion",
+      "short_description": "Team structure reevaluation due to expansion",
       "actionable": true,
       "priority_level": "medium",
-      "opportunity_type": "Reputational risk",
-      "suggested_action": "Reach out to discuss how we can support during this transition.",
-      "relevance": "Potential risk to partnership; proactive engagement is necessary.",
-      "suggested_reply": "Hi SolarisProAi,\n\nWe understand that rapid growth can bring challenges. We're here to support you and ensure alignment with your goals. Let's discuss how we can assist during this transition.\n\nBest,\nMark"
+      "opportunity_type": "Client request",
+      "suggested_action": "Reach out to discuss support during transition.",
+      "relevance": "Maintaining partnership stability during changes is crucial.",
+      "suggested_reply": "We're here to support you through this transition. Let's connect to discuss how we can adapt our services to better align with your evolving needs."
     }
   },
   {
@@ -272,13 +272,13 @@
       "scenario_type": "twitter"
     },
     "analysis": {
-      "short_description": "Inquiry for ML engineers collaboration",
+      "short_description": "Collaboration request for ML engineers",
       "actionable": true,
-      "priority_level": "high",
+      "priority_level": "medium",
       "opportunity_type": "New business opportunity",
-      "suggested_action": "Respond to DM and schedule a discovery call.",
-      "relevance": "Direct inquiry indicates a potential new client relationship.",
-      "suggested_reply": "Thanks for the shoutout! We'd love to chat about how we can help you find top-tier ML engineers. Let's set up a time to discuss!"
+      "suggested_action": "DM Warp to discuss collaboration details.",
+      "relevance": "Startup seeks collaboration for hiring ML engineers, aligning with our expertise.",
+      "suggested_reply": "Sounds great! Let's chat about how we can help you find top-tier ML engineers. DM us your availability!"
     }
   }
 ]

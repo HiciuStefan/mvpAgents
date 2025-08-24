@@ -7,9 +7,9 @@ from agents._tools.llm_websiteAgent import analyze_article, load_user_profile
 from agents.common.api_sender import ApiClient # MODIFICAT
 from agents.common.context_api_fetcher import get_client_context
 from agents.common.json_validator import validate_json
+from supabase_retriever import load_json_from_supabase
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-SITES_FILE = os.path.join(SCRIPT_DIR, "..", "config", "website_config.json")
 MAX_ARTICLES = 4
 PROCESSED_FILE = "results/processed_articles.json"
 
@@ -34,17 +34,14 @@ def save_json(path, data):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
-# Încarcă configurațiile din sites.json
+# Încarcă configurațiile din Supabase
 def load_sites_config():
-    if not os.path.exists(SITES_FILE):
-        print(f"⚠️ Fișierul {SITES_FILE} nu există.")
-        return {}
-    with open(SITES_FILE, "r", encoding="utf-8") as f:
-        try:
-            return json.load(f)
-        except json.JSONDecodeError:
-            print(f"⚠️ Eroare la parsarea {SITES_FILE}.")
-            return {}
+    """Încarcă configurațiile site-urilor din Supabase (item 'website_config')."""
+    config = load_json_from_supabase('website_config')
+    if config:
+        return config
+    print("Configurația pentru website-uri nu a fost găsită în Supabase.")
+    return [] # Returnează listă goală pentru a permite iterația
 
 # Verifică dacă articolul a mai fost procesat
 def already_processed(processed, url):

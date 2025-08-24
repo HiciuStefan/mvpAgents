@@ -7,6 +7,7 @@ from .rag_retriever import get_rag_context
 from .rag_sender import send_to_rag
 from datetime import datetime, timezone
 import uuid
+from supabase_retriever import load_json_from_supabase
 
 def safe_print(text, prefix=""):
     """
@@ -19,39 +20,24 @@ def safe_print(text, prefix=""):
         safe_text = text.encode('utf-8', errors='replace').decode('utf-8')
         print(f"{prefix}{safe_text}")
 
-def load_json_file(file_path: str):
-    """
-    Incarca un fisier JSON si returneaza continutul.
-    """
-    if not os.path.exists(file_path):
-        safe_print(f"Fisierul nu a fost gasit la calea: {file_path}")
-        return None
-    
-    try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except json.JSONDecodeError:
-        safe_print(f"Eroare la decodarea JSON din fisierul: {file_path}")
-        return None # Return None on error
-
 from .payload_builder import build_dashboard_payload
 
 if __name__ == "__main__":
     safe_print("Initializare procesare batch...")
 
-    # 1. Incarcare contexte si scenarii
-    user_context = load_json_file('context/digital_excellence.json')
+    # 1. Incarcare contexte si scenarii din Supabase
+    user_context = load_json_from_supabase('user_config')
     
     scenarios_to_load = {
-        "positive": "context/scenarios/positive_scenarios.json",
-        "neutral": "context/scenarios/neutral_scenarios.json",
-        "negative": "context/scenarios/negative_scenarios.json", 
-        "twitter": "context/scenarios/twitter_scraped.json"
+        "positive": "positive_scenarios",
+        "neutral": "neutral_scenarios",
+        "negative": "negative_scenarios", 
+        "twitter": "twitter_scraped"
     }
 
     all_items = []
-    for scenario_type, path in scenarios_to_load.items():
-        scenarios = load_json_file(path)
+    for scenario_type, item_name in scenarios_to_load.items():
+        scenarios = load_json_from_supabase(item_name)
         if scenarios:  # Only process if scenarios were loaded successfully
             for item in scenarios:
                 # Add scenario type to each item
@@ -59,7 +45,7 @@ if __name__ == "__main__":
                 all_items.append(item)
 
     if not user_context or not all_items:
-        safe_print("Oprire proces. Nu s-au putut incarca fisierele de context sau scenariile.")
+        safe_print("Oprire proces. Nu s-au putut incarca fisierele de context sau scenariile din Supabase.")
         exit()
 
     # 2. Normalizare si pregatire continut pentru RAG
@@ -115,7 +101,7 @@ if __name__ == "__main__":
             if payload:
                 desc = analysis.get('short_description', 'N/A')
                 safe_print(f"  -> Se trimite '{source_type}' la dashboard: {desc}")
-                send_context_to_dashboard(payload, source_type)
+                # send_context_to_dashboard(payload, source_type)
             else:
                 safe_print(f"  -> Eroare: Nu s-a putut construi payload-ul pentru item.")
 
