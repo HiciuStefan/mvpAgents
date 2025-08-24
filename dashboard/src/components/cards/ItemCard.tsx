@@ -20,10 +20,10 @@ export function ItemCard({ item, origin }: { item: LatestItem; origin?: string }
 	const pathname = usePathname();
 	const derivedOrigin = pathname ? pathname.replace(/^\//, "") : undefined;
 
-	const { id, type, data, client_name, actionable, urgency } = item;
-	const { short_description, relevance } = data;
+	const { id, type, data, clientName, actionable, urgency } = item;
+	const { shortDescription, relevance } = data;
 
-	const suggested_action = 'suggested_action' in data ? data.suggested_action : null;
+	const suggested_action = 'suggestedAction' in data ? data.suggestedAction : null;
 
 
 
@@ -41,13 +41,13 @@ export function ItemCard({ item, origin }: { item: LatestItem; origin?: string }
 			)}
 		>
 			<CardHeader className="w-[200px] shrink-0 flex flex-col items-start h-full py-[5px] gap-3">
-				<CardTitle>{client_name}</CardTitle>
+				<CardTitle>{clientName}</CardTitle>
 				<ChannelBadge type={type} />
 			</CardHeader>
 			<CardContent className="pr-4">
 				<div className="flex flex-col items-start gap-1">
 					<div>
-						<div className="text-lg font-medium">{short_description}</div>
+						<div className="text-lg font-medium">{shortDescription}</div>
 						{actionable &&
 							<div className="mb-4 text-sm text-gray-500">{relevance}</div>
 						}

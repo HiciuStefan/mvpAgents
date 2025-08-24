@@ -60,17 +60,17 @@ export async function LatestProcessed()
 						</TableHeader>
 						<TableBody>
 							{latest_items.map((item, index) => {
-								const { type, data, actionable, client_name } = item;
+								const { type, data, actionable, clientName } = item;
 
-								const { short_description } = data;
+								const { shortDescription } = data;
 
 								const action_type = actionable ? 'Actionable' : 'Informative';
 
 								return (
 									<TableRow key={index}>
 										<TableCell className="font-medium">{get_display_type(type)}</TableCell>
-										<TableCell>{short_description}</TableCell>
-										<TableCell>{client_name}</TableCell>
+										<TableCell>{shortDescription}</TableCell>
+										<TableCell>{clientName}</TableCell>
 										<TableCell className="text-right">{action_type}</TableCell>
 									</TableRow>
 								)

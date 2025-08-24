@@ -1,6 +1,6 @@
 import { type NextRequest } from 'next/server';
 import { api } from "~/trpc/server";
-import { processed_websites_schema, processed_GET_schema, processed_DELETE_schema } from '~/server/db/schema';
+import { processedWebsitesSchema, processed_GET_schema, processed_DELETE_schema } from '~/server/db/schema';
 import { handle_get } from '~/app/api/agents/handle_get';
 import { handle_post } from '~/app/api/agents/handle_post';
 import { handle_delete } from '~/app/api/agents/handle_delete';
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest)
 	return handle_post(
 		req,
 		'website',
-		processed_websites_schema,
+		processedWebsitesSchema,
 		(input) => api.website.create(input),
 	);
 }

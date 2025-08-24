@@ -1,10 +1,12 @@
 import { desc, inArray, eq, and, gte } from 'drizzle-orm';
-import { email, processed_items, twitter, website } from './schema';
+import { email, twitter, website } from './schema';
 import { db } from '.';
 import { startOfToday } from 'date-fns';
 import { subDays } from 'date-fns';
 import type { DateRangeValueType } from '~/components/filters/date_ranges';
 import type { ChannelValueType } from '~/components/filters/channel_ranges';
+import { processedItems } from './schemas/processed-items';
+
 
 // Define types for each table's data
 type WebsiteData = typeof website.$inferSelect;
@@ -12,7 +14,7 @@ type EmailData = typeof email.$inferSelect;
 type TwitterData = typeof twitter.$inferSelect;
 
 // Define base processed item type
-type ProcessedItem = typeof processed_items.$inferSelect;
+type ProcessedItem = typeof processedItems.$inferSelect;
 
 
 
@@ -54,16 +56,16 @@ export async function fetch_latest_items({
 	const conditions = [];
 
 	if (actionable === true) {
-		conditions.push(eq(processed_items.actionable, true));
+		conditions.push(eq(processedItems.actionable, true));
 	}
 
 	if (dateFilter) {
-		conditions.push(gte(processed_items.created_at, dateFilter));
+		conditions.push(gte(processedItems.createdAt, dateFilter));
 	}
 
 	// Add channel filtering if channel is defined and not "all"
 	if (channel && channel !== 'all') {
-		conditions.push(eq(processed_items.type, channel));
+		conditions.push(eq(processedItems.type, channel));
 	}
 
 	// if (priority !== 'all') {
@@ -74,10 +76,10 @@ export async function fetch_latest_items({
 	// Step 1: Get the latest 10 processed items
 	const latestItems = await db
 		.select()
-		.from(processed_items)
+		.from(processedItems)
 		// .where(actionable === true ? eq(processed_items.actionable, true) : undefined)
 		.where(conditions.length ? and(...conditions) : undefined)
-		.orderBy(desc(processed_items.created_at))
+		.orderBy(desc(processedItems.createdAt))
 		.limit(limit);
 
 
@@ -89,13 +91,13 @@ export async function fetch_latest_items({
 	// Step 3: Fetch child data by type
 	const [websiteData, emailData, twitterData] = await Promise.all([
 		websiteIds.length > 0
-			? db.select().from(website).where(inArray(website.processed_item_id, websiteIds))
+			? db.select().from(website).where(inArray(website.processedItemId, websiteIds))
 			: Promise.resolve([]),
 		emailIds.length > 0
-			? db.select().from(email).where(inArray(email.processed_item_id, emailIds))
+			? db.select().from(email).where(inArray(email.processedItemId, emailIds))
 			: Promise.resolve([]),
 		twitterIds.length > 0
-			? db.select().from(twitter).where(inArray(twitter.processed_item_id, twitterIds))
+			? db.select().from(twitter).where(inArray(twitter.processedItemId, twitterIds))
 			: Promise.resolve([]),
 	]);
 
@@ -105,19 +107,19 @@ export async function fetch_latest_items({
 		if (item.type === 'website') {
 			return {
 				...item,
-				data: websiteData.find(w => w.processed_item_id === item.id),
+				data: websiteData.find(w => w.processedItemId === item.id),
 			} as LatestItem;
 		}
 		if (item.type === 'email') {
 			return {
 				...item,
-				data: emailData.find(e => e.processed_item_id === item.id),
+				data: emailData.find(e => e.processedItemId === item.id),
 			} as LatestItem;
 		}
 		if (item.type === 'twitter') {
 			return {
 				...item,
-				data: twitterData.find(t => t.processed_item_id === item.id),
+				data: twitterData.find(t => t.processedItemId === item.id),
 			} as LatestItem;
 		}
 		return item as LatestItem; // TypeScript should infer correctly
@@ -139,19 +141,19 @@ export async function fetch_latest_items_by_type({
 
 	// Step 1: Get items of the specified type from today
 	const whereConditions = [
-		eq(processed_items.type, type),
-		gte(processed_items.created_at, startOfToday)
+		eq(processedItems.type, type),
+		gte(processedItems.createdAt, startOfToday)
 	];
 
 	if (actionable === true) {
-		whereConditions.push(eq(processed_items.actionable, true));
+		whereConditions.push(eq(processedItems.actionable, true));
 	}
 
 	const latestItems = await db
 		.select()
-		.from(processed_items)
+		.from(processedItems)
 		.where(and(...whereConditions))
-		.orderBy(desc(processed_items.created_at))
+		.orderBy(desc(processedItems.createdAt))
 		.limit(limit);
 
 	// Step 2: Get IDs for the specific type
@@ -160,34 +162,34 @@ export async function fetch_latest_items_by_type({
 	// Step 3: Fetch child data based on type
 	if (type === 'website') {
 		const websiteData = itemIds.length > 0
-			? await db.select().from(website).where(inArray(website.processed_item_id, itemIds))
+			? await db.select().from(website).where(inArray(website.processedItemId, itemIds))
 			: [];
 
 		return latestItems.map(item => ({
 			...item,
-			data: websiteData.find(w => w.processed_item_id === item.id),
+			data: websiteData.find(w => w.processedItemId === item.id),
 		})) as LatestItem[];
 	}
 
 	if (type === 'email') {
 		const emailData = itemIds.length > 0
-			? await db.select().from(email).where(inArray(email.processed_item_id, itemIds))
+			? await db.select().from(email).where(inArray(email.processedItemId, itemIds))
 			: [];
 
 		return latestItems.map(item => ({
 			...item,
-			data: emailData.find(e => e.processed_item_id === item.id),
+			data: emailData.find(e => e.processedItemId === item.id),
 		})) as LatestItem[];
 	}
 
 	if (type === 'twitter') {
 		const twitterData = itemIds.length > 0
-			? await db.select().from(twitter).where(inArray(twitter.processed_item_id, itemIds))
+			? await db.select().from(twitter).where(inArray(twitter.processedItemId, itemIds))
 			: [];
 
 		return latestItems.map(item => ({
 			...item,
-			data: twitterData.find(t => t.processed_item_id === item.id),
+			data: twitterData.find(t => t.processedItemId === item.id),
 		})) as LatestItem[];
 	}
 
@@ -197,8 +199,8 @@ export async function fetch_latest_items_by_type({
 export async function fetch_item_by_id(id: string): Promise<LatestItem | null> {
 	const items = await db
 		.select()
-		.from(processed_items)
-		.where(eq(processed_items.id, id))
+		.from(processedItems)
+		.where(eq(processedItems.id, id))
 		.limit(1);
 
 	const [found] = items;
@@ -207,17 +209,17 @@ export async function fetch_item_by_id(id: string): Promise<LatestItem | null> {
 	const item = found;
 
 	if (item.type === 'website') {
-		const data = await db.select().from(website).where(eq(website.processed_item_id, id)).limit(1);
+		const data = await db.select().from(website).where(eq(website.processedItemId, id)).limit(1);
 		if (data.length === 0) return null;
 		return { ...item, type: 'website', data: data[0] } as LatestItem;
 	}
 	if (item.type === 'email') {
-		const data = await db.select().from(email).where(eq(email.processed_item_id, id)).limit(1);
+		const data = await db.select().from(email).where(eq(email.processedItemId, id)).limit(1);
 		if (data.length === 0) return null;
 		return { ...item, type: 'email', data: data[0] } as LatestItem;
 	}
 	if (item.type === 'twitter') {
-		const data = await db.select().from(twitter).where(eq(twitter.processed_item_id, id)).limit(1);
+		const data = await db.select().from(twitter).where(eq(twitter.processedItemId, id)).limit(1);
 		if (data.length === 0) return null;
 		return { ...item, type: 'twitter', data: data[0] } as LatestItem;
 	}

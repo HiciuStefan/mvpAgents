@@ -65,7 +65,7 @@ export default async function BusinessIntelligence({ searchParams }: PageProps)
 	});
 
 
-	const clientOptions = Array.from(new Set(latest_items.map(item => item.client_name)));
+	const clientOptions = Array.from(new Set(latest_items.map(item => item.clientName)));
 
 	const filtered_items = latest_items.filter(item => {
 		if (filters.priority !== undefined) {
