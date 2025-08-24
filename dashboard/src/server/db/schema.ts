@@ -3,9 +3,6 @@ import z from 'zod';
 // Re-export everything from the organized schema modules
 export * from './schemas';
 
-// Re-export utilities for backward compatibility
-export { TABLE_PREFIX, createTable } from './utils';
-
 // GET schema for GET requests
 export const processed_GET_schema = z.object({
   limit: z.coerce.number().int().positive().default(1),

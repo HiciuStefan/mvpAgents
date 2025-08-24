@@ -1,13 +1,16 @@
-import { type Config } from "drizzle-kit";
-
-import { env } from "~/env";
-import { TABLE_PREFIX } from "~/server/db/schema";
+// import 'dotenv/config';
+import { type Config } from 'drizzle-kit';
+import { env } from '~/env';
+import { schemaName } from './src/server/db/schemas/schemaRoot';
 
 export default {
-  schema: "./src/server/db/schema.ts",
-  dialect: "postgresql",
+  schema: './src/server/db/schema.ts',
+  out: './src/server/db/migrations',
+  dialect: 'postgresql',
+  schemaFilter: [schemaName],
   dbCredentials: {
     url: env.DATABASE_URL,
   },
-  tablesFilter: [`${TABLE_PREFIX}_*`],
+  verbose: true,
+  strict: true,
 } satisfies Config;

@@ -26,7 +26,6 @@ export function createAgentTable<
   name: string,
   extraColumns: T,
   processedItemsTable: P,
-  // indexes?: (table: TableColumns<T>) => IndexBuilder[]
   indexes?: (
     table: TableColumns<BaseColumns & T & AgentColumns>
   ) => IndexBuilder[]

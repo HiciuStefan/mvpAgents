@@ -1,3 +1,5 @@
 import { pgSchema } from 'drizzle-orm/pg-core';
 
-export const basicSchema = pgSchema('agents');
+export const schemaName = 'agents';
+
+export const basicSchema = pgSchema(schemaName);

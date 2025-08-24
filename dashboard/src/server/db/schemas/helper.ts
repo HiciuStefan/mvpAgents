@@ -32,8 +32,8 @@ export function createAuditTable<T extends Record<string, PgColumnBuilderBase>>(
       .defaultNow()
       .notNull(),
     updatedAt: updatedAtColumn(),
-    createdByUserId: text('created_by_user_id').references(() => users.id),
-    updatedByUserId: text('updated_by_user_id').references(() => users.id),
+    createdByUserId: uuid('created_by_user_id').references(() => users.id),
+    updatedByUserId: uuid('updated_by_user_id').references(() => users.id),
     deletedAt: timestamp('deleted_at', { withTimezone: true }),
   };
 

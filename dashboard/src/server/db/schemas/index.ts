@@ -19,7 +19,7 @@ import { relations } from 'drizzle-orm';
 import { processedItems } from './processed-items';
 import { twitter, email, website } from './agent-tables';
 
-// Main processed items relations
+// Define relations here to avoid circular dependencies
 export const processedItemsRelations = relations(processedItems, ({ one }) => ({
   twitter: one(twitter, {
     fields: [processedItems.id],
