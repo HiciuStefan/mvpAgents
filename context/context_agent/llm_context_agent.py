@@ -14,9 +14,9 @@ load_dotenv()
 llm = AzureChatOpenAI(
     azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
     api_key=os.getenv("AZURE_OPENAI_API_KEY"),
-    api_version=os.getenv("API_VERSION", "2024-05-01-preview"),
+    api_version=os.getenv("API_VERSION", "2024-01-01-preview"),
     azure_deployment=os.getenv("DEPLOYMENT_NAME", "gpt-4o"),
-    temperature=float(os.getenv("AZURE_TEMPERATURE", 0.2)),
+    # temperature=float(os.getenv("AZURE_TEMPERATURE", 0.2)),
 )
 
 # Instructiuni clare pentru LLM privind sarcina de procesare in batch si formatul JSON asteptat

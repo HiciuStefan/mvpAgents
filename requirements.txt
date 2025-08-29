@@ -61,6 +61,7 @@ pyparsing==3.2.3
 pyperclip==1.9.0
 PySocks==1.7.1
 python-dotenv==1.1.1
+python-dateutil==2.9.0
 PyYAML==6.0.2
 referencing==0.36.2
 regex==2024.11.6
@@ -90,4 +91,4 @@ wsproto==1.2.0
 xxhash==3.5.0
 zstandard==0.23.0
 supabase
-pytest
+newspaper3k
