@@ -1,201 +1,56 @@
 [
   {
-    "title": "Agentic AI Summit recap: Embracing AI transformation enterprise-wide",
-    "authors": [
-      "Graham Sheldon"
-    ],
-    "publish_date": "2025-03-27",
-    "text": "Explore top highlights from the UiPath Agentic AI Summit, including Agent Builder, Maestro, IXP, and Test Cloud—real tools delivering real enterprise results.",
-    "client_name": "UIPath",
-    "url": "https://www.uipath.com/blog/ai/agentic-ai-summit-highlights"
-  },
-  {
-    "title": "AI agents took center stage at Microsoft Build",
-    "authors": [
-      "Sandeep Panda"
-    ],
-    "publish_date": "2025-06-11",
-    "text": "Missed Microsoft Build 2025? Get the key takeaways from UiPath on how agentic AI is driving real results with people, robots, and AI agents working together.",
-    "client_name": "UIPath",
-    "url": "https://www.uipath.com/blog/ai/microsoft-build-2025-uipath-insights"
-  },
-  {
-    "title": "An OS for the enterprise: AI that orchestrates everything",
-    "authors": [
-      "Cynthya Peranandam"
-    ],
-    "publish_date": "2025-07-28",
-    "text": "Read how agentic orchestration acts as an enterprise OS—bridging AI, automation, and workflows to eliminate inefficiencies and unlock end-to-end process intelligence.",
-    "client_name": "UIPath",
-    "url": "https://www.uipath.com/blog/ai/os-for-enterprise-ai-that-orchestrates-everything"
-  },
-  {
-    "title": "How UiPath Innovators are mapping the future of agentic automation",
-    "authors": [
-      "Andrew Sevillia"
-    ],
-    "publish_date": "2025-06-25",
-    "text": "UiPath Innovators share early insights on agentic automation—emerging use cases, impact metrics, and what leaders are thinking as they move from idea to implementation.",
-    "client_name": "UIPath",
-    "url": "https://www.uipath.com/blog/automation/how-uipath-innovators-mapping-future-of-agentic-automation"
-  },
-  {
-    "title": "Agentic, not fragmented: how AI agents unify the contact center",
-    "authors": [
-      "Scott Dresser"
-    ],
-    "publish_date": "2025-07-21",
-    "text": "Your guide to how contact center leaders can use agentic AI to tackle fragmented processes and streamline work across teams and technologies.",
-    "client_name": "UIPath",
-    "url": "https://www.uipath.com/blog/industry-solutions/automate-customer-service-with-ai-agents"
-  },
-  {
-    "title": "Still running AI agents and RPA in silos in financial services? You’re leaving value on the table.",
-    "authors": [
-      "Charlie Fitzpatrick"
-    ],
-    "publish_date": "2025-05-21",
-    "text": "Learn how financial institutions can align AI and RPA to drive scalable, measurable business value and competitive advantage.",
-    "client_name": "UIPath",
-    "url": "https://www.uipath.com/blog/industry-solutions/overcoming-silos-financial-services"
-  },
-  {
     "title": "Technical Tuesday: getting your AI agents enterprise ready with agent evaluation and scoring",
     "authors": [
       "Zach Eslami"
     ],
+    "text": "Learn how to evaluate and score AI agents for enterprise readiness. Discover key metrics, testing tips, and best practices in this Technical Tuesday blog.\n\nTechnical Tuesday: Getting your AI agents enterprise-ready with agent evaluation and scoring",
     "publish_date": "2025-05-27",
-    "text": "Learn how to evaluate and score AI agents for enterprise readiness. Discover key metrics, testing tips, and best practices in this Technical Tuesday blog.",
     "client_name": "UIPath",
     "url": "https://www.uipath.com/blog/product-and-updates/ai-agent-evaluation-and-scoring"
-  },
-  {
-    "title": "Technical Tuesday: How AI agents are transforming software testing",
-    "authors": [
-      "Ingo Philipp"
-    ],
-    "publish_date": "2025-06-17",
-    "text": "Find out why agentic testing is the next evolution of software testing: AI-powered, integrated, and purpose-built for modern, fast-paced software development.",
-    "client_name": "UIPath",
-    "url": "https://www.uipath.com/blog/product-and-updates/how-ai-agents-transforming-software-testing-technical-tuesday"
-  },
-  {
-    "title": "Introducing UiPath Data Fabric: fueling AI agents with unified enterprise data",
-    "authors": [
-      "Shivaraman Shankar"
-    ],
-    "publish_date": "2025-07-02",
-    "text": "UiPath Data Fabric connects AI agents to the real-time data they need from all over the enterprise with no duplication or delays.",
-    "client_name": "UIPath",
-    "url": "https://www.uipath.com/blog/product-and-updates/introducing-uipath-data-fabric"
-  },
-  {
-    "title": "Fast-track development of enterprise-grade agentic automations with LlamaIndex",
-    "authors": [
-      "Taqi Jaffri"
-    ],
-    "publish_date": "2025-07-10",
-    "text": "UiPath now offers full support for LlamaIndex’s open‑source agent framework and managed LlamaCloud. Here's what that means for developers.",
-    "client_name": "UIPath",
-    "url": "https://www.uipath.com/blog/product-and-updates/llamaindex-fast-tracks-enterprise-grade-agentic-automation-development"
-  },
-  {
-    "title": "Technical Tuesday: How UiPath Healing Agent solves UI automation's biggest challenges",
-    "authors": [
-      "Ravin Seju"
-    ],
-    "publish_date": "2025-07-22",
-    "text": "UiPath Healing Agent uses AI to adapt automations in real time—so they keep working as your apps evolve. Boost resilience, reduce maintenance.",
-    "client_name": "UIPath",
-    "url": "https://www.uipath.com/blog/product-and-updates/technical-tuesday-how-healing-agent-solves-ui-automation-challenges"
-  },
-  {
-    "title": "Technical Tuesday: How UI agents are unlocking the true potential of large action models",
-    "authors": [
-      "Cosmin Voicu"
-    ],
-    "publish_date": "2025-06-10",
-    "text": "Discover how UI agents powered by LAMs unlock smarter, goal-based automation—and why the UiPath integrated approach makes them enterprise-ready today.",
-    "client_name": "UIPath",
-    "url": "https://www.uipath.com/blog/product-and-updates/ui-agents-unlock-large-action-models-potential"
-  },
-  {
-    "title": "Understanding the role of UiPath Apps in agentic automation",
-    "authors": [
-      "Udit Chandna"
-    ],
-    "publish_date": "2025-06-18",
-    "text": "Discover how UiPath Apps empowers people to lead in the era of agentic automation—serving as the intelligent interface where AI agents, robots, and humans work together to drive better outcomes, faster.",
-    "client_name": "UIPath",
-    "url": "https://www.uipath.com/blog/product-and-updates/understanding-role-of-uipath-apps-in-agentic-automation"
-  },
-  {
-    "title": "Why fragmented tech stalls agentic automation (and what you can do about it)",
-    "authors": [
-      "Sophia Zhylych"
-    ],
-    "publish_date": "2025-07-09",
-    "text": "Find out how agentic automation—and a new unified developer experience in UiPath Studio Web—can help you reduce tool sprawl and unlock real results.",
-    "client_name": "UIPath",
-    "url": "https://www.uipath.com/blog/product-and-updates/why-fragmented-tech-stalls-agentic-automation"
-  },
-  {
-    "title": "Gartner named UiPath a Leader in RPA for the 7th year. Here’s why that matters for your business.",
-    "authors": [
-      "Chris Janiszewski"
-    ],
-    "publish_date": "2025-07-18",
-    "text": "Discover why UiPath is a 7-time Leader in the 2025 Gartner® Magic Quadrant™ for RPA, and how the company is leading the shift to agentic automation by combining AI, robots, and people. Gartner named UiPath a Leader in RPA for the seventh year; this report explains what that recognition means for organizations and why it matters for your business.",
-    "client_name": "UIPath",
-    "url": "https://www.uipath.com/blog/rpa/gartner-magic-quadrant-rpa-report"
   },
   {
     "title": "Turning AI Into Practical Solutions with OPAQUE",
     "authors": [
       "Teresa Tung"
     ],
+    "text": "Turning AI Into Practical Solutions\n\nAccenture is a global professional services company that helps businesses solve complex problems, using innovative solutions to help organizations adapt to today’s fast-changing business environment. Accenture stands out by making advanced technologies like AI usable in real-world settings. They provide full support to clients, from identifying key AI opportunities to building secure, scalable models that integrate smoothly into existing operations.\n\nWith the growing amount of sensitive data and the need for AI systems to work in multi-party environments, ensuring data security is a big challenge. To address these needs, Accenture leverages cutting-edge hardware like NVIDIA's H100 Tensor Core GPUs alongside OPAQUE's confidential computing technologies. This powerful combination enables businesses to safely implement AI projects while ensuring scalability, data privacy, and regulatory compliance.\n\n\"Through our collaboration with OPAQUE, we are empowering companies to navigate complex data landscapes with confidence, ensuring that privacy remains a priority even as they advance their capabilities.\"\n\nThe Challenge: Ensuring Data Privacy During AI Deployment\n\nTrusted AI depends on trusted data. Companies manage huge amounts of personal, financial, and proprietary data. As the data grows, securely analyzing it becomes essential—not only for maintaining customer trust and complying with legal requirements but also for unlocking the full value of data for insights. However, analyzing sensitive data, especially when shared between multiple parties, is a challenge. Strict regulations and technological limitations make it hard to collaborate securely. Data silos within organizations add to the problem, making it difficult to share and analyze data across departments or external partners. This results in missed opportunities and prevents businesses from fully leveraging AI. In industries with heavy regulation, the need to maintain data security while using AI becomes even more critical. Accenture needed a way to harness the power of large datasets while ensuring innovation and security were not compromised.\n\nThe Solution: Secure AI for Complex Data Environments\n\nTo address these issues, Accenture partnered with OPAQUE, whose platform allows multiple organizations to share and analyze sensitive data securely. OPAQUE's confidential AI technology ensures that data remains encrypted during processing, allowing organizations to collaborate without exposing or decrypting sensitive information. With this partnership, Accenture and its clients can confidently move AI projects into production, knowing that compliance and data security are maintained. This collaboration removes barriers that previously restricted the full use of valuable data.\n\n\"Our collaboration with OPAQUE has transformed how we support businesses in managing sensitive data. Using confidential AI technology, we are enabling companies to gain valuable insights and push the boundaries of what's possible in a responsible and forward-thinking manner.\"\n\nThe Results: Unlocking AI's Potential\n\nTelecommunications: Improved Data Sharing and Cyber Threat Response.\n\nAccenture works with leading telecommunications companies to help them share data securely across departments and with partners. OPAQUE's secure multi-party computation (SMPC) technology allows these companies to perform computations on encrypted data without exposing sensitive information. By partnering with OPAQUE, Accenture enables telecom providers to collaborate securely on tasks like fraud prevention and network optimization. For example, multiple telecom companies can combine their data to detect patterns of fraudulent activity, while ensuring compliance with data privacy regulations and keeping proprietary information protected.\n\n\"At Accenture, our focus is on driving innovation while adhering to the highest standards of security and compliance. With confidential AI technology, we can help industries access and leverage sensitive data that was previously out of reach, all while preserving data sovereignty and privacy.\"\n\n\"Our collaboration with OPAQUE has opened new opportunities for companies and reinforced trust in data ecosystems.\"\n\nEnhancing Know Your Customer (KYC) Programs\n\nIn the retail sector, Accenture helps clients securely analyze customer data without exposing sensitive information. By leveraging OPAQUE's confidential computing platform, Accenture enables retailers to collaborate with third-party partners or internal departments to gain deeper insights into customer behavior. This secure approach allows retailers to create more personalized marketing campaigns and improve the shopping experience. For instance, a retailer might work with a payment processor to analyze purchasing patterns, gaining valuable insights while ensuring individual customer privacy is maintained.\n\nConclusion: Innovation With Confidence\n\nBy integrating OPAQUE's technologies, Accenture has solved data protection challenges, enabling clients to innovate and grow while ensuring data security in an increasingly data-driven world.",
     "publish_date": "2024-10-11",
-    "text": "Turning AI Into Practical Solutions\n\nAccenture is a global professional services company that helps businesses solve complex problems, using innovative solutions to help organizations adapt to today’s fast-changing business environment. Accenture stands out by making advanced technologies like AI usable in real-world settings. They provide full support to clients, from identifying key AI opportunities to building secure, scalable models that integrate smoothly into existing operations.\n\nWith the growing amount of sensitive data and the need for AI systems to work in multi-party environments, ensuring data security is a big challenge. To address these needs, Accenture leverages cutting-edge hardware like NVIDIA’s H100 Tensor Core GPUs alongside OPAQUE's confidential computing technologies. This powerful combination enables businesses to safely implement AI projects while ensuring scalability, data privacy, and regulatory compliance.\n\n\"Through our collaboration with OPAQUE, we are empowering companies to navigate complex data landscapes with confidence, ensuring that privacy remains a priority even as they advance their capabilities.\"\n\nThe Challenge: Ensuring Data Privacy During AI Deployment\n\nTrusted AI depends on trusted data. Companies manage huge amounts of personal, financial, and proprietary data. As the data grows, securely analyzing it becomes essential—not only for maintaining customer trust and complying with legal requirements but also for unlocking the full value of data for insights. However, analyzing sensitive data, especially when shared between multiple parties, is a challenge. Strict regulations and technological limitations make it hard to collaborate securely. Data silos within organizations add to the problem, making it difficult to share and analyze data across departments or external partners. This results in missed opportunities and prevents businesses from fully leveraging AI. In industries with heavy regulation, the need to maintain data security while using AI becomes even more critical. Accenture needed a way to harness the power of large datasets while ensuring innovation and security were not compromised.\n\nThe Solution: Secure AI for Complex Data Environments\n\nTo address these issues, Accenture partnered with OPAQUE, whose platform allows multiple organizations to share and analyze sensitive data securely. OPAQUE’s confidential AI technology ensures that data remains encrypted during processing, allowing organizations to collaborate without exposing or decrypting sensitive information. With this partnership, Accenture and its clients can confidently move AI projects into production, knowing that compliance and data security are maintained. This collaboration removes barriers that previously restricted the full use of valuable data.\n\n\"Our collaboration with OPAQUE has transformed how we support businesses in managing sensitive data. Using confidential AI technology, we are enabling companies to gain valuable insights and push the boundaries of what’s possible in a responsible and forward-thinking manner.\"\n\nThe Results: Unlocking AI’s Potential\n\nTelecommunications: Improved Data Sharing and Cyber Threat Response.\n\nAccenture works with leading telecommunications companies to help them share data securely across departments and with partners. Opaque’s secure multi-party computation (SMPC) technology allows these companies to perform computations on encrypted data without exposing sensitive information. By partnering with OPAQUE, Accenture enables telecom providers to collaborate securely on tasks like fraud prevention and network optimization. For example, multiple telecom companies can combine their data to detect patterns of fraudulent activity, while ensuring compliance with data privacy regulations and keeping proprietary information protected.\n\n\"At Accenture, our focus is on driving innovation while adhering to the highest standards of security and compliance. With confidential AI technology, we can help industries access and leverage sensitive data that was previously out of reach, all while preserving data sovereignty and privacy.\"\n\n\"Our collaboration with OPAQUE has opened new opportunities for companies and reinforced trust in data ecosystems.\"\n\nEnhancing Know Your Customer (KYC) Programs\n\nIn the retail sector, Accenture helps clients securely analyze customer data without exposing sensitive information. By leveraging OPAQUE’s confidential computing platform, Accenture enables retailers to collaborate with third-party partners or internal departments to gain deeper insights into customer behavior. This secure approach allows retailers to create more personalized marketing campaigns and improve the shopping experience. For instance, a retailer might work with a payment processor to analyze purchasing patterns, gaining valuable insights while ensuring individual customer privacy is maintained.\n\nConclusion: Innovation With Confidence\n\nBy integrating OPAQUE's technologies, Accenture has solved data protection challenges, enabling clients to innovate and grow while ensuring data security in an increasingly data-driven world.",
     "client_name": "Opaque",
     "url": "https://www.opaque.co/case-studies/accenture"
   },
   {
-    "title": "RiskStream Collaborative and OPAQUE Team Up to Fight Insurance Fraud",
-    "authors": [
-      "Eric Philips"
-    ],
-    "publish_date": "2024-10-11",
-    "text": "Insurance fraud is a major industry challenge\n\nWith the FBI and National Insurance Crime Bureau (NICB) estimating the total cost of non-health insurance fraud at more than $40 billion per year. Fraudsters often take advantage of the highly fragmented nature of the industry.\n\nKnowing that—due to data privacy limitations—individual insurers can typically only analyze their own data rather than pooling and analyzing it to identify potential patterns of fraudulent activity. Because fraudsters use blind spots to carry out criminal activity, exchanging loss incident data between disparate insurers is often mission-critical to successfully identifying and mitigating fraud attempts.\n\nRiskStream Collaborative, the insurance industry’s largest blockchain consortium, is on a mission to provide this essential capability with RAPID X, a blockchain-powered auto claims data platform that facilitates claims data exchange between multiple insurance carriers to better detect and prevent fraudulent activity, from auto fraud to workers’ compensation fraud.\n\nWhen building RAPID X, RiskStream had to create a robust foundation for data exchange between insurance carriers that was both secure and compliant with privacy laws and regulations. Collaborative members needed to have the assurance that their data would be encrypted and confidential when pooled with other members’ data; otherwise, no company or insurer would trust and utilize the solution.\n\n“If you’re unable to look at any sensitive data at all—even name, or date of birth—it handcuffs your ability to see patterns and flag potential fraud. Improving the amount of data that you have secure access to is incredibly important: if you’re only analyzing your own data, you’re extremely limited in the insights you can get,” explained Eric Phillips, director of product operations at RiskStream Collaborative.\n\nExisting solutions for data pooling and collaboration—including data masking and anonymization—proved to be time-consuming, inefficient, and even detrimental to the value of the data. RiskStream needed a platform that could ensure data would remain encrypted, protected, and unchanged throughout its entire lifecycle, empowering insurers to harness the benefits of collaborative analysis without modifying existing workflows. At the same time, RiskStream also needed that solution to integrate seamlessly into their systems to maximize efficiency.\n\n“As a collaborative, we had the unique opportunity to help mitigate this existential threat, but we couldn’t do it on our own,” Phillips said. “We needed a solution that would help us securely share data without fears of leakages or breaches.”\n\nMultiple collaborative members recommended Opaque, a confidential AI provider, as the right platform to enable secure multiparty data sharing and guarantee ease of use, ownership, and interoperability.\n\nSecure Multiparty Data Sharing\n\nOPAQUE enables secure multiparty data sharing via its Confidential AI platform.\n\nWith OPAQUE, collaborative members can now stream encrypted data directly from RAPID X into OPAQUE via API in near-real time without exposing it to any other party. Members can also run pre-approved, confidential analyses in OPAQUE to compare each claim against a claims database from all carriers who opt in (with all claims remaining encrypted during the analysis).\n\nCarriers can also calculate a fraud score for each claim and notify others when the fraud score exceeds a threshold through RAPID X. Ultimately, insights are derived from the joint analyses, without ever exposing the raw data: carriers can only see insights regarding their own claims. This guarantees that sensitive information remains protected, addressing both regulatory and competitive concerns.\n\nWith OPAQUE, collaborative members have dramatically increased their speed of intervention and flagging of potential fraudulent activity. By detecting fraud more quickly and accurately, these carriers can reduce the financial losses associated with fraudulent claims—knowing that security, privacy, and compliance are baked into the solution.\n\n“Our members didn’t even know that this was possible. It was eye-opening to work with OPAQUE and start educating our members on the platform and its capabilities,” according to Phillips. “Opaque is perfectly suited to help solve the problems that the insurance industry faces fighting fraud—while doing so in a safe, private, encrypted manner.”\n\n“Opaque is perfectly suited to help solve the problems that the insurance industry faces fighting fraud—while doing so in a safe, private, encrypted manner.”\n\nEase of Use, Ownership, & Interoperability\n\nOPAQUE proved to be a turnkey business application: the product was integrated quickly, connecting systems smoothly and enabling RiskStream to feed data directly into OPAQUE’s platform via existing technology. It took only two weeks to set up the platform, enabling RiskStream to avoid laborious and developer-heavy customization.\n\n“OPAQUE’s solution was fairly off the shelf—it only took a little customization,” Phillips explained. “I was extremely impressed. We were on a bit of a time crunch, so to meet that deliverable in such a short amount of time absolutely exceeded our expectations.”\n\nOnce implemented, OPAQUE’s user-friendly platform empowered RiskStream to be the workspace manager, able to add or remove others into the workspace and set custom rules. This has ensured security, privacy, and total trustworthiness between members.\n\nCollaborative members have been effusive in their praise for OPAQUE’s customer service, citing their efficiency in responding to technical questions. For RiskStream, OPAQUE is a strategic, valued partner, offering thought leadership and expertise on how to solve ongoing challenges.\n\nFor more information about the RiskStream Collaborative, or questions about RAPID X, please visit https://www.riskstream.org, or contact [email protected].",
-    "client_name": "Opaque",
-    "url": "https://www.opaque.co/case-studies/riskstream"
-  },
-  {
-    "title": "Unlocking Enterprise AI at Scale: ServiceNow x Opaque",
-    "authors": [
-      "Jake Broekhuizen"
-    ],
-    "publish_date": "2024-11-05",
-    "text": "ServiceNow, a leader in digital workflow automation\n\nIs committed to transforming the way enterprises operate by building cutting-edge AI solutions that streamline business processes, enhance employee experiences, and drive operational efficiency.\n\nHowever, the challenge of scaling AI across the enterprise while managing sensitive data, ensuring compliance, and maintaining control over fragmented information posed significant hurdles. To overcome these challenges, ServiceNow sought a partner that could provide robust privacy protections and seamless data management — enter Opaque Systems.\n\nServiceNow partnered with OPAQUE Systems to enhance its AI solutions by leveraging confidential computing technologies to solve critical data privacy and management challenges. This collaboration allowed ServiceNow's Digital Technology (DT) division to streamline processes, increase operational efficiency, and enhance employee experiences while ensuring data security.\n\nOne of the main hurdles in productizing AI within enterprise environments is dealing with sensitive data, fragmented systems, and ownership concerns. ServiceNow turned to OPAQUE's secure, LLM-enabled service to navigate these obstacles. This service enables seamless access to interconnected data while preserving privacy, access control, and ensuring compliance with regulatory standards.\n\nThrough this collaboration, ServiceNow benefited from faster time to production, decreased deployment and maintenance costs, and enhanced data privacy and compliance — key differentiators that set the company apart. OPAQUE’s technology integrates smoothly into ServiceNow’s architecture, making it scalable and efficient, while reducing operational risk by maintaining provable compliance with both internal governance policies and external regulations.\n\nThis integration also enables improved employee experiences using generative AI, powered by OPAQUE’s secure system. ServiceNow’s employees, for example, can access real-time insights and faster responses by leveraging Opaque’s confidential AI platform to query and process data efficiently, ensuring both performance and privacy in an ever-connected workplace.\n\nThe partnership between ServiceNow and OPAQUE\n\nHighlights how confidential AI can unlock new opportunities for businesses looking to scale AI while safeguarding sensitive information.\n\nOPAQUE’s secure, scalable architecture not only addresses the technical challenges of AI deployment but also ensures compliance with internal and external regulations. This collaboration is a prime example of how forward-thinking enterprises like ServiceNow can achieve innovation and growth without compromising data privacy or operational integrity.\n\n\"ServiceNow works closely with Microsoft, NVIDIA, and OPAQUE to put AI to work for people and deliver great experiences to both customers and employees on the Now Platform.\"\n- Kellie Romack, Chief Digital Information Officer\n\n\"The partnership between OPAQUE and Microsoft allows us to quickly deploy and leverage the power of Azure confidential VMs with NVIDIA H100 Tensor Core GPUs to deliver confidential AI with verifiable data privacy and security.\"\n- Kellie Romack, Chief Digital Information Officer",
-    "client_name": "Opaque",
-    "url": "https://www.opaque.co/case-studies/servicenow"
-  },
-  {
-    "title": "Unlocking AI-Powered Software Development with Confidential Data: Bloomfilter x OPAQUE",
-    "authors": [
-      "Andrew Wolfe",
-      "Erik Severinghaus"
-    ],
-    "publish_date": "2025-05-30",
-    "text": "Bloomfilter, a leader in AI-driven process mining for the software development lifecycle (SDLC), empowers technology leaders to uncover bottlenecks, reduce risk, and drive better business outcomes. Their platform provides deep visibility into every stage of the SDLC by ingesting and analyzing data from tools like Jira and GitHub, surfacing actionable insights for teams and executives alike.\n\nHowever, as Bloomfilter expanded its suite to include large language models and advanced AI features, questions about data privacy, security, and intellectual property risk became critical barriers, especially for blue-chip enterprise clients.\n\nBy partnering with OPAQUE, Bloomfilter was able to deliver provable guarantees of data privacy and sovereignty, accelerate enterprise adoption of their most advanced AI features, and unlock new value for their customers. In just weeks, Bloomfilter saw sales cycles contract, enterprise objections dissolve, and platform “stickiness” rise as clients embraced capabilities once held back by security concerns. Today, Bloomfilter delivers on its mission with the confidence that customer data—and business reputations—are protected by confidential AI.\n\nBloomfilter: Bringing Clarity and Control to the SDLC\n\nModern software development is a labyrinth of tasks, tools, and stakeholders. CTOs and product leaders crave transparency—into costs, bottlenecks, rework, and risks—but siloed data and legacy processes keep these answers out of reach. Bloomfilter set out to change that by providing AI-powered process mining and analytics for the SDLC, connecting the dots from code commits to business outcomes.\n\n\"With Bloomfilter, we can surface where teams lose momentum—down to specific processes and bottlenecks. Our CTOs value that the data stays private and in our control, even as we unlock insights for both engineering and product. Now, both teams align on what’s slowing us down and how to fix it, all with audit-ready security in place.\" — Andrew Wolfe, Co-Founder and Co-CEO, Bloomfilter\n\nAs Bloomfilter’s features evolved—especially with AI-powered risk analysis and generative insights—so did the stakes. Clients began to ask: How can we be sure our sensitive data is safe from leaks, competitive threats, and emerging AI attack vectors?\n\nThe Challenge: Data Privacy, AI Risk, and Adoption Barriers\n\nBloomfilter’s most innovative AI features required ingesting and analyzing customer data from systems like Jira and GitHub—data that often includes intellectual property, known software vulnerabilities, user stories, and more. Security-conscious clients, especially in highly regulated sectors, raised concerns about:\n\n- Potential intellectual property leakage\n- Data exhaust being weaponized via AI\n- Compliance with strict privacy mandates\n- Losing control over how and where data was processed by third-party models\n\nThese concerns led to drawn-out security reviews, delayed deals, and in some cases, customers disabling Bloomfilter’s most valuable AI-powered features.\n\n\"Some clients loved our AI roadmap but refused to activate key features due to privacy concerns. We realized our growth and renewal rates were at risk if we couldn’t provide airtight assurances.\" — Andrew Wolfe, Co-Founder and Co-CEO, Bloomfilter\n\nThe Solution: Confidential AI with OPAQUE\n\nBloomfilter turned to OPAQUE’s confidential computing platform to give customers the robust, audit-ready privacy guarantees they demanded—without sacrificing performance, agility, or time-to-value. With a focus on enabling confidential agents for retrieval-augmented generation (RAG), Bloomfilter could now offer its most advanced AI capabilities while maintaining strict data privacy controls.\n\nWorking closely with OPAQUE's customer success team, Bloomfilter was able to:\n\n- Deploy AI workloads—including confidential agents for retrieval-augmented generation—in secure, confidential environments (on Azure and beyond)\n- Integrate rapidly via an Azure Marketplace package, rolling out pilot implementations in days\n- Showcase architecture diagrams that proved customer data would remain private—even across multi-cloud deployments\n- Eliminate the need for code rewrites, accelerating time to adoption\n\nWith OPAQUE, Bloomfilter could assure clients: their data, models, and analysis outputs remained encrypted and strictly controlled at every stage.\n\nThe Results: Faster Deals, Full Adoption, and Business Growth\n\nThe impact was both immediate and measurable:\n\n- Sales Conversion: Bloomfilter saw a 57% increase in sales conversion rates on large enterprise pursuits.\n- Sales Cycle: Security review time dropped by 32%, shaving an average of 28 days off new deals.\n- AI Feature Adoption: The share of customers activating Bloomfilter’s most advanced AI features jumped from 46% to over 90%—with full adoption now in sight.\n- Platform Stickiness: Engagement metrics shifted from monthly to daily active usage as customers embraced AI-powered insights.\n\nAfter OPAQUE launched, the response was immediate. CTOs who needed hybrid deployments unlocked full access with private, vendor-agnostic integrations. CIOs dropped their privacy objections as soon as automated, tamper-proof audits landed on their desks.\n\n\"Our technical stakeholders kept telling us, ‘We’re finally able to use confidential AI without compromising our environment or losing control of our data.’ Once those hurdles dropped, adoption soared. Even our most risk-conscious clients are using every feature, and we’re seeing daily engagement numbers we never hit before.\" — Erik Severinghaus, Co-Founder and Co-CEO at Bloomfilter\n\nEqually important, Bloomfilter now positions itself as a privacy-first innovator, earning the trust of both technical and business leaders.\n\nLooking Ahead\n\nToday, Bloomfilter and OPAQUE continue to collaborate on next-generation features, such as confidential agents for retrieval-augmented generation (RAG), deepening the value proposition for enterprise customers. The result: Bloomfilter’s clients can innovate with confidence, accelerate time-to-value from AI, and protect the sensitive data at the heart of their businesses.\n\nBloomfilter’s partnership with OPAQUE exemplifies how forward-thinking SaaS leaders are turning privacy and security from obstacles into powerful enablers for growth, adoption, and differentiation in the era of AI.\n\nGood privacy practices aren’t just policies—they’re what bring customers back and help your business grow. Experience how OPAQUE makes trust a core part of the way you work. Request your demo and start the conversation.",
-    "client_name": "Opaque",
-    "url": "https://www.opaque.co/case-studies/unlocking-ai-powered-software-development-with-confidential-data-bloomfilter-x-opaque"
-  },
-  {
-    "title": "Architecture and Security White Paper",
+    "title": "IMPLICARE SOCIALA",
     "authors": [],
-    "publish_date": "2025-08-13",
-    "text": "Architecture and Security White Paper - Opaque\nWe Value your Privacy\nWe use cookies in the delivery of our services. To learn about the cookies we use and information about your preferences and opt-out choices,\nplease click here.\nCustomize\nReject All\nAccept All\nCustomize Consent Preferences\nWe use cookies in the delivery of our services. To learn about the cookies we use and information about your preferences and opt-out choices, please click here. By using our platform you agree to our use of cookies.\nEssential\nAlways Active\nThese items are required to enable basic website functionality.\nMarketing\nEssential\nThese items are used to deliver advertising that is more relevant to you and your interests. They may also be used to limit the number of times you see an advertisement and measure the effectiveness of advertising campaigns. Advertising networks usually place them with the website operatorâs permission.\nAnalytics\nEssential\nThese items help the website operator understand how its website performs, how visitors interact with the site, and whether there may be technical issues. This storage type usually doesnât collect information that identifies a visitor.\nReject all cookies\nAllow all cookies\nConfirm and close",
+    "text": "Incurajam responsabilitatea sociala\n\nDinamic 92 Distribution si-a ghidat actiunile si deciziile comerciale bazandu-se pe comunicare si pe implicare in comunitatea in care isi desfasoara activitatea.\n\nIncurajam responsabilitatea sociala si sustinem proiecte de viitor precum digitalizarea tinerilor sau ajutand comunitatile greu incercate, incurajam sportul si ne implicam in proiecte dintre cele mai diverse.\n\nProiecte\n\nDINAMIC 92 membru Family Business Network\n„Afacerile de familie sunt coloana vertebrală a economiei noastre europene. Afacerile de familie nu încetează niciodată să inoveze.” Ursula von der Leyen, 2022 European Family Businesses Summit Membrii Family Business Network România (FBN România) au aniversat cei 10 ani de activitate a...\n\nDINAMIC 92 sustine Spitalul Judetean de Urgenta Piatra Neamt\nComitetul Director al Spitalului Judetean de Urgenta Piatra Neamt, aduce multumiri reprezentantilor SC Dinamic 92 Distribution SRL, pentru ajutorul acordat. Am reusit astfel sa acoperim o parte din nevoia de ingrijire a pacientilor, gestul dumneavoastra...\n\nDINAMIC 92 SUSTINE Asociatia Comunitatea Noastra\nAsociația ”Comunitatea Noastră” este o organizație non-guvernamentală fondată în Piatra-Neamț.  ONG-ul și-a propus să inspire oamenii pentru a deveni proactivi, interesați de comunitatea lor,  implicați și informați, conform principiului ”binele colectiv generează binele individual”....\n\nDINAMIC 92 sustine CS Steel Tonic Piatra Neamt\nSustinem de aproape un an de zile clubul de karate #CSSteelTonicPiatraNeamt si ne mandrim cu acesti copii talentati! Acestia au obtinut rezultate deosebite la Campionatul National de la Alba Iulia: 9 medalii, dintre care una de aur.  Campionatul a fost organizat pentru copii...\n\nAJUTOARELE LUI MOS CRACIUN\nAjutoarele lui Mos Craciun au ajuns si anul acesta si au ajutat peste 70 de persoane vulnerabile, care se afla in situatii dificile, oferindu-le bunuri materiale si aducand pe fetele lor un strop de bucurie pentru a avea sarbatori cu adevarat fericite.Solidaritatea trebuie sa existe...\n\nMIFNE proiect sustinut de DINAMIC 92\nLa 100 de nasteri, un copil cu autism vine in acesta lume ! Este drama parintilor, care tanjesc dupa o privire, o imbratisare sau  un zambet de la copilul lor. Invata sa traiasca cu autismul, care produce un impact deosebit de puternic in nucleul familiei, cu efecte in comunitatile din care fac...",
+    "publish_date": "2022-09-15",
+    "client_name": "dinamic92",
+    "url": "https://www.dinamic92.ro/implicare-sociala/"
+  },
+  {
+    "title": "Employment Scams",
+    "authors": [],
+    "text": "UiPath will never ask for fees or upfront payments during the recruitment process or as part of an offer of employment. UiPath will also not ask for recently hired employees to pay any fees associated with their employment, including visa applications or equipment such as laptops needed to perform work duties.\n\nAll jobs advertised will be listed on UiPath.com exclusively. If you have any doubts regarding the authenticity of any job listing on communication purportedly from or on behalf of UiPath, please contact us (careers@uipath.com).\n\nWe are aware of activities where third parties are using the UiPath name and logos in employment scams. These scams may appear legitimate, but they are not. So, it is important that you both research the legitimacy of any recruiting communication and remain mindful that fraudsters use various techniques including employment scams to find their next victim. Below is some information that may help you avoid falling victim to an employment scam.\n\nExample scams include:\n- Requiring payment (or pre-payment) for visa applications or processing services\n- Questionnaire based employment interviews\n- Questionnaire based decisions to hire\n- Employment offers over social media or communications tools, such as Facebook, Twitter, and WhatsApp\n\nOther common indicators include:\n- Request for payment to apply for a job\n- Request for financial account details\n- Request for personally identifying information (e.g., Social Security Number, Social Insurance Number, National Insurance Number, passport information, passwords, etc.)\n- Request for payments to be sent to a third-party\n- Request for payment for professional or business opportunities\n- Unsolicited communications\n- Misspellings of UiPath in online domain names or email addresses\n- Non-UiPath email addresses (e.g., Yahoo, Gmail.com, or uiptah.com)\n- Offer of employment without physical interviews",
+    "publish_date": null,
+    "client_name": "UIPath",
+    "url": "https://www.uipath.com/company/careers/fraudulent-job-scams"
+  },
+  {
+    "title": "The Confidential Computing Summit 2025: Building the Trust Layer For The Agentic Era - OPAQUE",
+    "authors": [],
+    "text": "Download the Confidential Computing Summit 2025 Report—insights from Microsoft, Google, Anthropic on securing AI using sensitive data, and building trust at scale.",
+    "publish_date": "2025-08-29",
     "client_name": "Opaque",
-    "url": "https://www.opaque.co/resources/downloadables/architecture-and-security-white-paper"
+    "url": "https://www.opaque.co/resources/downloadables/the-confidential-computing-summit-2025-building-the-trust-layer-for-the-agentic-era"
+  },
+  {
+    "title": "Goodyear – UltraGrip Performance 3",
+    "authors": [
+      "dinamic_admin"
+    ],
+    "text": "În cel mai recent test pentru anvelopele de iarnă, publicația germană Auto Bild, apreciază noua anvelopă de iarnă Goodyear UltraGrip Performance 3 pentru eficiența și durabilitatea sa deosebită, anvelopa exemplară fiind premiată cu distinctiile „Eco-Master” și „Green Tire”.",
+    "publish_date": "2023-11-16",
+    "client_name": "dinamic92",
+    "url": "https://www.dinamic92.ro/goodyear-ultragrip-performance-3/"
   }
 ]

@@ -55,35 +55,16 @@ class PageAnalysis(BaseModel):
     reason: str = Field(description="A brief explanation for the classification.")
 
 
-# --- Core Scraper Class ---
+# --- Blog Index Processor Class ---
 
-class SimpleWebsiteScraper:
+class BlogIndexProcessor:
     """
-    A class to scrape articles from websites, using an LLM to identify and extract content.
-    It manages state to avoid re-scraping content and handles HTML cleaning and data validation.
+    A class to handle the discovery, analysis, and validation of blog index URLs.
+    It manages its own state to avoid re-processing content.
     """
-    def __init__(self, output_filename="scraped_articles_v2.json"):
-        """
-        Initializes the scraper, setting up paths and loading initial state.
-        - output_filename: The file where scraped articles will be saved.
-        """
-        self.output_path = os.path.join(os.path.dirname(__file__), output_filename)
+    def __init__(self):
         self.state_path = os.path.join(os.path.dirname(__file__), STATE_FILENAME)
-        self.processed_urls = self._load_processed_urls()
         self.scraping_state = self._load_scraping_state()
-
-    def _load_processed_urls(self) -> set:
-        """
-        Loads the URLs of already scraped articles from the output file.
-        This prevents the scraper from processing the same article multiple times.
-        Returns a set of URLs for efficient lookup.
-        """
-        try:
-            with open(self.output_path, 'r', encoding='utf-8') as f:
-                articles = json.load(f)
-                return {article['url'] for article in articles}
-        except (FileNotFoundError, json.JSONDecodeError):
-            return set()
 
     def _load_scraping_state(self) -> dict:
         """
@@ -283,70 +264,61 @@ Analyze the text content and respond with the most appropriate `page_type` and a
         print(f"[INFO] Found {len(validated_urls)} validated article links.")
         return validated_urls
 
-    def extract_article_data(self, url: str) -> Optional[dict]:
+    def process_blog_indexes(self, base_url: str, client_name: str) -> None:
         """
-        Extracts data from an article.
+        Discovers, analyzes, and validates blog index URLs for a given client.
+        Updates the internal scraping_state dictionary with accepted and rejected URLs.
         """
-        print(f"[INFO] Scraping article: {url}")
-        html_content = self._get_html(url)
-        if not html_content:
-            return None
-
-        soup = BeautifulSoup(html_content, 'html.parser')
+        if client_name not in self.scraping_state:
+            self.scraping_state[client_name] = {}
         
-        for element in soup(["script", "style", "nav", "footer", "header", "aside", "form"]):
-            element.decompose()
-        
-        cleaned_html = str(soup)
-        body_text = soup.get_text(separator='\n', strip=True)
+        self.scraping_state[client_name].setdefault("blog_index_urls", [])
+        self.scraping_state[client_name].setdefault("rejected_index_urls", [])
 
-        parser = JsonOutputParser(pydantic_object=ArticleData)
-        system_prompt = '''You are an expert data extractor. Your mission is to extract the title, authors, full text content, and publication date from the provided HTML of a news or blog article.
-The publication date should be in YYYY-MM-DD format. If no date is found, the publish_date field should be null.
-Focus on extracting the main body of the article accurately.
-'''
-        prompt = ChatPromptTemplate.from_messages([
-            ("system", system_prompt),
-            ("human", "Article URL: {url}\n\nPage HTML:\n{page_html}\n\n{format_instructions}")
-        ])
-        chain = prompt | llm | parser
-        try:
-            data = chain.invoke({
-                "url": url,
-                "page_html": cleaned_html[:20000],
-                "format_instructions": parser.get_format_instructions()
-            })
-            if not data.get('text') or len(data.get('text', '').strip()) < 100:
-                data['text'] = body_text
-            return data
-        except Exception as e:
-            print(f"[ERROR] LLM failed to extract data for {url}: {e}")
-            # Fallback to regex if LLM fails or doesn't find a date
-            publish_date = None
-            try:
-                date_pattern = re.compile(
-                    r'(\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?,\s+\d{1,2},?\s+\d{4}\b)|' # Month DD, YYYY or Mon DD, YYYY
-                    r'(\b\d{4}-\d{2}-\d{2}\b)' # YYYY-MM-DD
-                )
-                match = date_pattern.search(html_content)
-                if match:
-                    publish_date = parse_date(match.group(0)).strftime('%Y-%m-%d')
-                    print(f"[INFO] Extracted date using regex fallback: {publish_date}")
-            except Exception as regex_e:
-                print(f"[WARN] Regex date extraction failed for {url}: {regex_e}")
+        if not self.scraping_state[client_name]["blog_index_urls"]:
+            print(f"[INFO] No cached blog index URLs found for {client_name}. Searching and validating...")
+            
+            potential_urls = self.find_blog_index_urls(base_url)
 
-            return {'title': '', 'authors': [], 'text': body_text, 'publish_date': publish_date}
+            if potential_urls:
+                for url in potential_urls:
+                    if url in self.scraping_state[client_name]["blog_index_urls"] or url in self.scraping_state[client_name]["rejected_index_urls"]:
+                        continue
+                    
+                    analysis = self._analyze_page_type(url)
+                    if not analysis:
+                        print(f"[WARN] Could not analyze page type for {url}. Rejecting.")
+                        self.scraping_state[client_name]["rejected_index_urls"].append(url)
+                        continue
 
-    def run(self):
-        """
-        The main execution loop for the scraper.
-        """
-        sites_config = load_json_from_supabase('website_config')
-        if not sites_config:
-            print("[ERROR] Website configuration not found in Supabase.")
-            return
+                    if analysis.page_type == PageType.BLOG_INDEX:
+                        print(f"[ACCEPT] Accepted {url} as a blog index. Reason: {analysis.reason}")
+                        self.scraping_state[client_name]["blog_index_urls"].append(url)
+                    elif analysis.page_type == PageType.RESOURCES_MIX:
+                        print(f"[INFO] Page {url} is a mix of resources. Checking for dates in sample articles...")
+                        sample_articles = self.find_individual_article_links(url)
+                        if sample_articles and self._check_for_date_in_article(sample_articles[0]):
+                            print(f"[ACCEPT] Accepted resource page {url} because its articles have dates.")
+                            self.scraping_state[client_name]["blog_index_urls"].append(url)
+                        else:
+                            print(f"[REJECT] Rejected resource page {url} because its articles seem to lack dates.")
+                            self.scraping_state[client_name]["rejected_index_urls"].append(url)
+                    else:
+                        print(f"[REJECT] Rejected {url}. Type: {analysis.page_type}. Reason: {analysis.reason}")
+                        self.scraping_state[client_name]["rejected_index_urls"].append(url)
+                
+                self._save_scraping_state()
+            else:
+                print("[INFO] No potential blog index URLs found. Skipping site.")
 
-        all_new_articles = []
+if __name__ == "__main__":
+    print("--- Starting BlogIndexProcessor Direct Run ---")
+    processor = BlogIndexProcessor()
+
+    sites_config = load_json_from_supabase('website_config')
+    if not sites_config:
+        print("[ERROR] Website configuration not found in Supabase. Exiting.")
+    else:
         for site in sites_config:
             client_name = site.get("name")
             base_url = site.get("base_url")
@@ -354,129 +326,10 @@ Focus on extracting the main body of the article accurately.
             if not client_name or not base_url:
                 continue
 
-            print(f"\n[INFO] --- Scraping site: {client_name} ---")
-            
-            if client_name not in self.scraping_state:
-                self.scraping_state[client_name] = {}
-            
-            self.scraping_state[client_name].setdefault("blog_index_urls", [])
-            self.scraping_state[client_name].setdefault("rejected_index_urls", [])
+            print(f"\nProcessing site: {client_name} ({base_url})")
+            processor.process_blog_indexes(base_url, client_name)
 
-            lookback_date = (datetime.now() - timedelta(days=LOOKBACK_MONTHS * 30)).date()
-            last_scraped_date_str = self.scraping_state[client_name].get("last_scraped_date")
-            
-            if last_scraped_date_str:
-                stop_date = parse_date(last_scraped_date_str).date()
-                print(f"[INFO] Resuming scan from last known date: {stop_date}")
-            else:
-                stop_date = lookback_date
-                print(f"[INFO] First scan for this site. Looking back to {stop_date}")
+            print("\nUpdated Scraping State for this site:")
+            print(json.dumps(processor.scraping_state, indent=2))
 
-            newest_article_date_this_run = None
-
-            # --- Blog Index URL Discovery and Validation ---
-            if not self.scraping_state[client_name]["blog_index_urls"]:
-                print(f"[INFO] No cached blog index URLs found for {client_name}. Searching and validating...")
-                
-                potential_urls = self.find_blog_index_urls(base_url)
-
-                if potential_urls:
-                    for url in potential_urls:
-                        if url in self.scraping_state[client_name]["blog_index_urls"] or url in self.scraping_state[client_name]["rejected_index_urls"]:
-                            continue
-                        
-                        analysis = self._analyze_page_type(url)
-                        if not analysis:
-                            print(f"[WARN] Could not analyze page type for {url}. Rejecting.")
-                            self.scraping_state[client_name]["rejected_index_urls"].append(url)
-                            continue
-
-                        if analysis.page_type == PageType.BLOG_INDEX:
-                            print(f"[ACCEPT] Accepted {url} as a blog index. Reason: {analysis.reason}")
-                            self.scraping_state[client_name]["blog_index_urls"].append(url)
-                        elif analysis.page_type == PageType.RESOURCES_MIX:
-                            print(f"[INFO] Page {url} is a mix of resources. Checking for dates in sample articles...")
-                            sample_articles = self.find_individual_article_links(url)
-                            if sample_articles and self._check_for_date_in_article(sample_articles[0]):
-                                print(f"[ACCEPT] Accepted resource page {url} because its articles have dates.")
-                                self.scraping_state[client_name]["blog_index_urls"].append(url)
-                            else:
-                                print(f"[REJECT] Rejected resource page {url} because its articles seem to lack dates.")
-                                self.scraping_state[client_name]["rejected_index_urls"].append(url)
-                        else:
-                            print(f"[REJECT] Rejected {url}. Type: {analysis.page_type}. Reason: {analysis.reason}")
-                            self.scraping_state[client_name]["rejected_index_urls"].append(url)
-                    
-                    self._save_scraping_state()
-                else:
-                    print("[INFO] No potential blog index URLs found. Skipping site.")
-                    continue
-            
-            validated_blog_urls = self.scraping_state[client_name].get("blog_index_urls", [])
-            if not validated_blog_urls:
-                print(f"[INFO] No validated blog index URLs for {client_name}. Skipping.")
-                continue
-
-            print(f"[INFO] Using {len(validated_blog_urls)} cached & validated blog index URLs for {client_name}.")
-            
-            all_article_links_for_site = set()
-            for blog_index_url in validated_blog_urls:
-                article_links = self.find_individual_article_links(blog_index_url)
-                all_article_links_for_site.update(article_links)
-
-            new_links = [link for link in all_article_links_for_site if link not in self.processed_urls]
-
-            if not new_links:
-                print("[INFO] No new article links found.")
-                continue
-            
-            print(f"[INFO] Found {len(new_links)} new unique articles to process for {client_name}.")
-
-            if new_links:
-                link = new_links[0] # Take the first link
-                print(f"[INFO] Processing one article for testing: {link}")
-                article_data = self.extract_article_data(link)
-
-                if article_data and article_data.get('text') and len(article_data.get('text', '').strip()) >= 100:
-                    article_data['client_name'] = client_name
-                    article_data['url'] = link
-                    all_new_articles.append(article_data)
-                    self.processed_urls.add(link)
-                    if article_data.get('publish_date'):
-                        try:
-                            article_date = parse_date(article_data['publish_date']).date()
-                            self.scraping_state[client_name]["last_scraped_date"] = article_date.strftime('%Y-%m-%d')
-                            print(f"[INFO] Newest article for {client_name} is from {article_date}. State updated.")
-                        except (ValueError, TypeError):
-                            print(f"[WARN] Could not parse date for article {link}, but adding it to results anyway.")
-                else:
-                    print(f"[SKIP] Test article {link} has no meaningful content. Ignoring.")
-
-        if all_new_articles:
-            try:
-                with open(self.output_path, 'r', encoding='utf-8') as f:
-                    existing_articles = json.load(f)
-            except (FileNotFoundError, json.JSONDecodeError):
-                existing_articles = []
-
-            updated_articles = existing_articles + all_new_articles
-
-            with open(self.output_path, "w", encoding="utf-8") as f:
-                json.dump(updated_articles, f, ensure_ascii=False, indent=2)
-            print(f"\n[SUCCESS] Scraped {len(all_new_articles)} new articles. Total is now {len(updated_articles)}. Saved to {self.output_path}")
-        else:
-            print("\n[INFO] No new articles found across all sites.")
-        
-        self._save_scraping_state()
-
-        print("--- DISCOVERY AND VALIDATION COMPLETE. EXITING. ---")
-        sys.exit()
-
-
-
-if __name__ == "__main__":
-    """
-    Entry point for running the scraper directly.
-    """
-    scraper = SimpleWebsiteScraper()
-    scraper.run()
+    print("\n--- BlogIndexProcessor Direct Run Complete ---")

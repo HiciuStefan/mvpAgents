@@ -1,0 +1,47 @@
+{
+  "UIPath": {
+    "blog_index_urls": [
+      "https://www.uipath.com/blog",
+      "https://www.uipath.com/community-blog",
+      "https://www.uipath.com/inside-the-rocketship",
+      "https://www.uipath.com/newsroom",
+      "https://www.uipath.com/blog/technical-tuesday"
+    ],
+    "rejected_index_urls": [
+      "https://www.uipath.com/blog/ai/agentic-ai-summit-highlights",
+      "https://www.uipath.com/resources/automation-webinars",
+      "https://www.uipath.com/resources/automation-whitepapers",
+      "https://www.uipath.com/resources/automation-analyst-reports/gartner-magic-quadrant-robotic-process-automation",
+      "https://www.uipath.com/resources/automation-case-studies",
+      "https://www.uipath.com/resources/automation-case-studies/hub-international-achieves-extreme-growth-with-ai",
+      "https://www.uipath.com/resources/automation-analyst-reports",
+      "https://www.uipath.com/resources/automation-webinars/forrester-agentic-testing-webinar",
+      "https://www.uipath.com/resources/all",
+      "https://www.uipath.com/resources/automation-demo?filterResources=&Topics=Agentic-automation&Topics=Agentic-testing",
+      "https://www.uipath.com/resources/automation-case-studies/wex-is-streamlining-operations-with-automation",
+      "https://www.uipath.com/resources/automation-case-studies/ags-health-revolutionizes-operations-with-ai-and-machine-learning",
+      "https://www.uipath.com/resources/automation-case-studies/veterans-affairs-reinvented-claims-processing-with-automation",
+      "https://www.uipath.com/resources/automation-demo",
+      "https://www.uipath.com/resources/automation-brochures",
+      "https://www.uipath.com/product/rpa-insights",
+      "https://www.uipath.com/resources/automation-case-studies/accelerating-arcelik-process-digitalization-with-rpa"
+    ]
+  },
+  "Opaque": {
+    "blog_index_urls": [
+      "https://www.opaque.co/resources"
+    ],
+    "rejected_index_urls": [
+      "https://www.opaque.co/resources/downloadables/architecture-and-security-white-paper",
+      "https://www.opaque.co/resources/downloadables/white-paper---bridging-the-gap-how-opaque-complements-hyperscalers-to-unlock-confidential-ai",
+      "https://www.opaque.co/resources/downloadables/white-paper-confidential-ai-securing-data-models-and-agents-in-the-age-of-ai",
+      "https://www.opaque.co/resources/downloadables/the-confidential-computing-summit-2025-building-the-trust-layer-for-the-agentic-era"
+    ]
+  },
+  "dinamic92": {
+    "blog_index_urls": [
+      "https://www.dinamic92.ro/blog/"
+    ],
+    "rejected_index_urls": []
+  }
+}
