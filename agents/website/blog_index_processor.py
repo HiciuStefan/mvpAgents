@@ -22,17 +22,10 @@ from agents._tools.llm_client import llm
 # --- Constants ---
 # Filename for storing the last scraped date and selectors for each website
 STATE_FILENAME = "scraping_state.json"
-# Number of months to look back for articles on the first scan of a website
-LOOKBACK_MONTHS = 12
 
 # --- Pydantic Models for Structured Output ---
 
-class ArticleData(BaseModel):
-    """Pydantic model for structuring scraped article data."""
-    title: str = Field(description="The main title of the article.")
-    authors: Optional[List[str]] = Field(description="List of authors of the article.")
-    text: str = Field(description="The full, cleaned text content of the article.")
-    publish_date: Optional[str] = Field(description="The publication date of the article in YYYY-MM-DD format. If no date is found, this should be null.")
+
 
 class ArticleLinks(BaseModel):
     """Pydantic model for a list of article URLs."""
