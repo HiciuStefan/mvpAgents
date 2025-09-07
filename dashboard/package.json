@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@azure/search-documents": "^12.1.0",
+    "@clerk/backend": "^2.12.1",
     "@clerk/nextjs": "^6.31.1",
     "@clerk/types": "^4.78.0",
     "@hookform/resolvers": "^5.2.1",

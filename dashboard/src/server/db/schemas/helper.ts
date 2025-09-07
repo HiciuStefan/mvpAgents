@@ -56,7 +56,7 @@ export function createAuditTable<T extends Record<string, PgColumnBuilderBase>>(
 }
 
 /** Helper for reusable updatedAt column */
-function updatedAtColumn(name = 'updated_at') {
+export function updatedAtColumn(name = 'updated_at') {
   return timestamp(name, { withTimezone: true })
     .defaultNow()
     .notNull()

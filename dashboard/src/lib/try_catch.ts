@@ -13,10 +13,10 @@ export type Result<T, E = Error> = Success<T> | Failure<E>;
 
 // Main wrapper function
 export async function try_catch<T, E = Error>(
-  promise: Promise<T>,
+  promise: Promise<T> | (() => Promise<T>)
 ): Promise<Result<T, E>> {
   try {
-    const data = await promise;
+    const data = await (typeof promise === 'function' ? promise() : promise);
     return { data, error: null };
   } catch (error) {
     return { data: null, error: error as E };

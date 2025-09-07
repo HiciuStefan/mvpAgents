@@ -6,11 +6,13 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC } from "@trpc/server";
-import superjson from "superjson";
-import { ZodError } from "zod";
+import { initTRPC } from '@trpc/server';
+import { TRPCError } from '@trpc/server';
+import superjson from 'superjson';
+import { ZodError } from 'zod';
+import { auth } from '@clerk/nextjs/server';
 
-import { db } from "~/server/db";
+import { db } from '~/server/db';
 
 /**
  * 1. CONTEXT
@@ -85,7 +87,7 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   if (t._config.isDev) {
     // artificial delay in dev
     const waitMs = Math.floor(Math.random() * 400) + 100;
-    await new Promise((resolve) => setTimeout(resolve, waitMs));
+    await new Promise(resolve => setTimeout(resolve, waitMs));
   }
 
   const result = await next();
@@ -97,10 +99,47 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
 });
 
 /**
+ * Middleware that enforces authentication for all procedures
+ */
+const isAuthed = t.middleware(async ({ next }) => {
+  const user = await auth();
+  if (!user.userId) {
+    console.log('User not authenticated');
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'User not authenticated',
+    });
+  }
+
+  if (!user.orgId) {
+    console.log('User not in organization');
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: 'User must belong to an organization',
+    });
+  }
+
+  return next({
+    ctx: {
+      user: {
+        userId: user.userId,
+        orgId: user.orgId,
+      },
+    },
+  });
+});
+
+/**
  * Public (unauthenticated) procedure
  *
  * This is the base piece you use to build new queries and mutations on your tRPC API. It does not
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
+ *
+ * Use this for public endpoints (sign-in/sign-up related only)
  */
+// export const publicProcedure = t.procedure;
 export const publicProcedure = t.procedure.use(timingMiddleware);
+
+// Use this for all authenticated endpoints (recommended default)
+export const authenticatedProcedure = t.procedure.use(isAuthed);
