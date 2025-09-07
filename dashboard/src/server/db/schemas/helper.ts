@@ -1,4 +1,4 @@
-import { uuid, timestamp, text, index } from 'drizzle-orm/pg-core';
+import { uuid, timestamp, index } from 'drizzle-orm/pg-core';
 import type {
   IndexBuilder,
   PgColumnBuilderBase,
