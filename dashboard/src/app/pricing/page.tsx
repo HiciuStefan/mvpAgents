@@ -1,16 +1,19 @@
 'use client';
 
-import Link from 'next/link';
-import { PricingTable, useAuth } from '@clerk/nextjs';
+// import Link from 'next/link';
+import {
+  PricingTable,
+  //  useAuth
+} from '@clerk/nextjs';
 import { Skeleton } from '~/components/ui/skeleton';
-import { useRouter } from 'next/navigation';
-import { Button } from '~/components/ui/button';
+// import { useRouter } from 'next/navigation';
+// import { Button } from '~/components/ui/button';
+import { ROUTES } from '~/lib/nav_items';
 // import { useEffect } from 'react';
-// import { ROUTES } from '~/lib/nav_items';
 
 export default function OnboardingPricingPage() {
-  const router = useRouter();
-  const { orgId } = useAuth();
+  // const router = useRouter();
+  // const { orgId } = useAuth();
 
   // useEffect(() => {
   //   if (!orgId) {
@@ -31,7 +34,7 @@ export default function OnboardingPricingPage() {
             <PricingTable
               // forOrganizations
               ctaPosition="bottom"
-              newSubscriptionRedirectUrl="/dashboard"
+              newSubscriptionRedirectUrl={ROUTES.HOME}
               checkoutProps={{
                 appearance: {
                   elements: {
