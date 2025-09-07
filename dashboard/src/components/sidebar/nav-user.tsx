@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { useClerk, useUser } from '@clerk/nextjs';
 import { BadgeCheck, Bell, ChevronsUpDown, LogOut } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import {
-	DropdownMenu,
+  DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
@@ -13,8 +12,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '~/components/ui/sidebar';
-
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from '~/components/ui/sidebar';
+import { useIsClient } from '~/hooks/use-is-client';
 
 // Placeholder component that matches the visual structure
 function NavUserPlaceholder() {
@@ -37,12 +41,8 @@ function NavUserPlaceholder() {
 }
 
 export function NavUser() {
-  const [isClient, setIsClient] = useState(false);
+  const isClient = useIsClient();
   const { user } = useUser();
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   // Show placeholder during SSR and initial hydration
   if (!isClient) {
@@ -52,36 +52,37 @@ export function NavUser() {
   // Show nothing if no user is loaded yet
   if (!user) return null;
 
-  return (
-    <NavUserClient user={user} />
-  );
+  return <NavUserClient user={user} />;
 }
 
-function NavUserClient({ user }: { user: NonNullable<ReturnType<typeof useUser>['user']> }) {
-	const { openUserProfile, signOut } = useClerk();
-	const { isMobile } = useSidebar();
+function NavUserClient({
+  user,
+}: {
+  user: NonNullable<ReturnType<typeof useUser>['user']>;
+}) {
+  const { openUserProfile, signOut } = useClerk();
+  const { isMobile } = useSidebar();
 
-	const userDisplayName =
-		user.fullName ??
-		user.username ??
-		user.emailAddresses[0]?.emailAddress ??
-		'User';
+  const userDisplayName =
+    user.fullName ??
+    user.username ??
+    user.emailAddresses[0]?.emailAddress ??
+    'User';
 
-	const userEmail = user.primaryEmailAddress?.emailAddress ?? '';
-	const userAvatar = user.imageUrl;
-	const userInitials = user.fullName
-		? user.fullName
-				.split(' ')
-				.slice(0, 2)
-				.map(n => n[0])
-				.join('')
-				.toUpperCase()
-		: userDisplayName.slice(0, 2).toUpperCase();
+  const userEmail = user.primaryEmailAddress?.emailAddress ?? '';
+  const userAvatar = user.imageUrl;
+  const userInitials = user.fullName
+    ? user.fullName
+        .split(' ')
+        .slice(0, 2)
+        .map(n => n[0])
+        .join('')
+        .toUpperCase()
+    : userDisplayName.slice(0, 2).toUpperCase();
 
-	const handleSignOut = async () => {
-		await signOut({ redirectUrl: `/` });
-	};
-
+  const handleSignOut = async () => {
+    await signOut({ redirectUrl: `/` });
+  };
 
   return (
     <SidebarMenu>
@@ -94,10 +95,14 @@ function NavUserClient({ user }: { user: NonNullable<ReturnType<typeof useUser>[
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={userAvatar} alt={userDisplayName} />
-                <AvatarFallback className="rounded-lg">{userInitials}</AvatarFallback>
+                <AvatarFallback className="rounded-lg">
+                  {userInitials}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{userDisplayName}</span>
+                <span className="truncate font-semibold">
+                  {userDisplayName}
+                </span>
                 <span className="truncate text-xs">{userEmail}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
@@ -113,17 +118,21 @@ function NavUserClient({ user }: { user: NonNullable<ReturnType<typeof useUser>[
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={userAvatar} alt={userDisplayName} />
-                  <AvatarFallback className="rounded-lg">{userInitials}</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">
+                    {userInitials}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{userDisplayName}</span>
+                  <span className="truncate font-semibold">
+                    {userDisplayName}
+                  </span>
                   <span className="truncate text-xs">{userEmail}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-							<DropdownMenuItem onClick={() => openUserProfile()}>
+              <DropdownMenuItem onClick={() => openUserProfile()}>
                 <BadgeCheck />
                 Account
               </DropdownMenuItem>
