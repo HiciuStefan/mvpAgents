@@ -11,13 +11,13 @@
       "scenario_type": "positive"
     },
     "analysis": {
-      "short_description": "Urgent request for new developer",
+      "short_description": "Request to source AI Developer",
       "actionable": true,
       "priority_level": "high",
-      "opportunity_type": "Client request",
-      "suggested_action": "Source candidates for a Mid-level AI Developer with NLP skills",
-      "relevance": "Client has a new, urgent hiring need due to successful expansion.",
-      "suggested_reply": "Hi Sarah,\n\nThank you for reaching out! I understand the urgency and will start sourcing candidates for the Mid-level AI Developer position right away. I'll keep you updated on the progress.\n\nBest,\nMark"
+      "opportunity_type": "New business opportunity / Client request",
+      "suggested_action": "Schedule a 30-min call with Sarah to confirm JD, hiring process, location and timeline; begin sourcing candidates matching skills and budget.",
+      "relevance": "Urgent hiring need with a near-term start — opportunity for a new client engagement.",
+      "suggested_reply": "Hi Sarah,\n\nThanks — glad to hear Alex is working out well. We can absolutely help source a mid-level AI Developer with CV/deep learning and the new NLP requirement.\n\nTo move quickly, can we schedule a 30-minute call in the next 48 hours to confirm:\n- Final JD (any changes from Alex's role)\n- Remote vs. onsite / time zones and work authorization requirements\n- Interview process and stakeholders\n- Any technical take-home or live coding expectations\n- Engagement model (direct hire, contract) and confirmation of budget and start date\n\nIf a call is difficult, please send the updated JD and answers to the questions above. Once confirmed, we’ll begin sourcing and aim to deliver an initial shortlist of 3–5 screened candidates within 5 business days.\n\nProposed times (ET): Tomorrow 10:00–10:30, 14:00–14:30, or Wednesday 09:00–09:30. Tell me which works or share alternative times.\n\nLooking forward to helping you move quickly on this.\n\nBest,\nMark\nPartnerships, Digital Excellence"
     }
   },
   {
@@ -36,13 +36,13 @@
       "scenario_type": "positive"
     },
     "analysis": {
-      "short_description": "Update on developer performance and future needs",
-      "actionable": true,
-      "priority_level": "medium",
-      "opportunity_type": "Client request",
-      "suggested_action": "Prepare a candidate pipeline for future developer roles.",
-      "relevance": "Client indicates potential future hiring needs due to growth.",
-      "suggested_reply": "Hi Sarah,\n\nThank you for the update on Priya's performance! I'm glad to hear she's making a positive impact. I'll start preparing a pipeline for additional developer roles as needed.\n\nBest,\nMark"
+      "short_description": "Analysis failed, processed as neutral",
+      "actionable": false,
+      "priority_level": "neutral",
+      "opportunity_type": " ",
+      "suggested_action": " ",
+      "relevance": " ",
+      "suggested_reply": " "
     }
   },
   {
@@ -59,13 +59,13 @@
       "scenario_type": "positive"
     },
     "analysis": {
-      "short_description": "Acknowledgment of hiring success",
+      "short_description": "Congratulate recruiter on AI hire",
       "actionable": true,
-      "priority_level": "low",
-      "opportunity_type": "Relationship-building note",
-      "suggested_action": "Engage with SolarisProAi on social media.",
-      "relevance": "Strengthening partnership visibility and engagement.",
-      "suggested_reply": "Congrats @SolarisProAi! 🎉 Excited to see your team grow! #AITalent #Partnership"
+      "priority_level": "medium",
+      "opportunity_type": "Relationship-building opportunity",
+      "suggested_action": "Reply publicly on Twitter congratulating them, follow their account, then send a DM proposing a brief 15–20 min intro to discuss fintech/banking AI use cases and candidate referrals.",
+      "relevance": "Keeps us top-of-mind with a recruiting partner for future hires and referrals.",
+      "suggested_reply": "Congrats on the new AI hire! 🎉 Love seeing the team grow. Always great working with partners who move fast. If you’re exploring AI projects in banking/fintech, Digital Excellence can help deliver practical outcomes—DM us to set up a quick intro. #AITalent #Fintech #NLP"
     }
   },
   {
@@ -82,13 +82,13 @@
       "scenario_type": "positive"
     },
     "analysis": {
-      "short_description": "Inquiry for collaboration on ML recruitment",
+      "short_description": "Startup seeks ML engineers via Twitter",
       "actionable": true,
-      "priority_level": "high",
+      "priority_level": "medium",
       "opportunity_type": "New business opportunity",
-      "suggested_action": "Respond to DM and schedule a discovery call",
-      "relevance": "Potential client seeking collaboration for ML engineers.",
-      "suggested_reply": "Thanks for reaching out! Let's connect to discuss how we can collaborate on your ML recruitment needs. DM me your availability!"
+      "suggested_action": "Publicly reply asking them to DM or book a 20-min intro; send a DM with a Calendly link requesting role details; prepare a candidate brief and engagement options ahead of the call.",
+      "relevance": "Inbound lead seeking ML talent — potential new client for Digital Excellence.",
+      "suggested_reply": "Love this — DM us the roles & timeline or book a 20-min intro: calendly.com/digitalexcellence/intro. We help startups hire senior ML engineers fast. #AIJobs #TechRecruitment"
     }
   },
   {
@@ -106,13 +106,13 @@
       "scenario_type": "positive"
     },
     "analysis": {
-      "short_description": "New lead from InnovateAI for partnership",
+      "short_description": "Partnership lead from InnovateAI",
       "actionable": true,
       "priority_level": "high",
       "opportunity_type": "New business opportunity",
-      "suggested_action": "Follow up with InnovateAI immediately to schedule a meeting",
-      "relevance": "Direct inquiry from a high-potential client. Prompt action is crucial for conversion.",
-      "suggested_reply": "Thank you for reaching out, InnovateAI! We're excited about the opportunity to partner with you on talent acquisition solutions. Let's schedule a meeting to discuss your needs further. Please let us know your availability."
+      "suggested_action": "Schedule a 30-minute discovery call with InnovateAI within 48 hours; request roles, headcount, timeline, hiring model and budget before the call.",
+      "relevance": "High-value lead seeking rapid ML hiring support that aligns with growth goals.",
+      "suggested_reply": "Subject: Re: Partnership inquiry — InnovateAI\n\nHi InnovateAI team,\n\nThanks for reaching out to Digital Excellence — we appreciate the inquiry. We’d like to schedule a 30-minute discovery call in the next 48 hours to understand your ML engineering hiring needs and explore how we can partner (RPO, team augmentation, or delivery + hiring).\n\nQuick asks before the call to help us prepare:\n1) Key roles and seniority required\n2) Target headcount and hiring timeline\n3) Preferred hiring model (FTE, contractors, RPO, mixed)\n4) Tech stack and any interview/skill requirements\n4) Any budget range or constraints\n\nPlease pick a time on our calendar: https://calendly.com/digitalexcellence/intro or reply with 2–3 slots that work for you (we’re available in the next 48 hours). After the call we’ll share a concise proposal and next steps.\n\nLooking forward to speaking,\n\n[Your Name]\nHead of Partnerships\nDigital Excellence\nhttps://digitalexcellence.ai"
     }
   },
   {
@@ -131,13 +131,13 @@
       "scenario_type": "neutral"
     },
     "analysis": {
-      "short_description": "Updated onboarding and reimbursement policies",
-      "actionable": false,
-      "priority_level": "neutral",
-      "opportunity_type": " ",
-      "suggested_action": " ",
-      "relevance": " ",
-      "suggested_reply": " "
+      "short_description": "Updated onboarding & travel policy notice",
+      "actionable": true,
+      "priority_level": "medium",
+      "opportunity_type": "Client request",
+      "suggested_action": "Update candidate briefing and recruitment templates to include revised travel and reporting expectations; notify recruiting team and confirm completion with Sarah.",
+      "relevance": "Prevents onboarding issues and maintains partner relationship with SolarisProAI.",
+      "suggested_reply": "Hi Sarah,\n\nThanks for the update — we’ll incorporate the revised onboarding documentation and travel reimbursement/reporting expectations into our candidate briefings and recruitment materials. Could you please share the updated documentation or a link to the specific sections you want emphasized? I’ll notify our recruiting team today and send you a confirmation once the briefing template and candidate checklist are updated.\n\nThanks,\nMark\nPartnerships, Digital Excellence"
     }
   },
   {
@@ -155,13 +155,13 @@
       "scenario_type": "neutral"
     },
     "analysis": {
-      "short_description": "General update on AI training program",
-      "actionable": false,
-      "priority_level": "neutral",
-      "opportunity_type": " ",
-      "suggested_action": " ",
-      "relevance": " ",
-      "suggested_reply": " "
+      "short_description": "SolarisProAi shifts to internal AI training",
+      "actionable": true,
+      "priority_level": "low",
+      "opportunity_type": "Competitive/market intelligence",
+      "suggested_action": "Add SolarisProAi to competitor watchlist; monitor their hiring pages and vendor/RFP activity monthly; inform sales to prioritize banks/fintechs and highlight fast delivery and cost savings.",
+      "relevance": "Could reduce external vendor demand; affects sales targeting and positioning.",
+      "suggested_reply": "Subject: Monitor — SolarisProAi internal training update\n\nHi team,\n\nSolarisProAi announced an enhanced internal AI mentorship and training program. This may signal a strategic shift toward building internal capability that could reduce their reliance on external vendors over time.\n\nProposed next steps:\n- Add SolarisProAi to our competitor watchlist and check their careers/announcements monthly.\n- Track any changes in external hiring or public RFPs and flag reductions in vendor engagements.\n- Sales: prioritize outreach to regional banks and mid-market fintechs; emphasize our speed of delivery, measurable cost savings, and outcomes-focused delivery.\n\nCan someone own the watchlist update and share a brief status in the monthly intelligence note? I’ll coordinate with Sales to adjust messaging.\n\nThanks,\n[Your Name]\n"
     }
   },
   {
@@ -179,13 +179,13 @@
       "scenario_type": "neutral"
     },
     "analysis": {
-      "short_description": "Team expansion update",
-      "actionable": false,
-      "priority_level": "neutral",
-      "opportunity_type": " ",
-      "suggested_action": " ",
-      "relevance": " ",
-      "suggested_reply": " "
+      "short_description": "Hiring pause announced",
+      "actionable": true,
+      "priority_level": "low",
+      "opportunity_type": "Relationship-building opportunity",
+      "suggested_action": "Set a reminder to DM/check back in 2–3 weeks offering help with onboarding automation and ops efficiency.",
+      "relevance": "Signals a temporary slowdown—good moment to nurture relationship and offer automation help.",
+      "suggested_reply": "Congrats on the new hires — smart to pause and focus on stability. If you want to streamline onboarding or automate ops while you scale, DM us. We help banks & fintechs speed credit decisions and cut costs. #AIExpansion #GrowthPacing"
     }
   },
   {
@@ -204,12 +204,12 @@
       "scenario_type": "negative"
     },
     "analysis": {
-      "short_description": "Urgent developer compensation issue",
+      "short_description": "Developer threatens resignation — urgent",
       "actionable": true,
       "priority_level": "high",
       "opportunity_type": "Reputational risk",
-      "suggested_action": "Discuss Alex's salary expectations and plan for retention or replacement.",
-      "relevance": "Alex's potential resignation could disrupt team operations and client projects.",
+      "suggested_action": "Call Sarah immediately to clarify Alex's demands and timeline, assess retention feasibility, notify delivery leads, and begin sourcing replacement candidates if needed.",
+      "relevance": "Loss of a dev next week risks delivery and client relationships.",
       "suggested_reply": "Immediate phone call required to address this sensitive issue."
     }
   },
@@ -229,13 +229,13 @@
       "scenario_type": "negative"
     },
     "analysis": {
-      "short_description": "Feedback on candidate screening process",
+      "short_description": "Client feedback: candidate screening issue",
       "actionable": true,
       "priority_level": "medium",
       "opportunity_type": "Client request",
-      "suggested_action": "Review and improve the candidate screening process",
-      "relevance": "Improving screening is vital for client satisfaction and trust.",
-      "suggested_reply": "Thank you for your feedback, Sarah. We'll review our candidate screening process to ensure better alignment with your expectations moving forward."
+      "suggested_action": "Acknowledge the feedback, review and tighten the screening checklist, schedule a 20-minute alignment call with Sarah within 3 business days, and deliver 3 replacement candidates within 4 business days.",
+      "relevance": "Client trust affected; fixing screening preserves partnership and future deals.",
+      "suggested_reply": "Hi Sarah,\n\nThank you for the candid feedback — I’m sorry the recent candidate missed the mark on communication and live problem solving. I appreciate you flagging this and take it seriously.\n\nImmediate next steps from our side:\n- I’ll review and tighten our screening checklist (communication and live problem-solving gates) and add an explicit live exercise.\n- I’ll personally review the next shortlist and ensure candidates meet those checkpoints.\n- I will send 3 stronger replacement candidates within 4 business days.\n\nCould we schedule a 20-minute alignment call in the next 3 business days so I can better understand any specific examples or must-have behaviors you want emphasized? I’m available [insert two times], or tell me a time that works for you.\n\nThanks again for the clear guidance — I’ll own this and follow up with the updated rubric and replacements.\n\nBest,\nMark\nPartnerships, Digital Excellence"
     }
   },
   {
@@ -253,13 +253,13 @@
       "scenario_type": "negative"
     },
     "analysis": {
-      "short_description": "Team structure reevaluation due to growth",
+      "short_description": "Partner tweet: re-evaluating team & partners",
       "actionable": true,
       "priority_level": "medium",
-      "opportunity_type": "Client request",
-      "suggested_action": "Reach out to discuss how we can support their transition.",
-      "relevance": "Maintaining strong partnerships is crucial during their reevaluation.",
-      "suggested_reply": "We understand the challenges that come with rapid growth. Let's connect to discuss how we can support your team during this transition. #Partnership #Support"
+      "opportunity_type": "Partnership risk / retention opportunity",
+      "suggested_action": "Reply publicly offering help and propose a 15-min call; follow up via DM and email with a 1-page plan and a relevant bank/fintech case study.",
+      "relevance": "Potential risk to partnership; timely outreach can retain and reshape engagement.",
+      "suggested_reply": "Reorgs are tough — happy to help. We've helped regional banks & mid-market fintechs stabilize ops and speed credit decisions. DM us or I'll set a quick 15-min call to share practical, no-slide solutions. #GrowingPains #TechOps"
     }
   },
   {
@@ -272,13 +272,13 @@
       "scenario_type": "twitter"
     },
     "analysis": {
-      "short_description": "Collaboration request for ML engineers",
+      "short_description": "Startup requests ML-recruitment collaboration",
       "actionable": true,
       "priority_level": "medium",
       "opportunity_type": "New business opportunity",
-      "suggested_action": "DM Warp to discuss collaboration details.",
-      "relevance": "Startup seeks top-tier ML engineers, aligning with our services.",
-      "suggested_reply": "Sounds great! Let's chat about how we can help you find the right ML engineers. DM us your availability!"
+      "suggested_action": "Reply publicly to invite a DM, then move conversation to DM and schedule a 20-min intro to capture role specs, timeline, and budget.",
+      "relevance": "Direct inbound lead for ML hiring—fits our recruitment/partnership goals.",
+      "suggested_reply": "Love this — we’d be happy to help! DM us the roles & timeline or drop a note at hello@digitalexcellence.ai. Happy to set a quick 20‑min intro to scope must-haves and next steps. #AIJobs"
     }
   }
 ]

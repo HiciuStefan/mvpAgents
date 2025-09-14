@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import subprocess
 import os
 import sys
@@ -268,6 +268,64 @@ def post_client_info(client_name):
     # Într-un caz real, aici ai prelucra datele trimise în corpul cererii POST,
     # de exemplu: data = request.get_json()
     return f"POST request pentru clientul: {client_name}"
+
+@app.route('/scrape-article', methods=['GET', 'POST'])
+def scrape_article():
+    try:
+        if request.method == 'POST':
+            data = request.get_json()
+            if not data or 'base_url' not in data or 'client_name' not in data:
+                return jsonify({
+                    "status": "error",
+                    "message": "Request body must contain 'base_url' and 'client_name'"
+                }), 400
+            base_url = data['base_url']
+            client_name = data['client_name']
+        else:  # GET request
+            base_url = request.args.get('base_url')
+            client_name = request.args.get('client_name')
+            if not base_url or not client_name:
+                return jsonify({
+                    "status": "error",
+                    "message": "URL parameters must contain 'base_url' and 'client_name'"
+                }), 400
+
+        project_dir = os.path.dirname(os.path.abspath(__file__))
+        venv_python = os.path.join(project_dir, '.venv', 'Scripts', 'python.exe')
+        
+        python_executable = venv_python if os.path.exists(venv_python) else 'python'
+        
+        env = os.environ.copy()
+        env['PYTHONPATH'] = project_dir if 'PYTHONPATH' not in env else f"{project_dir};{env['PYTHONPATH']}"
+
+        script_path = os.path.join(project_dir, 'agents', 'website', 'article_scraper.py')
+
+        result = subprocess.run(
+            [python_executable, script_path, base_url, client_name],
+            capture_output=True,
+            text=True,
+            check=True,
+            cwd=project_dir,
+            env=env
+        )
+        
+        return jsonify({
+            "status": "success",
+            "output": result.stdout,
+            "error": result.stderr
+        })
+    except subprocess.CalledProcessError as e:
+        return jsonify({
+            "status": "error",
+            "message": "A apărut o eroare la rularea article_scraper.py.",
+            "output": e.stdout,
+            "error": e.stderr
+        }), 500
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"A apărut o eroare neașteptată: {str(e)}"
+        }), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)
