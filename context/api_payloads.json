@@ -2891,5 +2891,201 @@
       "short_description": "Startup seeks ML engineers (tweet)",
       "urgency": 2
     }
+  },
+  {
+    "source": "email",
+    "payload": {
+      "content": "Hi Mark,\n\nHope you're well! Alex has been performing excellently and has integrated well with our international team.\n\nDue to our rapid expansion success, we need another AI Developer to join our international team. The role is similar to Alex's position:\n\n- Mid-level AI Developer (2-4 years experience)\n- Computer vision and deep learning focus\n- Python, TensorFlow/PyTorch proficiency\n- Natural language processing skills (new requirement)\n- Budget: $75-85K annually\n- Start date: September 15th, 2024\n- Project: Multi-language sentiment analysis for international markets\n\nCan you help us find another strong candidate? We're looking to move quickly on this.\n\nBest regards,\nSarah Chen\nCTO, SolarisProAi",
+      "client_name": "SolarisProAi",
+      "type": "email",
+      "message_id": "positive_email_1",
+      "subject": "Urgent: Additional AI Developer Required",
+      "processed_at": "2025-09-15T14:36:18.395218+00:00",
+      "actionable": true,
+      "suggested_action": "Schedule a 30-min call to confirm requirements, then begin sourcing and deliver a 3-5 candidate shortlist within 5 business days.",
+      "suggested_reply": "Hi Sarah,\n\nThanks — great to hear Alex is doing well and thanks for the clear brief. We can help and will prioritize this given the September 15 start.\n\nQuick confirmation items so we source the right candidates:\n- Employment type: permanent hire, contractor, or contract-to-hire?\n- Location/remote expectations and timezone overlap requirements\n- Any must-have libraries, frameworks or research experience (e.g., specific CV architectures, transformer stacks)\n- Interview process and decision timeline (tech screen, hiring manager, final interview)\n\nIf that works, I can be available for a 30-minute call tomorrow or the day after to align, then deliver an initial shortlist of 3–5 vetted candidates within 5 business days.\n\nProposed times: [two time slots, local timezone]. Please confirm your preferred slot or reply with details above and we’ll start sourcing immediately.\n\nThanks,\nMark\nPartnerships — Digital Excellence\npartnerships@digitalexcellence.com",
+      "short_description": "Urgent request for AI developer hire",
+      "relevance": "Existing client needs a rapid hire — opportunity to expand engagement.",
+      "urgency": 3
+    }
+  },
+  {
+    "source": "email",
+    "payload": {
+      "content": "Hi Mark,\n\nJust a quick update – our second AI developer, Priya Malhotra, is settling in very well. Her work on the sentiment analysis module has been excellent so far, especially her multilingual NLP enhancements.\n\nThanks again for finding such high-quality talent. We’ll likely need a third developer soon if this growth continues.\n\nBest,\nSarah",
+      "client_name": "SolarisProAi",
+      "type": "email",
+      "message_id": "positive_email_2",
+      "subject": "Update: Second Developer Performing Well",
+      "processed_at": "2025-09-15T14:36:21.504957+00:00",
+      "actionable": true,
+      "suggested_action": "Reply thanking Sarah, ask timeline/role details (seniority, skills, contract type), offer to source shortlist and propose a brief alignment call",
+      "suggested_reply": "Subject: Re: Update: Second Developer Performing Well\n\nHi Sarah,\n\nThanks for the update — that’s excellent news. I’m glad Priya is settling in and delivering strong multilingual NLP improvements.\n\nWe’d be happy to start sourcing a third developer. Could you share a few details so we can move quickly:\n- Target timeline / expected start date\n- Seniority level (mid/senior/lead)\n- Must-have skills (NLP, languages, ML infra, MLOps, etc.)\n- Contract type (contract, contract-to-hire, or direct hire)\n- Any budget or interview availability constraints\n\nIf you’d like, I can assemble an initial shortlist (3–5 profiles) within 5 business days once we have the details. Would you be available for a 20–30 minute call next week to align on requirements? I’m flexible Tuesday or Thursday afternoon — let me know what works and I’ll send a calendar invite.\n\nThanks again — glad to be helping scale your team.\n\nBest,\nMark\nPartnerships, Digital Excellence\nmark@digitalexcellence.com",
+      "short_description": "Client likely needs a 3rd AI developer",
+      "relevance": "Client signals imminent hiring—chance to win repeat engagement.",
+      "urgency": 2
+    }
+  },
+  {
+    "source": "twitter",
+    "payload": {
+      "url": "https://twitter.com/unknown/status/00000",
+      "text": "We're building something incredible! ✨ Just added another AI developer to our global vision team. Huge thanks to our recruitment partner for helping us scale with precision. #AITalent #GlobalAI #NLP",
+      "tweet_id": "2a3b4c5d-6e7f-8901-2345-67890abcdef1",
+      "actionable": true,
+      "client_name": "SolarisProAi",
+      "relevance": "Strengthens partner ties and opens potential fintech delivery partnerships.",
+      "suggested_action": "Like and reply publicly congratulating them, mention potential collaboration for fintech/regional bank projects, then follow up via DM within 48 hours to explore partnership opportunities.",
+      "suggested_reply": "@SolarisProAi Huge congrats on the new AI hire — love seeing the team grow! 🚀 If you’re scaling AI work for fintech or regional banks, we partner on delivery & ops to move projects from prototype to production. DM us and let’s explore collaboration. #AITalent #Fintech",
+      "short_description": "SolarisProAi hiring momentum tweet",
+      "urgency": 2
+    }
+  },
+  {
+    "source": "twitter",
+    "payload": {
+      "url": "https://twitter.com/unknown/status/00000",
+      "text": "@DigitalExcellence Your work in AI recruitment is impressive! We're a startup looking for top-tier ML engineers. DM us to discuss potential collaboration! #AIJobs #TechRecruitment",
+      "tweet_id": "3b4c5d6e-7f8a-9012-3456-7890abcdef23",
+      "actionable": true,
+      "client_name": "SolarisProAi",
+      "relevance": "Direct lead for AI talent/services; aligns with growth goals.",
+      "suggested_action": "Reply publicly to invite DM, then send a DM with brief intake questions and a calendar link to schedule a 20-min discovery call within 48 hours.",
+      "suggested_reply": "Love this — we’d be glad to help! DM us the role details (skills, seniority, timeline) or grab a 20‑min slot: calendly.com/digitalex/20. We’ll follow up in DM.",
+      "short_description": "Startup seeking ML engineers on Twitter",
+      "urgency": 2
+    }
+  },
+  {
+    "source": "website",
+    "payload": {
+      "client_name": "SolarisProAi",
+      "url": "https://www.innovateai.com/partnership-inquiry",
+      "title": "New Lead: AI Startup Seeking Partnership",
+      "content": "A new AI startup, 'InnovateAI', just filled out our partnership inquiry form on our website. They are looking for talent acquisition solutions for their rapidly expanding ML engineering team. This represents a high-value lead.",
+      "short_description": "Inbound partnership lead — InnovateAI",
+      "actionable": true,
+      "opportunity_type": "New business opportunity",
+      "suggested_action": "Schedule a 30-minute discovery call with InnovateAI within 48 hours; request team size, target roles, timeline and budget; prepare a brief talent-acquisition/partnership proposal highlighting our delivery capabilities.",
+      "suggested_reply": "Hi InnovateAI team,\n\nThanks for reaching out to Digital Excellence and for your partnership inquiry. We’re excited by the opportunity to support your rapidly growing ML engineering team.\n\nCan we schedule a 30-minute discovery call within the next 48 hours to discuss hiring priorities and partnership options? I’m available for a call on:\n- Friday, July 18: 10:00–11:00 AM or 3:00–4:00 PM (your timezone)\n- Monday, July 21: 9:00–10:00 AM\n\nIf none of those work, please share 2–3 times that suit you or send a calendar link.\n\nTo make the meeting productive, could you briefly share ahead of the call:\n- Roles and seniority levels you’re hiring for\n- Expected headcount and target timeline\n- Any must-have skills or process constraints\n- Preliminary budget or engagement model preference\n\nWe’ll prepare a short, focused proposal outlining candidate sourcing, screening, and partnership-engagement options tailored to InnovateAI.\n\nLooking forward to connecting.\n\nBest,\nAlex Rivera\nPartnerships Lead | Digital Excellence\n[email address] | [phone] | calendly.com/digitalexcellence/meet",
+      "relevance": "High-value inbound lead; timely outreach critical for conversion.",
+      "read": false,
+      "scraped_at": "2025-09-15T14:36:27.887574+00:00",
+      "urgency": 3
+    }
+  },
+  {
+    "source": "email",
+    "payload": {
+      "content": "Hi Mark,\n\nAs we expand, we've updated our onboarding documentation and travel reimbursement policies. Please make sure future candidates are aware of the revised travel and reporting expectations.\n\nBest,\nSarah",
+      "client_name": "SolarisProAi",
+      "type": "email",
+      "message_id": "neutral_email_1",
+      "subject": "New Onboarding Requirements",
+      "processed_at": "2025-09-15T14:36:29.491008+00:00",
+      "actionable": true,
+      "suggested_action": "Update candidate briefing and screening materials to reflect the revised onboarding and travel reimbursement policies; request the updated docs from Sarah and confirm completion.",
+      "suggested_reply": "Hi Sarah,\n\nThanks for the update — we’ll incorporate the revised onboarding documentation and travel reimbursement policies into our candidate briefing and screening materials. Could you please share the updated documents or a short summary of the key changes you want highlighted for candidates? I’ll confirm with you once the briefing has been updated and shared with the recruiting team.\n\nBest,\nMark",
+      "short_description": "Updated onboarding & travel policy",
+      "relevance": "Prevents onboarding friction and ensures candidates meet new expectations.",
+      "urgency": 2
+    }
+  },
+  {
+    "source": "website",
+    "payload": {
+      "client_name": "SolarisProAi",
+      "url": "https://www.solarisproai.com/news/solarisproai-enhances-internal-ai-training-program",
+      "title": "SolarisProAi Enhances Internal AI Training Program",
+      "content": "As we scale, our internal AI team is benefiting from a structured mentorship and training program. While we continue hiring externally, internal growth is equally important. #TechGrowth #AITraining",
+      "short_description": "SolarisProAi internal AI training update",
+      "actionable": false,
+      "opportunity_type": " ",
+      "suggested_action": " ",
+      "suggested_reply": "",
+      "relevance": " ",
+      "read": false,
+      "scraped_at": "2025-09-15T14:36:30.971607+00:00",
+      "urgency": 0
+    }
+  },
+  {
+    "source": "twitter",
+    "payload": {
+      "url": "https://twitter.com/unknown/status/00000",
+      "text": "Taking a short breather as we onboard our latest team additions. Stability and alignment are just as important as rapid growth. #AIExpansion #GrowthPacing",
+      "tweet_id": "1a2b3c4d-5e6f-7890-abcd-ef1234567890",
+      "actionable": false,
+      "client_name": "SolarisProAi",
+      "relevance": " ",
+      "suggested_action": " ",
+      "suggested_reply": "",
+      "short_description": "Team expansion pause (tweet)",
+      "urgency": 0
+    }
+  },
+  {
+    "source": "email",
+    "payload": {
+      "content": "Hi Mark,\n\nWe have a problem. Alex Rodriguez has requested a significant raise and is threatening to resign if his salary isn’t adjusted by next week. This is causing disruption in our team planning.\n\nCan we discuss his expectations and explore whether a replacement would be feasible if needed?\n\nSarah",
+      "client_name": "SolarisProAi",
+      "type": "email",
+      "message_id": "negative_email_1",
+      "subject": "Urgent: Developer Compensation Issue",
+      "processed_at": "2025-09-15T14:36:32.398925+00:00",
+      "actionable": true,
+      "suggested_action": "Schedule a 30-minute call with Sarah within 24 hours to clarify Alex's requested raise and prepare retention vs replacement options.",
+      "suggested_reply": "Hi Sarah,\n\nThanks for flagging this — I understand the urgency. I’m available to discuss Alex’s request and next steps. To prepare, can you confirm: the raise amount he's requesting, his current compensation and role responsibilities, any recent performance notes, and whether he’s given a formal notice or deadline?\n\nAhead of our call I’ll prepare (1) retention scenarios with budget impact and proposed counteroffer language, and (2) a replacement contingency plan with timeline and candidate options so we can move quickly if needed.\n\nI can meet today at 3:00 PM or tomorrow at 10:00 AM — which works best for you? If this needs immediate attention, please call my mobile or let me know a time and I’ll join right away.\n\nThanks,\nMark\nPartnerships, Digital Excellence",
+      "short_description": "Urgent: developer threatens resignation",
+      "relevance": "Resignation threat could disrupt delivery and partnerships; requires immediate action.",
+      "urgency": 3
+    }
+  },
+  {
+    "source": "email",
+    "payload": {
+      "content": "Hi Mark,\n\nThe last candidate you submitted didn’t meet our expectations in terms of communication skills and real-time problem solving. We'd appreciate a tighter screening process moving forward.\n\nBest,\nSarah",
+      "client_name": "SolarisProAi",
+      "type": "email",
+      "message_id": "negative_email_2",
+      "subject": "Feedback on Recent Candidate",
+      "processed_at": "2025-09-15T14:36:33.891849+00:00",
+      "actionable": true,
+      "suggested_action": "Call Sarah within 24 hours to apologize, gather specifics, commit to tightening screening; deliver 3 vetted replacements within 5 business days and run internal screening review.",
+      "suggested_reply": "Immediate phone call required to address this sensitive issue.",
+      "short_description": "Client complaint: candidate quality",
+      "relevance": "Preserve client trust and prevent churn with a key partner.",
+      "urgency": 3
+    }
+  },
+  {
+    "source": "twitter",
+    "payload": {
+      "url": "https://twitter.com/unknown/status/00000",
+      "text": "Rapid expansion comes with its challenges. We're actively re-evaluating our team structure and partnerships to ensure alignment with long-term goals. #GrowingPains #TechOps",
+      "tweet_id": "2a3b4c5d-6e7f-8901-2345-67890abcdef2",
+      "actionable": true,
+      "client_name": "SolarisProAi",
+      "relevance": "They may change partners; timely outreach preserves revenue and strategic relationship.",
+      "suggested_action": "Reply publicly on Twitter offering help and a quick 20-minute call; then DM the account and follow up by email to the primary contact with 1–2 bank/fintech case studies and a brief proposal for ops automation.",
+      "suggested_reply": "Growth pains are real — we can help. DM us to set up a 20-min call to explore quick wins (ops automation, faster credit decisions). We’ve helped regional banks cut costs and speed decisions. #GrowingPains #TechOps",
+      "short_description": "Partner re-evaluating team and partnerships",
+      "urgency": 2
+    }
+  },
+  {
+    "source": "twitter",
+    "payload": {
+      "url": "https://x.com/Lica2216/status/1956273442841330103",
+      "text": "@DigitalExcellence Your work in AI recruitment is amazing! We're a startup looking for top-tier ML engineers. DM us to discuss potential collaboration! #AIJobs #TechRecruitment",
+      "tweet_id": "1956273442841330103",
+      "actionable": true,
+      "client_name": "Warp",
+      "relevance": "Direct lead for ML talent/partnership that supports growth and client acquisition goals.",
+      "suggested_action": "Reply publicly asking them to DM role details and timeline, provide a contact email, then capture info and book a 15-minute discovery call to scope needs.",
+      "suggested_reply": "@Lica2216 love this — we’d be happy to collaborate! DM the roles, locations, and timelines or email talent@digitalexcellence.ai and we’ll set a quick 15‑min call to align on scope. #AIJobs #TechRecruitment",
+      "short_description": "Startup requests ML engineers via DM",
+      "urgency": 2
+    }
   }
 ]
