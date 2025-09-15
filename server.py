@@ -72,6 +72,52 @@ def run_context_agent():
             "message": f"A apărut o eroare neașteptată: {str(e)}"
         }), 500
 
+@app.route('/run-context-agent-individual')
+def run_context_agent_individual():
+    try:
+        project_dir = os.path.dirname(os.path.abspath(__file__))
+        venv_python = os.path.join(project_dir, '.venv', 'Scripts', 'python.exe')
+
+        python_executable = venv_python if os.path.exists(venv_python) else 'python'
+
+        env = os.environ.copy()
+        if 'PYTHONPATH' in env:
+            env['PYTHONPATH'] = f"{project_dir};{env['PYTHONPATH']}"
+        else:
+            env['PYTHONPATH'] = project_dir
+
+        result = subprocess.run(
+            [python_executable, '-m', 'context.context_agent.main_individual'],
+            capture_output=True,
+            text=True,
+            check=True,
+            cwd=project_dir,
+            env=env
+        )
+
+        return jsonify({
+            "status": "success",
+            "output": result.stdout,
+            "error": result.stderr
+        })
+    except subprocess.CalledProcessError as e:
+        return jsonify({
+            "status": "error",
+            "message": "A apărut o eroare la rularea context.context_agent.main_individual.",
+            "output": e.stdout,
+            "error": e.stderr
+        }), 500
+    except FileNotFoundError:
+        return jsonify({
+            "status": "error",
+            "message": "Scriptul context.context_agent.main_individual nu a fost găsit."
+        }), 404
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"A apărut o eroare neașteptată: {str(e)}"
+        }), 500
+
 @app.route('/run-twitter-agent')
 def run_twitter_agent():
     try:
