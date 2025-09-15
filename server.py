@@ -31,7 +31,7 @@ def run_context_agent():
         # Adaugă directorul proiectului la PYTHONPATH
         env = os.environ.copy()
         if 'PYTHONPATH' in env:
-            env['PYTHONPATH'] = f"{project_dir};{env['PYTHONPATH']}"
+            env['PYTHONPATH'] = f"{project_dir}{os.pathsep}{env['PYTHONPATH']}"
         else:
             env['PYTHONPATH'] = project_dir
 
@@ -82,7 +82,7 @@ def run_context_agent_individual():
 
         env = os.environ.copy()
         if 'PYTHONPATH' in env:
-            env['PYTHONPATH'] = f"{project_dir};{env['PYTHONPATH']}"
+            env['PYTHONPATH'] = f"{project_dir}{os.pathsep}{env['PYTHONPATH']}"
         else:
             env['PYTHONPATH'] = project_dir
 
@@ -136,7 +136,7 @@ def run_twitter_agent():
         # Adaugă directorul proiectului la PYTHONPATH
         env = os.environ.copy()
         if 'PYTHONPATH' in env:
-            env['PYTHONPATH'] = f"{project_dir};{env['PYTHONPATH']}"
+            env['PYTHONPATH'] = f"{project_dir}{os.pathsep}{env['PYTHONPATH']}"
         else:
             env['PYTHONPATH'] = project_dir
 
@@ -195,7 +195,7 @@ def run_twitter_agent_mock():
         # Adaugă directorul proiectului la PYTHONPATH
         env = os.environ.copy()
         if 'PYTHONPATH' in env:
-            env['PYTHONPATH'] = f"{project_dir};{env['PYTHONPATH']}"
+            env['PYTHONPATH'] = f"{project_dir}{os.pathsep}{env['PYTHONPATH']}"
         else:
             env['PYTHONPATH'] = project_dir
 
@@ -342,7 +342,7 @@ def scrape_article():
         python_executable = venv_python if os.path.exists(venv_python) else 'python'
         
         env = os.environ.copy()
-        env['PYTHONPATH'] = project_dir if 'PYTHONPATH' not in env else f"{project_dir};{env['PYTHONPATH']}"
+        env['PYTHONPATH'] = project_dir if 'PYTHONPATH' not in env else f"{project_dir}{os.pathsep}{env['PYTHONPATH']}"
 
         script_path = os.path.join(project_dir, 'agents', 'website', 'article_scraper.py')
 
