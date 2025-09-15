@@ -1,0 +1,50 @@
+name: Scrape Article (on-demand)
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: Base website URL (e.g., https://example.com)
+        required: true
+        type: string
+      client_name:
+        description: Client name key used by the scraper/state
+        required: true
+        type: string
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run article scraper
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python agents/website/article_scraper.py "${{ inputs.base_url }}" "${{ inputs.client_name }}" | tee scraper.log
+
+      - name: Upload outputs (artifacts)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scraped-articles-${{ inputs.client_name }}
+          path: |
+            agents/website/scraped_articles.json
+            agents/website/scraping_state.json
+            scraper.log
+          if-no-files-found: warn
+

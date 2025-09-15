@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: mvpagents-server
+    env: python
+    region: frankfurt
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn server:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      # Add your keys as needed, e.g. OPENAI_API_KEY, WEBSITE_AGENT_URL, etc.
+      # - key: OPENAI_API_KEY
+      #   sync: false
+
