@@ -118,6 +118,52 @@ def run_context_agent_individual():
             "message": f"A apărut o eroare neașteptată: {str(e)}"
         }), 500
 
+@app.route('/analyze-single-item', methods=['POST'])
+def analyze_single_item():
+    """
+    Analizează un singur item folosind LLM individual, fără să ruleze întregul main_individual.
+    Primește în body: {"item": {...}, "user_context": {...}, "rag_context": "..."}
+    """
+    try:
+        data = request.get_json()
+        if not data or 'item' not in data:
+            return jsonify({
+                "status": "error",
+                "message": "Request body must contain 'item' field"
+            }), 400
+
+        # Importăm direct funcțiile necesare
+        sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+        from context.context_agent.llm_context_agent_individual import get_llm_analysis_individual
+        from supabase_retriever import load_json_from_supabase
+
+        # Obținem user_context și rag_context din request sau din Supabase
+        user_context = data.get('user_context')
+        if not user_context:
+            user_context = load_json_from_supabase('user_config')
+            if not user_context:
+                return jsonify({
+                    "status": "error",
+                    "message": "No user_context provided and could not load from Supabase"
+                }), 400
+
+        rag_context = data.get('rag_context', '')
+        item = data['item']
+
+        # Analizăm item-ul
+        result = get_llm_analysis_individual(user_context, rag_context, item)
+
+        return jsonify({
+            "status": "success",
+            "result": result
+        })
+
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": f"A apărut o eroare neașteptată: {str(e)}"
+        }), 500
+
 @app.route('/run-twitter-agent')
 def run_twitter_agent():
     try:
