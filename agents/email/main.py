@@ -1,9 +1,12 @@
-import json
-from .email_agent import workflow  # Import the workflow
-import requests
+
 import os
+import requests
 from datetime import datetime, timezone
 from dotenv import load_dotenv
+from .enhance_and_filter_emails_workflow import enhance_and_filter_emails_workflow,AgentState
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
 
 load_dotenv()
 EMAIL_AGENT_URL =  os.getenv("EMAIL_AGENT_URL")  
@@ -26,7 +29,8 @@ def send_email_payload(email):
             "actionable":email.get("actionable"),
             "suggested_action": email.get("suggested_action"),
             "short_description": email.get("short_description", "No Description"),
-            "relevance": email.get("relevance", "")
+            "relevance": email.get("relevance", ""),
+            "suggested_reply": email.get("suggested_reply", "")
         }
 
         if EMAIL_AGENT_URL is None:
@@ -88,21 +92,69 @@ def get_payload_for_client(client_name):
     except Exception as err:
         print(f"⚠️ Unexpected error during get_payload_for_client: {err}")
 
+def send_to_server(data):
+    url = "http://127.0.0.1:5000/normal"  # change to your server's address
+    try:
+        response = requests.post(url, json=data)
+        response.raise_for_status()  # will raise an error if not 2xx
+        return response.json()       # parse JSON reply
+    except requests.RequestException as e:
+        print(f"Error sending data to server: {e}")
+        return None
         
+@app.route("/normal", methods=["GET"])
+def handle_data_normal():
+    # Run the workflow
+    try:
+        result = enhance_and_filter_emails_workflow.invoke(AgentState(emails=[], filtered_emails=[], email_creds=None))
+        emails = result.get("emails", [])
 
-# Run the workflow
-try:
-    # result = workflow.invoke({})
-    # emails = result.get("emails", [])
-    get_payload_for_client("Anca Irom")
-    # insert_base_context("context/base_context.json")
-    # delete_payload(emails)
-    # if not emails:
-    #     print("ℹ️ No emails returned by workflow.")
-    # else:
-    #     for email in emails:
-    #         send_email_payload(email)
+        if not emails:
+            print("ℹ️ No emails returned by workflow.")
+            return jsonify({"message": "No emails returned by workflow.", "emails": []}), 200
+        else:
+            filtered_emails = [
+        {k: v for k, v in email.items() if k != "body"}
+        for email in emails
+    ]
+            for email in emails:
+                send_email_payload(email)
+            return jsonify({"message": "Emails processed and sent.", "emails": filtered_emails}), 200
+        # return jsonify({"message": "Workflow execution is currently disabled."}), 200
 
-except Exception as main_err:
-    print(f"🚨 Failed to run workflow: {main_err}")
+    except Exception as main_err:
+        print(f"🚨 Failed to run workflow: {main_err}")
+        return jsonify({"error": str(main_err)}), 500
 
+@app.route("/paramRoute", methods=["GET"])
+def handle_data__with_params():
+    # Run the workflow
+    try:
+        incoming = request.get_json()  # Receive the data as JSON
+        creds = incoming.get('creds')
+        print("Received:", incoming)   # Log it on the server for visibility
+
+        result = enhance_and_filter_emails_workflow.invoke(AgentState(emails=[], filtered_emails=[], email_creds=creds))
+        emails = result.get("emails", [])
+
+        if not emails:
+            print("ℹ️ No emails returned by workflow.")
+            return jsonify({"message": "No emails returned by workflow.", "emails": []}), 200
+        else:
+            filtered_emails = [
+        {k: v for k, v in email.items() if k != "body"}
+        for email in emails
+    ]
+            for email in emails:
+                send_email_payload(email)
+            return jsonify({"message": "Emails processed and sent.", "emails": filtered_emails}), 200
+        # return jsonify({"message": "Workflow execution is currently disabled."}), 200
+
+    except Exception as main_err:
+        print(f"🚨 Failed to run workflow: {main_err}")
+        return jsonify({"error": str(main_err)}), 500
+
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

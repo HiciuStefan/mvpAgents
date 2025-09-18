@@ -8,5 +8,5 @@ venv/
 **/venv/
 output/
 token.json
-credentials/client_secrets.json
+credentials.json
 token.pickle

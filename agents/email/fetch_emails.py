@@ -4,15 +4,6 @@ from bs4 import BeautifulSoup
 from googleapiclient.discovery import build
 import re
 
-def mark_email_as_read(creds, email_id):
-    service = build('gmail', 'v1', credentials=creds)
-    service.users().messages().modify(
-        userId='me',
-        id=email_id,
-        body={"removeLabelIds": ["UNREAD"]}
-    ).execute()
-
-
 def get_plain_text_from_payload(payload,level=0):
     """
     Recursively scans a payload (or part of an email) for any part

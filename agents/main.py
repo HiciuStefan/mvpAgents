@@ -6,8 +6,6 @@ from datetime import datetime, timezone
 from dotenv import load_dotenv
 import json
 
-# from agents._tools.llm_emailAgent import return_email_label
-
 load_dotenv()
 RAG_URL_POST_DELETE =  os.getenv("RAG_URL_POST_DELETE")  
 RAG_URL_GET =  os.getenv("RAG_URL_GET") 
@@ -107,9 +105,6 @@ def get_relevant_context_from_rag(scenario_name: str,type: str)->str:
 
         context_list = [doc.get("content", "") for doc in documents]
         return "\n".join(context_list)
-        print(f"✅ Scenario '{scenario_name}' executed successfully. Response: {response.status_code}")
-
-        # return_email_label(scenario,response.text)
         return json.dumps(response.json())
     
     except FileNotFoundError:

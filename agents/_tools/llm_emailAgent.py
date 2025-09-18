@@ -1,28 +1,45 @@
 import os
+import logging
 from dotenv import load_dotenv
 from langchain_openai import AzureChatOpenAI
 from pydantic import BaseModel, SecretStr, ValidationError
 import json
+from supabase import create_client, Client
 
-class EmailLabel(BaseModel):
-	category: str
+PROMPT_TABLE= "Prompt"
+PROMPT_NAME = "prompt_name"
+PROMPT_PAYLOAD = "prompt_payload"
+SYSTEM_USER_CONTEXT_PROMP = "system_user_context_prompt"
+
+class LLMRespSchema(BaseModel):
 	short_description: str
 	actionable: bool  
 	suggested_action: str 
-	relevance: str   
+	relevance: str  
+	suggested_reply: str 
 
 load_dotenv()
-
 endpoint = os.getenv("AZURE_OPENAI_API_BASE")
 subscription_key = os.getenv("AZURE_OPENAI_API_KEY")
 version=os.getenv("AZURE_OPENAI_API_VERSION")
 deployment = os.getenv("DEPLOYMENT_NAME")
-FALLBACK_LABEL = EmailLabel(
-			category="Unknown",
+
+# Initialize Supabase client
+supabase_url = os.getenv("SUPABASE_URL")
+supabase_key = os.getenv("SUPABASE_KEY")
+
+if supabase_url is None or supabase_key is None:
+	raise ValueError("SUPABASE_URL and SUPABASE_KEY environment variables must be set.")
+
+supabase: Client = create_client(supabase_url, supabase_key)
+
+FALLBACK_RESPONSE = LLMRespSchema(
+			# category="Unknown",
 			short_description="",
 			actionable=False,
 			suggested_action="",
-			relevance=""
+			relevance="",
+			suggested_reply=""
 		)
 
 llm = AzureChatOpenAI(
@@ -30,52 +47,86 @@ llm = AzureChatOpenAI(
 	api_key          = SecretStr(subscription_key) if subscription_key else None,
 	api_version      = version,
 	azure_deployment = deployment, 
-	temperature      = 0.3,
+	temperature      = 1,
 )
 
-def return_email_label(email_text: str, db_history_text: str) -> EmailLabel:
+def load_prompt_from_supabase(prompt: str):
+    """
+    Loads JSON content from a specific item in the 'items' table in Supabase.
+    """
+    try:
+        res = supabase.table(PROMPT_TABLE).select(PROMPT_PAYLOAD).eq(PROMPT_NAME, prompt).single().execute()
+        if res.data and PROMPT_PAYLOAD in res.data:
+            return res.data[PROMPT_PAYLOAD]
+        else:
+            print(f"No data or {PROMPT_PAYLOAD} found for item: {prompt}")
+            return None
+    except Exception as e:
+        print(f"Error loading {prompt} from Supabase: {e}")
+        return None
+
+def get_email_enhancements(email_text: str, db_history_text: str) -> LLMRespSchema:
 	try:
-		messages = [
-			{
-				"role": "system",
-				"content": (
-					"You are an intelligent email processor for business use. Your job is to classify each incoming email "
-					"into one and only one of the following categories, based on the overall meaning and context of the message:\n\n"
-					"{\n"
-					"  \"Actionable\": The email asks the user to take a specific action such as confirming, approving, scheduling, replying, or addressing an issue. These emails usually require a response or follow-up.\n"
-					"  \"Informative\": The email provides information without requiring action. It may contain updates, announcements, summaries, reports, or notifications. Often includes phrases like 'FYI', 'for your information', or 'please note'.\n"
-					"  \"Invoice\": The email relates to a financial transaction. It may include terms like invoice, bill, payment, due date, amount owed, or receipt.\n"
-					"  \"Contract\": The email discusses a formal agreement, legal terms, signatures, or clauses. It may include contracts, agreements, legal documents, or requests for signature.\n"
-					"  \"Promo\": The email promotes products, services, or discounts. It may include marketing language like sale, offer, deal, coupon, promo, or limited-time offer.\n"
-					"}\n\n"
-					"Choose the single category that best describes the primary intent or topic of the email.\n"
-					"Focus on the meaning of the email, not just keyword matching.\n"
-					"even if you feel that this could go into muliple categories choose the most relevant one \n"
-					"Add a maximum of 60 characters description of the content of the e-mail.\n"
-					"An email is considered actionable if it pertains to business opportunities, product announcements, customer engagement, market signals, or collaboration.\n"
-					"Set the actionable field to a boolean value (true or false, without quotes) based on this assessment.\n"
-					"If the email is actionable, provide both a suggested action (max 40 characters) and a brief explanation of why the email is relevant (max 100 characters).\n"
-					"If the email is not actionable, set both suggested_action and relevance to empty strings (\"\").\n"
-                    "Return your answer in the following JSON format:\n"
-					"{\n"
-					"  \"category\": \"Actionable\",\n"
-					"  \"short_description\": \"A complaint from a customer\",\n"
-					"  \"actionable\": true,\n"
-					"  \"suggested_action\": \"View invoice.\",\n"
-					"  \"relevance\": \"Contract changes might risk project delays if not followed up promptly.\"\n"
-					"}\n\n"
-					"Only return the JSON. Do not include any explanation or additional content."
-				)
-			},
-			{
-        		"role": "user",
-        		"content": "Historical Emails:\n" + db_history_text
-			},
-			{
-				"role": "user",
-				"content": "New Email:\n" + email_text
-			}
-		]
+		# messages = [
+		# 	{
+		# 		"role": "system",
+		# 		"content": (
+		# 				"You are an intelligent email processor for business use. "
+		# 				"Analyze the provided email and return ONLY a valid JSON object "
+		# 				"with the following fields:\n\n"
+
+		# 				"1. short_description (string, max 60 characters): "
+		# 				"A concise summary of the email content.\n"
+		# 				"2. actionable (boolean): true or false (no quotes). "
+		# 				"An email is actionable if it meets ANY of these criteria:\n"
+		# 				"   - Pertains to business opportunities\n"
+		# 				"   - Contains product announcements\n"
+		# 				"   - Involves customer engagement\n"
+		# 				"   - Provides market signals\n"
+		# 				"   - Requests or proposes collaboration\n"
+		# 				"If unsure, set actionable to false.\n"
+		# 				"3. suggested_action (string, max 40 characters): "
+		# 				"If actionable=true, a concise next step that directly relates to the content of the email. "
+		# 				"If actionable=false, set to \"\".\n"
+		# 				"4. relevance (string, max 100 characters): "
+		# 				"If actionable=true, explain why the email matters. "
+		# 				"If actionable=false, set to \"\".\n"
+		# 				"5. suggested_reply (string): A polite, professional reply to the email.\n\n"
+
+		# 				"Formatting rules:\n"
+		# 				"- Output must be valid JSON with double quotes around all keys and string values.\n"
+		# 				"- No trailing commas.\n"
+		# 				"- Do not include any text outside the JSON.\n\n"
+
+		# 				"Example output:\n"
+		# 				"{\n"
+		# 				"  \"short_description\": \"A complaint from a customer\",\n"
+		# 				"  \"actionable\": true,\n"
+		# 				"  \"suggested_action\": \"View invoice.\",\n"
+		# 				"  \"relevance\": \"Contract changes might risk project delays if not followed up promptly.\",\n"
+		# 				"  \"suggested_reply\": \"Thank you for your email. We apologize for the inconvenience caused. We are looking into the issue and will get back to you shortly with a resolution. Your satisfaction is our priority.\"\n"
+		# 				"}\n\n"
+
+		# 				"ONLY return the JSON object. Do not include explanations, notes, or extra text."
+
+		# 		)
+		# 	},
+		# 	{
+		# 		"role": "user",
+		# 		"content": "Historical Emails:\n" + db_history_text
+		# 	},
+		# 	{
+		# 		"role": "user",
+		# 		"content": "New Email:\n" + email_text
+		# 	}
+		# ]
+
+		# Optionally load prompt from Supabase and override only if valid
+		supabase_prompt = load_prompt_from_supabase(SYSTEM_USER_CONTEXT_PROMP)
+		if supabase_prompt is None:
+			return FALLBACK_RESPONSE
+		else:	
+			messages = supabase_prompt
 
 		ai_msg = llm.invoke(messages)
 		raw = ai_msg.content
@@ -85,19 +136,35 @@ def return_email_label(email_text: str, db_history_text: str) -> EmailLabel:
 
 		try:
 			data = json.loads(raw)  # your parsed JSON
-			label: EmailLabel = EmailLabel(**data)
-			return label
+			email_enhancements: LLMRespSchema = LLMRespSchema(**data)
+			return email_enhancements
+		
 		except json.JSONDecodeError as e:
-			print(f"❌ JSON parsing failed: {e}")
-			# Return a fallback EmailLabel instance on JSON error
-			return FALLBACK_LABEL
+			# TODO remove print, use logging
+			# print(f"❌ JSON parsing failed: {e}")
+
+			logger = logging.getLogger(__name__)
+			logger.error("JSON decoding failed", exc_info=e)
+
+			# Return a fallback LLMRespSchema instance on JSON error
+			return FALLBACK_RESPONSE
+		
 		except ValidationError as exc:
+
+			logger = logging.getLogger(__name__)
+			logger.error("Validation failed", exc_info=exc)
+
 			# this will include missing-fields, wrong-types, extra-fields
 			raise RuntimeError(f"Invalid response schema from LLM:\n{exc}")
 
 	except Exception as e:
-		print(f"Error processing email text: {e}")
-		# Return a fallback EmailLabel instance
-		return FALLBACK_LABEL
+		# TODO remove print, use logging
+		# print(f"Error processing email text: {e}")
+			
+		logger = logging.getLogger(__name__)
+		logger.error("Other exception", exc_info=e)
+		
+		# Return a fallback LLMRespSchema instance
+		return FALLBACK_RESPONSE
 
 
