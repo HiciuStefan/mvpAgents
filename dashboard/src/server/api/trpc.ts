@@ -27,8 +27,10 @@ import { db } from '~/server/db';
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
+  const authResult = await auth();
   return {
     db,
+    auth: authResult,
     ...opts,
   };
 };
@@ -101,23 +103,19 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
 /**
  * Middleware that enforces authentication for all procedures
  */
-const isAuthed = t.middleware(async ({ next }) => {
-  const user = await auth();
-  if (!user.userId) {
-    console.log('User not authenticated');
-    throw new TRPCError({
-      code: 'UNAUTHORIZED',
-      message: 'User not authenticated',
-    });
+const isAuthed = t.middleware(async ({ next, ctx }) => {
+  const user = ctx.auth;
+  if (!ctx.auth.userId) {
+    throw new TRPCError({ code: 'UNAUTHORIZED' });
   }
 
-  if (!user.orgId) {
-    console.log('User not in organization');
-    throw new TRPCError({
-      code: 'BAD_REQUEST',
-      message: 'User must belong to an organization',
-    });
-  }
+  // if (!user.orgId) {
+  //   console.log('User not in organization');
+  //   throw new TRPCError({
+  //     code: 'BAD_REQUEST',
+  //     message: 'User must belong to an organization',
+  //   });
+  // }
 
   return next({
     ctx: {
@@ -125,6 +123,8 @@ const isAuthed = t.middleware(async ({ next }) => {
         userId: user.userId,
         orgId: user.orgId,
       },
+      // correct implementation
+      auth: ctx.auth,
     },
   });
 });
