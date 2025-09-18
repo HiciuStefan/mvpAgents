@@ -1,1 +1,0 @@
-ALTER TABLE "deai_processed_items" ALTER COLUMN "client_name" DROP NOT NULL;

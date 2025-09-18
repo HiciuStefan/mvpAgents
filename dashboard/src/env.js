@@ -1,5 +1,5 @@
-import { createEnv } from "@t3-oss/env-nextjs";
-import { z } from "zod";
+import { createEnv } from '@t3-oss/env-nextjs';
+import { z } from 'zod';
 
 export const env = createEnv({
   /**
@@ -9,10 +9,10 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
     NODE_ENV: z
-      .enum(["development", "test", "production"])
-      .default("development"),
-	EMBEDDINGS_API_KEY: z.string(),
-	RAG_API_KEY: z.string(),
+      .enum(['development', 'test', 'production'])
+      .default('development'),
+    EMBEDDINGS_API_KEY: z.string(),
+    RAG_API_KEY: z.string(),
   },
 
   /**
@@ -31,8 +31,8 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
-	EMBEDDINGS_API_KEY: process.env.EMBEDDINGS_API_KEY,
-	RAG_API_KEY: process.env.RAG_API_KEY,
+    EMBEDDINGS_API_KEY: process.env.EMBEDDINGS_API_KEY,
+    RAG_API_KEY: process.env.RAG_API_KEY,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

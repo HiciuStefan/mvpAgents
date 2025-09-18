@@ -2,18 +2,21 @@ import { TRPCError } from '@trpc/server';
 import { startOfDay, endOfDay } from 'date-fns';
 import { and, count, gte, lt, eq, desc } from 'drizzle-orm';
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
-import { email, processed_DELETE_by_id_schema, processed_DELETE_schema, processed_emails_schema, processed_GET_schema, processed_items } from '~/server/db/schema';
+import { email, processed_DELETE_by_id_schema, processed_DELETE_schema, processed_GET_schema } from '~/server/db/schema';
+
+import { processedItems } from '~/server/db/schema';
+import { processedEmailsSchema } from '~/server/db/schemas/validation-schemas';
 
 export const email_router = createTRPCRouter({
 	create: publicProcedure
-		.input(processed_emails_schema)
+		.input(processedEmailsSchema)
 		.mutation(async ({ ctx, input }) => {
-			return await ctx.db.transaction(async (tx) => {
+			const result = await ctx.db.transaction(async (tx) => {
 				const existing = await tx
 					.select()
 					.from(email)
 					.where(
-						eq(email.message_id, input.message_id)
+						eq(email.messageId, input.message_id)
 					)
 					.limit(1);
 
@@ -24,10 +27,11 @@ export const email_router = createTRPCRouter({
 					});
 				}
 
-				const [processedItem] = await tx.insert(processed_items).values({
+				const [processedItem] = await tx.insert(processedItems).values({
 					type: 'email',
-					client_name: input.client_name,
-					actionable: input.actionable
+					clientName: input.client_name,
+					actionable: input.actionable,
+					urgency: input.urgency
 				}).returning();
 
 				if (!processedItem) {
@@ -42,19 +46,21 @@ export const email_router = createTRPCRouter({
 					processed_at,
 					suggested_action,
 					short_description,
-					relevance
+					relevance,
+					suggested_reply
 				} = input;
 
 				const [item] = await tx.insert(email).values({
-					processed_item_id: processedItem.id,
-					message_id,
+					processedItemId: processedItem.id,
+					messageId : message_id,
 					subject,
 					content,
 					type,
-					processed_at,
-					suggested_action,
-					short_description,
-					relevance
+					processedAt: processed_at,
+					suggestedAction: suggested_action,
+					shortDescription: short_description,
+					relevance,
+					suggestedReply: suggested_reply
 				}).returning();
 
 				return {
@@ -62,6 +68,8 @@ export const email_router = createTRPCRouter({
 					item,
 				};
 			});
+
+			return result;
 		}),
 
 	getLatest: publicProcedure
@@ -72,31 +80,32 @@ export const email_router = createTRPCRouter({
 			return await ctx.db
 				.select({
 					// processed_items columns
-					id: processed_items.id,
-					client_name: processed_items.client_name,
-					actionable: processed_items.actionable,
-					created_at: processed_items.created_at,
+					id: processedItems.id,
+					clientName: processedItems.clientName,
+					actionable: processedItems.actionable,
+					createdAt: processedItems.createdAt,
 					// email columns
-					message_id: email.message_id,
+					messageId: email.messageId,
 					subject: email.subject,
 					content: email.content,
 					type: email.type,
-					processed_at: email.processed_at,
-					suggested_action: email.suggested_action,
-					short_description: email.short_description,
-					relevance: email.relevance
+					processedAt: email.processedAt,
+					suggestedAction: email.suggestedAction,
+					shortDescription: email.shortDescription,
+					relevance: email.relevance,
+					suggestedReply: email.suggestedReply
 				})
-				.from(processed_items)
-				.innerJoin(email, eq(email.processed_item_id, processed_items.id))
+				.from(processedItems)
+				.innerJoin(email, eq(email.processedItemId, processedItems.id))
 				.where(
 					input.client_name
 						? and(
-							eq(processed_items.type, 'email'),
-							eq(processed_items.client_name, input.client_name)
+							eq(processedItems.type, 'email'),
+							eq(processedItems.clientName, input.client_name)
 						)
-						: eq(processed_items.type, 'email')
+						: eq(processedItems.type, 'email')
 				)
-				.orderBy(desc(processed_items.created_at))
+				.orderBy(desc(processedItems.createdAt))
 				.limit(limit);
 		}),
 
@@ -107,12 +116,12 @@ export const email_router = createTRPCRouter({
 		const email_count_data = await ctx.db
 			.select({ count: count() })
 			.from(email)
-			.innerJoin(processed_items, eq(email.processed_item_id, processed_items.id))
+			.innerJoin(processedItems, eq(email.processedItemId, processedItems.id))
 			.where(
 				and(
-					eq(processed_items.type, 'email'),
-					gte(processed_items.created_at, todayStart),
-					lt(processed_items.created_at, todayEnd),
+					eq(processedItems.type, 'email'),
+					gte(processedItems.createdAt, todayStart),
+					lt(processedItems.createdAt, todayEnd),
 				),
 			);
 
@@ -128,13 +137,13 @@ export const email_router = createTRPCRouter({
 	delete_all: publicProcedure
 		.input(processed_DELETE_schema)
 		.mutation(async ({ ctx, input }) => {
-			const results = await ctx.db.delete(processed_items).where(
+			const results = await ctx.db.delete(processedItems).where(
 				input.client_name
 					? and(
-						eq(processed_items.type, 'email'),
-						eq(processed_items.client_name, input.client_name)
+						eq(processedItems.type, 'email'),
+						eq(processedItems.clientName, input.client_name)
 					)
-					: eq(processed_items.type, 'email')
+					: eq(processedItems.type, 'email')
 			).returning();
 
 			return results.length === 0 ? 'no items found' : `${results.length} item(s) deleted`;
@@ -144,7 +153,7 @@ export const email_router = createTRPCRouter({
 		.input(processed_DELETE_by_id_schema)
 		.mutation(async ({ ctx, input }) => {
 			// Delete just the processed_item - CASCADE will delete the email record
-			const results = await ctx.db.delete(processed_items).where(eq(processed_items.id, input.id)).returning();
+			const results = await ctx.db.delete(processedItems).where(eq(processedItems.id, input.id)).returning();
 
 			return results.length === 0 ? 'item not found' : 'item deleted';
 		})

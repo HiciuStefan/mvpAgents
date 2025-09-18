@@ -1,21 +1,25 @@
-import Link from "next/link";
-import { Logo } from "../digital_excellence_logo";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { User } from "lucide-react";
+'use client';
 
-export default function Header()
-{
+import { SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
+import { Button } from "~/components/ui/button";
+
+export default function Header() {
 	return (
-		<div className="flex justify-between items-center py-4 w-full">
-			{/* <div className="flex items-center pr-4 gap-2">
-				<span className="font-medium text-sm text-gray-700">Alex Doe</span>
-				<Avatar>
-					<AvatarImage src="" alt="User" />
-					<AvatarFallback>
-						<User className="w-5 h-5" />
-					</AvatarFallback>
-				</Avatar>
-			</div> */}
+		<div className="relative flex flex-end justify-end align-right w-full">
+			<div className="absolute top-[-50px] right-[0] flex items-center gap-2">
+				<SignedOut>
+					<SignUpButton>
+						<Button variant="outline" className="cursor-pointer">
+							Sign Up
+						</Button>
+					</SignUpButton>
+					<SignInButton>
+						<Button className="bg-[#154dbc] hover:bg-[#1b58d3] cursor-pointer">
+							Sign In
+						</Button>
+					</SignInButton>
+				</SignedOut>
+			</div>
 		</div>
 	)
 }

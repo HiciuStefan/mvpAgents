@@ -1,29 +1,58 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { ChannelBadge } from "~/components/ChannelBadge";
 import type { LatestItem } from "~/server/db/fetch_items";
+import { cn } from "~/lib/utils";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const urgencyColorMap: Record<number, string> = {
+	0: "border-l-gray-300",
+	1: "border-l-green-400",
+	2: "border-l-yellow-300",
+	3: "border-l-red-400",
+};
 
 
-export function ItemCard({ item } : { item: LatestItem })
+export function ItemCard({ item, origin }: { item: LatestItem; origin?: string })
 {
-	const { type, data, client_name } = item;
-	const { short_description, relevance } = data;
+	const pathname = usePathname();
+	const derivedOrigin = pathname ? pathname.replace(/^\//, "") : undefined;
 
-	const suggested_action = 'suggested_action' in data ? data.suggested_action : null;
+	const { id, type, data, clientName, actionable, urgency } = item;
+	const { shortDescription, relevance } = data;
 
+	const suggested_action = 'suggestedAction' in data ? data.suggestedAction : null;
+
+
+
+	const originParam = origin ?? derivedOrigin;
+	const href = originParam ? `/items/${id}?ref=${encodeURIComponent(originParam)}` : `/items/${id}`;
 
 	return (
-		<Card className="flex flex-row w-full">
+		<Link href={href} className="block">
+			<Card
+			className={cn(
+				"flex flex-row w-full border-l-[5px]",
+				"hover:bg-zinc-50",
+				"cursor-pointer",
+				urgencyColorMap[urgency] ?? urgencyColorMap[0]
+			)}
+		>
 			<CardHeader className="w-[200px] shrink-0 flex flex-col items-start h-full py-[5px] gap-3">
-				<CardTitle>{client_name}</CardTitle>
+				<CardTitle>{clientName}</CardTitle>
 				<ChannelBadge type={type} />
 			</CardHeader>
 			<CardContent className="pr-4">
 				<div className="flex flex-col items-start gap-1">
 					<div>
-						<div className="text-lg font-medium">{short_description}</div>
-						<div className="mb-4 text-sm text-gray-500">{relevance}</div>
+						<div className="text-lg font-medium">{shortDescription}</div>
+						{actionable &&
+							<div className="mb-4 text-sm text-gray-500">{relevance}</div>
+						}
 					</div>
-					{suggested_action &&
+					{suggested_action && actionable &&
 						<div className="flex items-center gap-2 font-medium text-[#1b4fb3]">
 							<SparkleSVG size={16} />
 							<span>{suggested_action}</span>
@@ -32,11 +61,12 @@ export function ItemCard({ item } : { item: LatestItem })
 				</div>
 			</CardContent>
 		</Card>
+		</Link>
 	);
 }
 
 
-function SparkleSVG({ size = 24 })
+export function SparkleSVG({ size = 24 })
 {
 	const sizePx = `${size}px`;
 

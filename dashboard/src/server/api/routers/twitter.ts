@@ -2,18 +2,21 @@ import { TRPCError } from '@trpc/server';
 import { startOfDay, endOfDay } from 'date-fns';
 import { and, count, gte, lt, eq, desc } from 'drizzle-orm';
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
-import { processed_items, processed_tweets_schema, twitter, processed_GET_schema, processed_DELETE_by_id_schema, processed_DELETE_schema } from '~/server/db/schema';
+import { twitter, processed_GET_schema, processed_DELETE_by_id_schema, processed_DELETE_schema } from '~/server/db/schema';
+import { processedTweetsSchema } from '~/server/db/schemas/validation-schemas';
+import { processedItems } from '~/server/db/schemas/processed-items';
+
 
 export const twitter_router = createTRPCRouter({
 	create: publicProcedure
-		.input(processed_tweets_schema)
+		.input(processedTweetsSchema)
 		.mutation(async ({ ctx, input }) => {
 			return await ctx.db.transaction(async (tx) => {
 				const existing = await tx
 					.select()
 					.from(twitter)
 					.where(
-						eq(twitter.tweet_id, input.tweet_id)
+						eq(twitter.tweetId, input.tweet_id)
 					)
 					.limit(1);
 
@@ -24,10 +27,11 @@ export const twitter_router = createTRPCRouter({
 					});
 				}
 
-				const [processedItem] = await tx.insert(processed_items).values({
+				const [processedItem] = await tx.insert(processedItems).values({
 					type: 'twitter',
-					client_name: input.client_name,
-					actionable: input.actionable
+					clientName: input.client_name,
+					actionable: input.actionable,
+					urgency: input.urgency
 				}).returning();
 
 				if (!processedItem) {
@@ -38,22 +42,20 @@ export const twitter_router = createTRPCRouter({
 					tweet_id,
 					url,
 					text,
-					status,
-					reply,
+					suggested_reply,
 					suggested_action,
 					short_description,
 					relevance
 				} = input;
 
 				const [item] = await tx.insert(twitter).values({
-					processed_item_id: processedItem.id,
-					tweet_id,
+					processedItemId: processedItem.id,
+					tweetId: tweet_id,
 					url,
 					text,
-					status,
-					reply,
-					suggested_action,
-					short_description,
+					suggestedReply: suggested_reply,
+					suggestedAction: suggested_action,
+					shortDescription: short_description,
 					relevance
 				}).returning();
 
@@ -72,31 +74,30 @@ export const twitter_router = createTRPCRouter({
 			return await ctx.db
 				.select({
 					// processed_items columns
-					id: processed_items.id,
-					client_name: processed_items.client_name,
-					actionable: processed_items.actionable,
-					created_at: processed_items.created_at,
+					id: processedItems.id,
+					client_name: processedItems.clientName,
+					actionable: processedItems.actionable,
+					created_at: processedItems.createdAt,
 					// twitter columns
-					tweet_id: twitter.tweet_id,
+					tweet_id: twitter.tweetId,
 					url: twitter.url,
 					text: twitter.text,
-					status: twitter.status,
-					reply: twitter.reply,
-					suggested_action: twitter.suggested_action,
-					short_description: twitter.short_description,
+					suggested_reply: twitter.suggestedReply,
+					suggested_action: twitter.suggestedAction,
+					short_description: twitter.shortDescription,
 					relevance: twitter.relevance
 				})
-				.from(processed_items)
-				.innerJoin(twitter, eq(twitter.processed_item_id, processed_items.id))
+				.from(processedItems)
+				.innerJoin(twitter, eq(twitter.processedItemId, processedItems.id))
 				.where(
 					input.client_name
 						? and(
-							eq(processed_items.type, 'twitter'),
-							eq(processed_items.client_name, input.client_name)
+							eq(processedItems.type, 'twitter'),
+							eq(processedItems.clientName, input.client_name)
 						)
-						: eq(processed_items.type, 'twitter')
+						: eq(processedItems.type, 'twitter')
 				)
-				.orderBy(desc(processed_items.created_at))
+				.orderBy(desc(processedItems.createdAt))
 				.limit(limit);
 		}),
 
@@ -106,14 +107,14 @@ export const twitter_router = createTRPCRouter({
 		const data = await ctx.db
 			.select()
 			.from(twitter)
-			.innerJoin(processed_items, eq(twitter.processed_item_id, processed_items.id))
+			.innerJoin(processedItems, eq(twitter.processedItemId, processedItems.id))
 			.where(
 				and(
-					eq(processed_items.type, 'twitter'),
-					gte(processed_items.created_at, todayStart)
+					eq(processedItems.type, 'twitter'),
+					gte(processedItems.createdAt, todayStart)
 				)
 			)
-			.orderBy(desc(processed_items.created_at));
+			.orderBy(desc(processedItems.createdAt));
 
 		return data;
 	}),
@@ -125,12 +126,12 @@ export const twitter_router = createTRPCRouter({
 		const twitter_count_data = await ctx.db
 			.select({ count: count() })
 			.from(twitter)
-			.innerJoin(processed_items, eq(twitter.processed_item_id, processed_items.id))
+			.innerJoin(processedItems, eq(twitter.processedItemId, processedItems.id))
 			.where(
 				and(
-					eq(processed_items.type, 'twitter'),
-					gte(processed_items.created_at, todayStart),
-					lt(processed_items.created_at, todayEnd),
+					eq(processedItems.type, 'twitter'),
+					gte(processedItems.createdAt, todayStart),
+					lt(processedItems.createdAt, todayEnd),
 				),
 			);
 
@@ -146,13 +147,13 @@ export const twitter_router = createTRPCRouter({
 	delete_all: publicProcedure
 		.input(processed_DELETE_schema)
 		.mutation(async ({ ctx, input }) => {
-			const results = await ctx.db.delete(processed_items).where(
+			const results = await ctx.db.delete(processedItems).where(
 				input.client_name
 					? and(
-						eq(processed_items.type, 'twitter'),
-						eq(processed_items.client_name, input.client_name)
+						eq(processedItems.type, 'twitter'),
+						eq(processedItems.clientName, input.client_name)
 					)
-					: eq(processed_items.type, 'twitter')
+					: eq(processedItems.type, 'twitter')
 			).returning();
 
 			return results.length === 0 ? 'no items found' : `${results.length} item(s) deleted`;
@@ -162,7 +163,7 @@ export const twitter_router = createTRPCRouter({
 		.input(processed_DELETE_by_id_schema)
 		.mutation(async ({ ctx, input }) => {
 			// Delete just the processed_item - CASCADE will delete the email record
-			const results = await ctx.db.delete(processed_items).where(eq(processed_items.id, input.id)).returning();
+			const results = await ctx.db.delete(processedItems).where(eq(processedItems.id, input.id)).returning();
 
 			return results.length === 0 ? 'item not found' : 'item deleted';
 		})

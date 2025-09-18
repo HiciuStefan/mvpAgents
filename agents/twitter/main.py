@@ -32,6 +32,7 @@ def main():
         tweet["reply"] = ""
         # tweet["tweet_id"] = tweet.pop("id")
         account = extract_account_from_url(tweet["url"])
+        tweet["account"] = account # Add account to the tweet object
         if account not in grouped:
             grouped[account] = {
                 "url": f"https://twitter.com/{account}",

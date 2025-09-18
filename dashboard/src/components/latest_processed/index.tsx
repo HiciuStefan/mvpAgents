@@ -21,6 +21,7 @@ import {
 	TableRow,
 } from "~/components/ui/table"
 import { ROUTES } from "~/lib/nav_items";
+import { DefaultChannelValue } from "../filters/channel_ranges";
 
 
 
@@ -36,7 +37,9 @@ function get_display_type(type: string)
 export async function LatestProcessed()
 {
 	const latest_items = await api.processed_items.getLatest({
-		limit: 4
+		limit: 4,
+		channel: DefaultChannelValue,
+		date_range: 'last_30_days'
 	});
 
 	return (
@@ -57,17 +60,17 @@ export async function LatestProcessed()
 						</TableHeader>
 						<TableBody>
 							{latest_items.map((item, index) => {
-								const { type, data, actionable, client_name } = item;
+								const { type, data, actionable, clientName } = item;
 
-								const { short_description } = data;
+								const { shortDescription } = data;
 
 								const action_type = actionable ? 'Actionable' : 'Informative';
 
 								return (
 									<TableRow key={index}>
 										<TableCell className="font-medium">{get_display_type(type)}</TableCell>
-										<TableCell>{short_description}</TableCell>
-										<TableCell>{client_name}</TableCell>
+										<TableCell>{shortDescription}</TableCell>
+										<TableCell>{clientName}</TableCell>
 										<TableCell className="text-right">{action_type}</TableCell>
 									</TableRow>
 								)

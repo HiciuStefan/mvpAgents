@@ -1,0 +1,27 @@
+{
+    "type": "object",
+    "properties": {
+        "content": { "type": "string" },
+        "client_name": { "type": "string" },
+        "type": { "type": "string" },
+        "message_id": { "type": "string" },
+        "subject": { "type": "string" },
+        "processed_at": { "type": "string", "format": "date-time" },
+        "actionable": { "type": "boolean" },
+        "suggested_action": { "type": "string" },
+        "short_description": { "type": "string" },
+        "relevance": { "type": "string" }
+    },
+    "required": [
+        "content",
+        "client_name",
+        "type",
+        "message_id",
+        "subject",
+        "processed_at",
+        "actionable",
+        "suggested_action",
+        "short_description",
+        "relevance"
+    ]
+}
