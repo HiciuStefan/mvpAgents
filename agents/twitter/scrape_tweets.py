@@ -1,33 +1,18 @@
 # scrape_tweets.py
 
-import json
 import time
 import os
 from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-
-from supabase_retriever import load_json_from_supabase
-
-def load_monitored_urls():
-    """Încarcă URL-urile monitorizate din Supabase (item 'twitter_config')."""
-    config = load_json_from_supabase('twitter_config')
-    if config and 'monitored_urls' in config:
-        return config.get('monitored_urls', [])
-    print("Configurația pentru Twitter nu a fost găsită în Supabase sau nu conține 'monitored_urls'.")
-    return []
+from agents.twitter.data.user.urls_data import MONITORED_URLS
 
 load_dotenv()
 TWITTER_USER = os.getenv("TWITTER_USER")
 TWITTER_PASS = os.getenv("TWITTER_PASS")
 
 def scrape_new_tweets(processed_ids: set) -> list:
-    monitored_urls = load_monitored_urls()
-    if not monitored_urls:
-        print("Nicio URL de monitorizat nu a fost găsită în configurație.")
-        return []
-
     options = webdriver.ChromeOptions()
     options.add_argument("--headless=new")
     options.add_argument("--start-maximized")
@@ -36,29 +21,31 @@ def scrape_new_tweets(processed_ids: set) -> list:
     browser = webdriver.Chrome(options=options)
 
     try:
-        print("Conectare la Twitter...")
+        print("🔐 Conectare la Twitter...")
         browser.get("https://twitter.com/login")
         time.sleep(3)
 
         username_input = browser.find_element(By.NAME, "text")
-        username_input.send_keys(TWITTER_USER or "")
+        username_input.send_keys(TWITTER_USER)
         username_input.send_keys(Keys.RETURN)
         time.sleep(3)
 
+        # password_input = browser.find_element(By.NAME, "password")
         password_input = browser.find_element(By.CSS_SELECTOR, 'input[type="password"]')
-        password_input.send_keys(TWITTER_PASS or "")
+        password_input.send_keys(TWITTER_PASS)
         password_input.send_keys(Keys.RETURN)
         time.sleep(5)
 
         all_tweets = []
 
-        for profile in monitored_urls:
+        for profile in MONITORED_URLS:
             client_name = profile["client_name"]
             profile_url = profile["profile_url"]
-            print(f"Verific {client_name} -> {profile_url}")
+            print(f"🔍 Verific {client_name} → {profile_url}")
             browser.get(profile_url)
             time.sleep(5)
 
+            # Scroll ușor ca să încarce tweeturile
             body = browser.find_element(By.TAG_NAME, "body")
             for _ in range(3):
                 body.send_keys(Keys.PAGE_DOWN)
@@ -76,7 +63,7 @@ def scrape_new_tweets(processed_ids: set) -> list:
                     tweet_url = None
                     for link in links:
                         href = link.get_attribute("href")
-                        if href and "/status/" in href:
+                        if "/status/" in href:
                             tweet_url = href
                             break
 
@@ -93,30 +80,6 @@ def scrape_new_tweets(processed_ids: set) -> list:
                 except Exception as e:
                     print(f"⚠️ Tweet invalid: {e}")
                     continue
-
-        # Persist results for context agent consumption
-        try:
-            project_root = os.path.dirname(os.path.dirname(SCRIPT_DIR))
-            scenarios_dir = os.path.join(project_root, "context", "scenarios")
-            os.makedirs(scenarios_dir, exist_ok=True)
-            output_path = os.path.join(scenarios_dir, "twitter_scraped.json")
-
-            items_for_context = []
-            for t in all_tweets:
-                items_for_context.append({
-                    "type": "twitter",
-                    "client_name": t.get("client_name", "SolarisProAi"),
-                    "tweet_id": t.get("tweet_id", "000000000"),
-                    "url": t.get("url", "https://twitter.com/unknown/status/00000"),
-                    # context_agent payload_builder asteapta "content" pentru twitter
-                    "content": t.get("text", "")
-                })
-
-            with open(output_path, 'w', encoding='utf-8') as f:
-                json.dump(items_for_context, f, indent=2, ensure_ascii=False)
-            print(f"Scraped tweets saved to {output_path}")
-        except Exception as e:
-            print(f"⚠️ Failed to save scraped tweets for context agent: {e}")
 
         return all_tweets
 
