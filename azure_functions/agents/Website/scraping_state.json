@@ -1,0 +1,101 @@
+{
+  "UIPath|https://www.uipath.com": {
+    "blog_index_urls": [
+      "https://www.uipath.com/community-blog",
+      "https://www.uipath.com/blog",
+      "https://www.uipath.com/newsroom"
+    ],
+    "rejected_index_urls": [
+      "https://www.uipath.com/insights",
+      "https://www.uipath.com/resources"
+    ],
+    "blog_index_details": [
+      {
+        "url": "https://www.uipath.com/community-blog",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Page lists multiple dated blog posts across categories (Tutorials, Community News, Developer Interviews) with pagination and signup—a community blog index."
+        }
+      },
+      {
+        "url": "https://www.uipath.com/blog",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Page lists many dated blog articles with categories, excerpts, collections and pagination (1, 2 ... 63), indicating a blog index rather than a single post or product page."
+        }
+      },
+      {
+        "url": "https://www.uipath.com/newsroom",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Page lists multiple dated news/press-release items with filters, categories, pagination and archive years — a newsroom/blog index rather than a single article or product page."
+        }
+      },
+      {
+        "url": "https://www.uipath.com/newsroom",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Page is a newsroom/blog index listing multiple dated press releases/articles with filters and pagination (section root style), not a single article or product page."
+        }
+      }
+    ],
+    "rejected_index_details": [
+      {
+        "url": "https://www.uipath.com/insights",
+        "analysis": {
+          "page_type": "PRODUCT_PAGE",
+          "reason": "The content describes a specific product (UiPath Insights) with features, demos, trial, brochure, integrations, testimonials, and CTAs to try or contact sales, indicating a product/service page."
+        }
+      },
+      {
+        "url": "https://www.uipath.com/resources",
+        "analysis": {
+          "page_type": "OTHER",
+          "reason": "domain_rule_excluded"
+        }
+      }
+    ],
+    "date_selector": "time[itemprop='datePublished'], meta[property='article:published_time']",
+    "latest_article_date": "2025-09-09"
+  },
+  "Opaque|https://www.opaque.co": {
+    "blog_index_urls": [
+      "https://www.opaque.co/resources"
+    ],
+    "rejected_index_urls": [],
+    "blog_index_details": [
+      {
+        "url": "https://www.opaque.co/resources",
+        "analysis": {
+          "page_type": "RESOURCES_MIX",
+          "reason": "Page lists many items across multiple content types (blogs, white papers, reports, press releases, events, webinars, solution briefs) and serves as a hub for mixed resources rather than a single article or pure blog index."
+        }
+      }
+    ],
+    "rejected_index_details": [],
+    "latest_article_date": "2025-08-13"
+  },
+  "Dinamic92|https://www.dinamic92.ro": {
+    "blog_index_urls": [
+      "https://www.dinamic92.ro/blog"
+    ],
+    "rejected_index_urls": [],
+    "blog_index_details": [
+      {
+        "url": "https://www.dinamic92.ro/blog",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Page lists multiple blog/news entries with titles/excerpts and 'Citeste mai departe' (read more) links, indicating a blog index/listing rather than a single article or product."
+        }
+      },
+      {
+        "url": "https://www.dinamic92.ro/blog",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Contains a list of multiple blog/news post titles and excerpts with 'Citeste mai departe' links — a blog index/archive page rather than a single article or product."
+        }
+      }
+    ],
+    "rejected_index_details": []
+  }
+}
