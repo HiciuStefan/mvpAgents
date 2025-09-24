@@ -11,9 +11,9 @@ from langchain_core.output_parsers import JsonOutputParser
 from pydantic.v1 import BaseModel, Field
 from bs4.element import Tag
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
 from agents._tools.llm_client import llm
-from agents.website.blog_index_processor import BlogIndexProcessor
+from blog_index_processor import BlogIndexProcessor
 
 SCRAPING_STATE_FILENAME = "scraping_state.json"
 OUTPUT_FILENAME = "scraped_articles.json"
