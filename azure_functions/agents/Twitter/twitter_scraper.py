@@ -146,7 +146,7 @@ class TwitterScraper:
         logging.info("Salvarea rezultatelor...")
         try:
             script_dir = os.path.dirname(os.path.abspath(__file__))
-            output_path = os.path.join(script_dir, "robust_scraped_tweets.json")
+            output_path = os.path.join(script_dir, "scraped_tweets.json")
 
             items_for_context = []
             for t in all_tweets:
