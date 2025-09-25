@@ -3,8 +3,8 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "python",
-    "SUPABASE_URL": "",
-    "SUPABASE_KEY": "",
+    "SUPABASE_URL": "https://vsdxvpkixkagipdolhrh.supabase.co",
+    "SUPABASE_SERVICE_ROLE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzZHh2cGtpeGthZ2lwZG9saHJoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NTU4MDIxNiwiZXhwIjoyMDcxMTU2MjE2fQ.OPLwK6pq8JAFFSNlAUr9457H9ChiavsT2KE9iAEIotU",
     "TWITTER_USER": "",
     "TWITTER_PASS": ""
   }
