@@ -12,7 +12,7 @@ from pydantic.v1 import BaseModel, Field
 from bs4.element import Tag
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
-from agents._tools.llm_client import llm
+from llm_client import llm
 from blog_index_processor import BlogIndexProcessor
 
 SCRAPING_STATE_FILENAME = "scraping_state.json"
@@ -211,7 +211,7 @@ class ArticleScraperV3:
             if date_element:
                 date_text = date_element.get('datetime') or date_element.get_text(strip=True)
                 if date_text:
-                    m = re.search(r"\d{4}-\d{2}-\d{2}", date_text)
+                    m = re.search(r"\d{4}-\d{2}-\d{2}", str(date_text))
                     if m:
                         publish_date = m.group(0)
         

@@ -13,7 +13,7 @@ from typing import Tuple, List, Dict, Any
 from xml.etree import ElementTree
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
-from agents._tools.llm_client import llm
+from llm_client import llm
 
 KEYWORDS = [
     'blog', 'news', 'articles', 'insights', 'resources', 'stories', 'press', 'events', 'updates', 'journal', 'media', 'publications'

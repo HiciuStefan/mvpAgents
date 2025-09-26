@@ -10,9 +10,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.
 # Import local scraper entrypoint for the Azure Function app
 from article_scraper import ArticleScraperV3
 
-app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
+app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
-@app.route(route="article_scraper", auth_level=func.AuthLevel.FUNCTION, methods=["POST"])
+@app.route(route="article_scraper", auth_level=func.AuthLevel.ANONYMOUS, methods=["POST"])
 def article_scraper_trigger(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function for article_scraper processed a request.')
 

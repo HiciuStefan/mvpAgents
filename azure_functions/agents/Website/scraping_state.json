@@ -98,5 +98,43 @@
         }
       }
     ]
+  },
+  "ExampleSite|https://en.wikipedia.org/wiki/Agentic_AI": {
+    "blog_index_urls": [],
+    "rejected_index_urls": [],
+    "blog_index_details": [],
+    "rejected_index_details": []
+  },
+  "Python Blogs|https://www.python.org/blogs/": {
+    "blog_index_urls": [],
+    "rejected_index_urls": [
+      "https://www.python.org/news"
+    ],
+    "blog_index_details": [],
+    "rejected_index_details": [
+      {
+        "url": "https://www.python.org/news",
+        "analysis": {
+          "page_type": "OTHER",
+          "reason": "llm_error"
+        }
+      }
+    ]
+  },
+  "Python Blogs|https://www.python.org/": {
+    "blog_index_urls": [
+      "https://www.python.org/blogs"
+    ],
+    "rejected_index_urls": [],
+    "blog_index_details": [
+      {
+        "url": "https://www.python.org/blogs",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Page lists multiple dated blog posts/news items (titles and dates) and serves as a blog hub/index rather than a single article or product page."
+        }
+      }
+    ],
+    "rejected_index_details": []
   }
 }
