@@ -1,0 +1,5 @@
+azure-functions
+langchain-openai
+pydantic
+python-dotenv
+supabase

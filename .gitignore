@@ -10,3 +10,4 @@ output/
 token.json
 credentials.json
 token.pickle
+local.settings.json

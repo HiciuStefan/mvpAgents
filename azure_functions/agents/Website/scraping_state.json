@@ -76,27 +76,26 @@
     "latest_article_date": "2025-08-13"
   },
   "Dinamic92|https://www.dinamic92.ro": {
-    "blog_index_urls": [],
-    "rejected_index_urls": [
-      "https://www.dinamic92.ro/blog/",
+    "blog_index_urls": [
       "https://www.dinamic92.ro/blog"
     ],
-    "blog_index_details": [],
-    "rejected_index_details": [
+    "rejected_index_urls": [],
+    "blog_index_details": [
       {
-        "url": "https://www.dinamic92.ro/blog/",
+        "url": "https://www.dinamic92.ro/blog",
         "analysis": {
-          "page_type": "OTHER",
-          "reason": "llm_error"
+          "page_type": "BLOG_INDEX",
+          "reason": "The content is a list of multiple blog/news items with titles and excerpts (\"Citeste mai departe\" links), indicating an index/listing of posts rather than a single article or product page."
         }
       },
       {
         "url": "https://www.dinamic92.ro/blog",
         "analysis": {
-          "page_type": "OTHER",
-          "reason": "llm_error"
+          "page_type": "BLOG_INDEX",
+          "reason": "Page lists multiple blog/news items (titles and short excerpts) with 'Citeste mai departe' (read more) links — a blog index/landing listing many posts."
         }
       }
-    ]
+    ],
+    "rejected_index_details": []
   }
 }

@@ -10,5 +10,5 @@ llm = AzureChatOpenAI(
     api_key=os.getenv("AZURE_OPENAI_API_KEY"),
     api_version=os.getenv("API_VERSION", "2025-01-01-preview"),
     azure_deployment=os.getenv("DEPLOYMENT_NAME", "gpt-4o-mini"),
-    temperature=float(os.getenv("AZURE_TEMPERATURE", 0.3)),
+    temperature=float(os.getenv("AZURE_TEMPERATURE", 1.0)),
 )
