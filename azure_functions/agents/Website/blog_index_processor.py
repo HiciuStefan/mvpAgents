@@ -418,6 +418,14 @@ class BlogIndexProcessor:
         }
         print(f"[INFO] Selected {len(blog_index_urls)} blog index URLs for {client_key}")
 
+    def get_scraping_state_path():
+        if os.environ.get("WEBSITE_INSTANCE_ID"):
+            # Running in Azure Functions → use /tmp
+            return os.path.join("/tmp", "scraping_state.json")
+        else:
+            # Running locally → save next to script
+            return os.path.join(os.path.dirname(__file__), "scraping_state.json")
+
 
 if __name__ == "__main__":
     import sys
@@ -426,7 +434,7 @@ if __name__ == "__main__":
         sys.exit(1)
     base_url = sys.argv[1]
     client_name = sys.argv[2]
-    scraping_state_path = os.path.join(os.path.dirname(__file__), "scraping_state.json")
+    scraping_state_path = BlogIndexProcessor.get_scraping_state_path()
     try:
         with open(scraping_state_path, "r", encoding="utf-8") as f:
             scraping_state = json.load(f)
