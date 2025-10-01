@@ -15,8 +15,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.
 from llm_client import llm
 from blog_index_processor import BlogIndexProcessor
 
-SCRAPING_STATE_FILENAME = "scraping_state.json"
-OUTPUT_FILENAME = "scraped_articles.json"
+SCRAPING_STATE_FILENAME = "/tmp/scraping_state.json"
+OUTPUT_FILENAME = "/tmp/scraped_articles.json"
 
 EXTENSIONS = ('.pdf', '.jpg', '.jpeg', '.png', '.doc', '.docx', '.xls', '.xlsx', '.zip', '.rar', '.mp4', '.avi', '.mov')
 REQUEST_HEADERS = {
