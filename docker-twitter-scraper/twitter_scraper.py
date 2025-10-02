@@ -11,11 +11,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
-
-# Add the root directory to the Python path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-
-from supabase_retriever import load_json_from_supabase
+from selenium.webdriver.chrome.service import Service
 
 # --- Constants ---
 STATE_FILENAME = "scraping_state.json"
@@ -38,18 +34,34 @@ class TwitterScraper:
         self.state_path = os.path.join(os.path.dirname(__file__), STATE_FILENAME)
         self.scraping_state = self._load_scraping_state()
 
-        options = webdriver.ChromeOptions()
+        options = webdriver.FirefoxOptions()
         if headless:
-            options.add_argument("--headless=new")
-        options.add_argument("--start-maximized")
-        options.add_argument("--disable-blink-features=AutomationControlled")
+            options.add_argument("--headless")
+        options.add_argument("--width=1920")
+        options.add_argument("--height=1080")
+        options.add_argument("--disable-gpu")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
-        options.add_argument("--disable-gpu")
-        options.add_argument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+        options.add_argument("--disable-extensions")
+        options.add_argument("--disable-plugins")
+        options.add_argument("--disable-images")
+        options.add_argument("--disable-javascript")
+        options.set_preference("general.useragent.override", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
         
         try:
-            self.browser = webdriver.Chrome(options=options)
+            # Use manually installed FirefoxDriver
+            driver_path = "/usr/local/bin/geckodriver"
+            
+            # Debug: print the driver path
+            logging.info(f"FirefoxDriver path: {driver_path}")
+            
+            # Check if the driver exists and is executable
+            if not os.path.exists(driver_path):
+                logging.error(f"FirefoxDriver not found at: {driver_path}")
+                raise Exception(f"FirefoxDriver not found at: {driver_path}")
+            
+            service = Service(driver_path)
+            self.browser = webdriver.Firefox(service=service, options=options)
             self.wait = WebDriverWait(self.browser, 10)  # Optimized timeout for speed
         except Exception as e:
             logging.error(f"Eroare la inițializarea browser-ului: {e}")
@@ -346,6 +358,9 @@ class TwitterScraper:
         logging.info("Încărcare URL-uri monitorizate din Supabase...")
         
         try:
+            # Try to import supabase_retriever from current directory
+            from supabase_retriever import load_json_from_supabase
+            
             config = load_json_from_supabase('twitter_config')
             if config and 'monitored_urls' in config and isinstance(config['monitored_urls'], list):
                 logging.info(f"Găsite {len(config['monitored_urls'])} URL-uri în configurația Supabase")
@@ -419,3 +434,4 @@ if __name__ == "__main__":
         print(f"\nScraping complete. Found {len(scraped_data)} new tweets.")
     else:
         print("\nNo new tweets found or scraping failed.")
+

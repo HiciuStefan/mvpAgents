@@ -1,0 +1,15 @@
+{
+  "monitored_urls": [
+    {
+      "client_name": "Warp",
+      "profile_url": "https://x.com/Lica2216"
+    }
+  ],
+  "created_at": "2025-01-30T17:00:00.000Z",
+  "note": "Configurație fallback pentru Twitter scraper Docker"
+}
+
+
+
+
+
