@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  twitter-scraper:
+    build: .
+    container_name: twitter-scraper
+    environment:
+      - TWITTER_USER=${TWITTER_USER}
+      - TWITTER_PASS=${TWITTER_PASS}
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+    volumes:
+      - ./scraped_tweets.json:/app/scraped_tweets.json
+      - ./scraping_state.json:/app/scraping_state.json
+      - ./twitter_config_fallback.json:/app/twitter_config_fallback.json
+    restart: unless-stopped
+    # Run every 30 minutes
+    command: >
+      sh -c "
+        while true; do
+          echo 'Starting Twitter scraper...'
+          python twitter_scraper.py
+          echo 'Scraping completed. Waiting 30 minutes...'
+          sleep 1800
+        done
+      "
+
+
+

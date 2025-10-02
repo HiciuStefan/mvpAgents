@@ -1,0 +1,214 @@
+{
+  "UIPath|https://www.uipath.com": {
+    "blog_index_urls": [
+      "https://www.uipath.com/blog",
+      "https://www.uipath.com/community-blog",
+      "https://www.uipath.com/newsroom"
+    ],
+    "rejected_index_urls": [
+      "https://www.uipath.com/resources",
+      "https://www.uipath.com/insights"
+    ],
+    "blog_index_details": [
+      {
+        "url": "https://www.uipath.com/blog",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "The page lists many dated blog articles with categories, excerpts/links, collections and pagination (page numbers and Next), indicating a blog index listing rather than a single post or product."
+        }
+      },
+      {
+        "url": "https://www.uipath.com/community-blog",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Page lists multiple dated blog articles across categories with pagination and subscription — a community blog index rather than a single post or product page."
+        }
+      },
+      {
+        "url": "https://www.uipath.com/newsroom",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Page lists multiple dated news/press release items with categories, filters and pagination (newsroom index), not a single article or product page."
+        }
+      },
+      {
+        "url": "https://www.uipath.com/newsroom",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Newsroom hub listing multiple dated press releases/articles with categories, year filters and pagination—a section index rather than a single post or product page."
+        }
+      }
+    ],
+    "rejected_index_details": [
+      {
+        "url": "https://www.uipath.com/resources",
+        "analysis": {
+          "page_type": "OTHER",
+          "reason": "domain_rule_excluded"
+        }
+      },
+      {
+        "url": "https://www.uipath.com/insights",
+        "analysis": {
+          "page_type": "PRODUCT_PAGE",
+          "reason": "The content describes a specific product (UiPath Insights) with features, benefits, integrations, demos, brochure/whitepaper, and CTAs to try/free trial and contact sales—typical product/service page content."
+        }
+      }
+    ],
+    "date_selector": "meta[property='article:published_time']",
+    "latest_article_date": "2025-09-30"
+  },
+  "Dinamic92|https://www.dinamic92.ro": {
+    "blog_index_urls": [
+      "https://www.dinamic92.ro/blog"
+    ],
+    "rejected_index_urls": [],
+    "blog_index_details": [
+      {
+        "url": "https://www.dinamic92.ro/blog",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "The page lists many blog/news items with titles, short excerpts and 'read more' links—a multi-article blog listing rather than a single post or product page."
+        }
+      },
+      {
+        "url": "https://www.dinamic92.ro/blog",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Page lists multiple blog/article entries with titles and excerpts and 'Citeste mai departe' links, indicating an index of posts rather than a single article or product."
+        }
+      }
+    ],
+    "rejected_index_details": []
+  },
+  "digi24_test|https://www.digi24.ro": {
+    "blog_index_urls": [
+      "https://www.digi24.ro/"
+    ],
+    "rejected_index_urls": [],
+    "blog_index_details": [
+      {
+        "url": "https://www.digi24.ro/",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Page contains many dated news items across categories (latest news, recommended, top read/videos), i.e. an index/listing of articles rather than a single article or product."
+        }
+      },
+      {
+        "url": "https://www.digi24.ro/",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Contains many dated news headlines, excerpts and category sections (latest news, recommendations, top read) — a multi-article news/index listing rather than a single article or product page."
+        }
+      },
+      {
+        "url": "https://www.digi24.ro/",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "The content is a news index with many headlines and short excerpts from multiple dated articles across categories (latest/top reads/emissions/sections), indicating a section/homepage listing rather than a single article or product."
+        }
+      },
+      {
+        "url": "https://www.digi24.ro/",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "The content is a news section homepage listing many article headlines/excerpts with timestamps, categories and navigation to more stories (latest, top read, videos), not a single article or product page."
+        }
+      },
+      {
+        "url": "https://www.digi24.ro/",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Page lists many news articles with timestamps, categories, recommendations and navigation sections (latest/top/read), indicating an index/homepage of news rather than a single article or product."
+        }
+      },
+      {
+        "url": "https://www.digi24.ro/",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Page contains numerous news article headlines and excerpts with timestamps, categories and navigation elements (latest/top reads/sections), indicating an index/listing of articles rather than a single post or product."
+        }
+      },
+      {
+        "url": "https://www.digi24.ro/",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Page contains multiple news headlines and excerpts across categories with timestamps and links (a news/blog index rather than a single article or product)."
+        }
+      },
+      {
+        "url": "https://www.digi24.ro/",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Page contains a large collection of headlines and excerpts across categories (latest news, recommended, top read, videos, timestamps) rather than a single article or product — functioning as a news/index hub."
+        }
+      },
+      {
+        "url": "https://www.digi24.ro/",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Page contains many dated news article headlines and excerpts across categories (news index/homepage style) rather than a single article, product, or resource hub."
+        }
+      },
+      {
+        "url": "https://www.digi24.ro/",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Page contains a list of multiple news articles and excerpts with timestamps and section headings (latest news, top read, recommendations), i.e., a news/index section rather than a single article or product."
+        }
+      }
+    ],
+    "rejected_index_details": [],
+    "date_selector": "time[itemprop='datePublished'], meta[property='article:published_time']",
+    "latest_article_date": "2025-09-30"
+  },
+  "BBC|https://www.bbc.com": {
+    "blog_index_urls": [
+      "https://www.bbc.com/news/stories",
+      "https://www.bbc.com/",
+      "https://www.bbc.com/news"
+    ],
+    "rejected_index_urls": [],
+    "blog_index_details": [
+      {
+        "url": "https://www.bbc.com/news/stories",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Page lists many dated stories/articles with titles, attributions, categories (Long Reads, Must See) — an index/section hub rather than a single article or product."
+        }
+      },
+      {
+        "url": "https://www.bbc.com/",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "The text is a homepage/news index listing many headlines, sections and article teasers across topics with timestamps and navigation — a multi-article listing rather than a single post or product page."
+        }
+      },
+      {
+        "url": "https://www.bbc.com/news",
+        "analysis": {
+          "page_type": "BLOG_INDEX",
+          "reason": "Homepage/news index listing many articles and headlines across categories (multiple dated stories, snippets, sections like Most read/Most watched), not a single article or product."
+        }
+      }
+    ],
+    "rejected_index_details": [],
+    "latest_article_date": "2025-09-30"
+  },
+  "Opaque|https://www.opaque.co": {
+    "blog_index_urls": [
+      "https://www.opaque.co/resources"
+    ],
+    "rejected_index_urls": [],
+    "blog_index_details": [
+      {
+        "url": "https://www.opaque.co/resources",
+        "analysis": {
+          "page_type": "RESOURCES_MIX",
+          "reason": "Page lists many items (blogs, press releases, white papers, reports, events) and serves as a hub mixing articles, downloads and resources rather than a single post or product page."
+        }
+      }
+    ],
+    "rejected_index_details": []
+  }
+}

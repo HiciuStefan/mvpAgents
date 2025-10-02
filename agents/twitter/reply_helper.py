@@ -3,35 +3,24 @@
 import webbrowser
 import pyperclip
 
-def launch_reply(tweet_url: str, reply_text: str) -> None:
+def prepare_reply(tweet_url: str, reply_text: str) -> None:
     """
-    Varianta folosită la aprobare – deschide tweetul și copiază răspunsul.
-    """
-    try:
-        pyperclip.copy(reply_text)
-        print("✅ Răspunsul a fost copiat în clipboard.")
-    except Exception as e:
-        print(f"⚠️ Eroare la copiere în clipboard: {e}")
-    
-    webbrowser.open(tweet_url)
-
-
-def post_reply(tweet_url: str, reply_text: str) -> str:
-    """
-    Varianta pentru postare – deschide tweetul și copiază răspunsul în clipboard.
-    Returnează un mesaj pentru a fi afișat în Streamlit.
+    Opens the target tweet URL in the default browser and copies the reply
+    text to the clipboard.
     """
     try:
         pyperclip.copy(reply_text)
         webbrowser.open(tweet_url)
-        return "✅ Răspunsul a fost copiat în clipboard. Deschide caseta de reply și apasă Ctrl+V."
     except Exception as e:
-        return f"⚠️ Eroare la postare sau copiere în clipboard: {e}"
+        # In a real application, this should be handled by a logger.
+        print(f"An error occurred while preparing the reply: {e}")
 
 
-# Test direct (opțional)
+# Direct test (optional)
 if __name__ == "__main__":
-    tweet = "https://x.com/Lica2216/status/1923667226961355122"
-    reply = "Thanks for sharing this insight! 👏"
-    rezultat = post_reply(tweet, reply)
-    print(rezultat)
+    test_tweet_url = "https://x.com/Lica2216/status/1956273442841330103"
+    test_reply_text = "Thanks for sharing this insight!"
+    
+    print("Running test for prepare_reply...")
+    prepare_reply(test_tweet_url, test_reply_text)
+    print("Test finished. Check your browser and clipboard.")
