@@ -12,7 +12,7 @@ from pydantic.v1 import BaseModel, Field
 from typing import Tuple, List, Dict, Any
 from xml.etree import ElementTree
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
 from agents._tools.llm_client import llm
 
 KEYWORDS = [

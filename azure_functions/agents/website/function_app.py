@@ -4,10 +4,11 @@ import json
 import os
 import sys
 
-# Add the project root to the path to allow importing 'agents'
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+# Ensure project root is on path for shared utilities in `agents/_tools`
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
 
-from agents.website.article_scraper import ArticleScraperV3
+# Import local scraper entrypoint for the Azure Function app
+from article_scraper import ArticleScraperV3
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 

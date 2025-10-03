@@ -11,9 +11,9 @@ from langchain_core.output_parsers import JsonOutputParser
 from pydantic.v1 import BaseModel, Field
 from bs4.element import Tag
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
 from agents._tools.llm_client import llm
-from agents.website.blog_index_processor import BlogIndexProcessor
+from blog_index_processor import BlogIndexProcessor
 
 SCRAPING_STATE_FILENAME = "scraping_state.json"
 OUTPUT_FILENAME = "scraped_articles.json"
@@ -90,81 +90,32 @@ class ArticleScraperV3:
     def _get_html(self, url: str) -> Optional[str]:
         import requests
         try:
-            resp = requests.get(url, timeout=5, headers=REQUEST_HEADERS, allow_redirects=True)
+            resp = requests.get(url, timeout=10, headers=REQUEST_HEADERS, allow_redirects=True)
             if resp.status_code == 200:
                 return resp.text
         except requests.RequestException as e:
             print(f"[ERROR] Failed to fetch {url}: {e}")
         return None
 
-    def find_individual_article_links(self, blog_index_url: str, excluded_index_urls: Optional[set] = None, max_articles: int = 100) -> List[str]:
-        """Găsește articole în ordinea apariției pe site și limitează numărul pentru performanță"""
+    def find_individual_article_links(self, blog_index_url: str, excluded_index_urls: Optional[set] = None) -> List[str]:
+        from collections import deque
         excluded_index_urls = excluded_index_urls or set()
         visited = set()
         index_parsed = urlparse(blog_index_url)
         base_root = f"{index_parsed.scheme}://{index_parsed.netloc}"
         index_path = index_parsed.path.rstrip('/')
         index_segments = [seg for seg in index_path.split('/') if seg]
-        
-        # Folosește o listă în loc de set pentru a păstra ordinea
-        article_candidates = []
-        
-        # Începe cu pagina principală și procesează secvențial
-        current_page = blog_index_url
-        depth = 0
-        max_depth = 2
-        
-        while current_page and depth <= max_depth and len(article_candidates) < max_articles:
-            if current_page in visited:
-                break
-            visited.add(current_page)
-            
-            html_content = self._get_html(current_page)
+        queue = deque([(blog_index_url, 0)])
+        article_candidates = set()
+        while queue:
+            current_url, depth = queue.popleft()
+            if current_url in visited:
+                continue
+            visited.add(current_url)
+            html_content = self._get_html(current_url)
             if not html_content:
-                break
-                
+                continue
             soup = BeautifulSoup(html_content, "html.parser")
-            page_articles = []
-            next_pages = []
-            
-            # Caută și articolele featured din TopBlog__Primary
-            featured_div = soup.find('div', class_='TopBlog__Primary')
-            if featured_div:
-                # Caută linkul către articolul featured
-                featured_link = featured_div.find('a', href=True)
-                if featured_link:
-                    href = featured_link.get('href')
-                    if href:
-                        abs_url = urljoin(current_page, href)
-                        if abs_url not in excluded_index_urls and self._is_internal(blog_index_url, abs_url):
-                            page_articles.append(abs_url)
-                else:
-                    # Dacă nu găsește link, încearcă să construiască URL-ul pe baza titlului
-                    title = featured_div.get('title', '')
-                    if title:
-                        # Convertește titlul la slug
-                        import re
-                        slug = title.lower()
-                        slug = re.sub(r'[^a-z0-9\s-]', '', slug)
-                        slug = re.sub(r'\s+', '-', slug)
-                        slug = slug.strip('-')
-                        
-                        # Construiește URL-urile posibile
-                        possible_urls = [
-                            f"{base_root}/blog/{slug}",
-                            f"{base_root}/blog/ai/{slug}",
-                            f"{base_root}/blog/ai/executives-formula-ai-success"  # URL-ul cunoscut
-                        ]
-                        
-                        # Testează URL-urile posibile
-                        for possible_url in possible_urls:
-                            if possible_url not in excluded_index_urls and self._is_internal(blog_index_url, possible_url):
-                                # Testează dacă URL-ul este valid
-                                test_html = self._get_html(possible_url)
-                                if test_html and title.lower() in test_html.lower():
-                                    page_articles.append(possible_url)
-                                    break
-            
             for a in soup.find_all("a", href=True):
                 if not isinstance(a, Tag):
                     continue
@@ -172,7 +123,7 @@ class ArticleScraperV3:
                 href = href_attr.strip() if isinstance(href_attr, str) else str(href_attr)
                 if not self._is_http_url(href):
                     continue
-                abs_url = urljoin(current_page, href)
+                abs_url = urljoin(current_url, href)
                 if abs_url in excluded_index_urls:
                     continue
                 if not self._is_internal(blog_index_url, abs_url):
@@ -192,34 +143,15 @@ class ArticleScraperV3:
                     ('page' in segments[-1].lower() if segments else False) or
                     (len(segments) >= 2 and 'page' in segments[-2].lower()) or
                     path.endswith('/category') or '/category/' in path or '/tag/' in path or
-                    (len(segments) >= 3 and segments[0] == 'c' and 'page' in segments[-1].lower()) or
-                    # Exclude paginile de paginare (doar numere)
-                    (len(segments) == len(index_segments) + 1 and segments[-1].isdigit())
+                    (len(segments) >= 3 and segments[0] == 'c' and 'page' in segments[-1].lower())
                 )
                 looks_like_article = len(segments) >= len(index_segments) + 1 and not is_index_like
-                
                 if looks_like_article:
-                    page_articles.append(abs_url)
-                elif is_index_like or (len(segments) <= len(index_segments) + 2 and depth < max_depth):
+                    article_candidates.add(abs_url)
+                if is_index_like or (len(segments) <= len(index_segments) + 2 and depth < 2):
                     if abs_url not in visited:
-                        next_pages.append(abs_url)
-            
-            # Adaugă articolele în ordinea găsirii (cele mai recente primul pe majoritatea site-urilor)
-            article_candidates.extend(page_articles)
-            
-            # Limitează numărul de articole pentru performanță
-            if len(article_candidates) >= max_articles:
-                break
-            
-            # Continuă cu următoarea pagină (pagination)
-            if next_pages:
-                current_page = next_pages[0]  # Ia prima pagină următoare
-                depth += 1
-            else:
-                break
-        
-        # Returnează doar numărul limitat de articole în ordinea găsirii
-        return article_candidates[:max_articles]
+                        queue.append((abs_url, depth + 1))
+        return list(article_candidates)
 
     def _find_date_selector_with_llm(self, article_url: str) -> Optional[str]:
         html_content = self._get_html(article_url)
@@ -301,32 +233,15 @@ class ArticleScraperV3:
                             break
         
         if not publish_date:
-            # Fallback to regex on the whole HTML for YYYY-MM-DD format
+            # Fallback to regex on the whole HTML
             date_match = re.search(r"\b\d{4}-\d{2}-\d{2}\b", html_content)
             publish_date = date_match.group(0) if date_match else None
-        
-        # 3. Additional fallback: look for common date formats in text
-        if not publish_date:
-            # Look for patterns like "September 29, 2025" and convert to YYYY-MM-DD
-            month_patterns = {
-                'january': '01', 'february': '02', 'march': '03', 'april': '04',
-                'may': '05', 'june': '06', 'july': '07', 'august': '08',
-                'september': '09', 'october': '10', 'november': '11', 'december': '12'
-            }
-            
-            # Pattern for "Month DD, YYYY"
-            text_date_match = re.search(r"(\w+)\s+(\d{1,2}),\s+(\d{4})", text, re.IGNORECASE)
-            if text_date_match:
-                month_name, day, year = text_date_match.groups()
-                month_num = month_patterns.get(month_name.lower())
-                if month_num:
-                    publish_date = f"{year}-{month_num}-{day.zfill(2)}"
 
         return {
             "url": url,
             "title": title,
             "authors": [],
-            "text": text[:200] if text else "",  # Limitează la primele 200 de caractere
+            "text": text,
             "publish_date": publish_date
         }
 
@@ -361,37 +276,24 @@ class ArticleScraperV3:
                     print(f"[WARN] Could not find any article links on {blog_index_urls[0]} to determine a date selector.")
 
         latest_state_date_str = client_state.get("latest_article_date")
-        cutoff_dt = datetime.now(timezone.utc) - timedelta(days=30)
+        cutoff_dt = datetime.now(timezone.utc) - timedelta(days=183)
         if latest_state_date_str:
             try:
                 cutoff_dt = datetime.strptime(latest_state_date_str, "%Y-%m-%d").replace(tzinfo=timezone.utc)
             except ValueError:
-                print(f"[WARN] Invalid date format in state. Using 30-day lookback.")
+                print(f"[WARN] Invalid date format in state. Using 6-month lookback.")
         
         print(f"[INFO] Using cutoff date: {cutoff_dt.date()}")
 
         new_articles = []
         newest_dt_found: Optional[datetime] = None
-        
-        # Determină limitele pentru performanță
-        is_first_scan = not client_state.get("latest_article_date")
-        max_articles_per_scan = 50 if is_first_scan else 20  # Limitează articolele per scanare
-        
         for blog_index_url in blog_index_urls:
-            article_links = self.find_individual_article_links(blog_index_url, excluded_index_urls=rejected_index_urls, max_articles=max_articles_per_scan)
-            print(f"[INFO] Found {len(article_links)} potential articles in {blog_index_url} (limited to {max_articles_per_scan} for performance).")
-            
-            articles_processed = 0
-            articles_skipped_old = 0
+            article_links = self.find_individual_article_links(blog_index_url, excluded_index_urls=rejected_index_urls)
+            print(f"[INFO] Found {len(article_links)} potential articles in {blog_index_url}.")
             
             for article_url in article_links:
                 if article_url in self.processed_urls:
                     continue
-                
-                # Stop early dacă am procesat prea multe articole
-                if articles_processed >= max_articles_per_scan:
-                    print(f"[INFO] Reached article limit ({max_articles_per_scan}). Stopping early.")
-                    break
                 
                 article_data = self.extract_article_data(article_url, date_selector)
                 if not (article_data and article_data.get("publish_date")):
@@ -402,24 +304,11 @@ class ArticleScraperV3:
                 except (ValueError, TypeError):
                     continue
 
-                # Stop early dacă articolul este mai vechi decât cutoff date
-                if art_dt < cutoff_dt:
-                    articles_skipped_old += 1
-                    # Dacă am găsit mai multe articole vechi consecutive, stop early
-                    if articles_skipped_old >= 5:
-                        print(f"[INFO] Found {articles_skipped_old} old articles in a row. Stopping early.")
-                        break
-                    continue
-                
-                # Reset counter pentru articole vechi când găsim unul nou
-                articles_skipped_old = 0
-                
-                new_articles.append(article_data)
-                self.processed_urls.add(article_url)
-                articles_processed += 1
-                
-                if newest_dt_found is None or art_dt > newest_dt_found:
-                    newest_dt_found = art_dt
+                if art_dt >= cutoff_dt:
+                    new_articles.append(article_data)
+                    self.processed_urls.add(article_url)
+                    if newest_dt_found is None or art_dt > newest_dt_found:
+                        newest_dt_found = art_dt
         
         if new_articles:
             self._save_articles(new_articles)
