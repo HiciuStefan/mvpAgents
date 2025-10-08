@@ -67,3 +67,5 @@ echo "   docker-compose down     # Stop the scraper"
 
 
 
+
+
