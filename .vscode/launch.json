@@ -12,7 +12,10 @@
       "type": "debugpy",
       "request": "launch",
       "module": "agents.email.main",
-      "cwd": "${workspaceFolder}"
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      }
     }, {
       "name": "Debug website agent",
       "type": "debugpy",

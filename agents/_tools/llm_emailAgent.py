@@ -5,26 +5,36 @@ from langchain_openai import AzureChatOpenAI
 from pydantic import BaseModel, SecretStr, ValidationError
 import json
 from supabase import create_client, Client
-from typing import Dict, List, Any
+from ..email.rag import get_relevant_context_from_rag
 
 PROMPT_TABLE= "Prompt"
-PROMPT_NAME = "prompt_name"
-PROMPT_PAYLOAD = "prompt_payload"
-SYSTEM_USER_CONTEXT_PROMP = "system_user_context_prompt"
-CONTENT = "content"
+NAME = "name"
+VALUE = "value"
+SYSTEM_PROMPT = "system_prompt"
+USER_CONTEXT = "user_context"
+JSON_INSTRUCTIONS = "json_instructions"
+
+class AnalysisContent(BaseModel):
+    short_description: str
+    actionable: bool 
+    suggested_action: str 
+    relevance: str 
+    suggested_reply: str
+    priority_level: str
+    opportunity_type: str
 
 class LLMRespSchema(BaseModel):
-	short_description: str
-	actionable: bool  
-	suggested_action: str 
-	relevance: str  
-	suggested_reply: str 
+    analysis: AnalysisContent
 
 load_dotenv()
 endpoint = os.getenv("AZURE_OPENAI_API_BASE")
 subscription_key = os.getenv("AZURE_OPENAI_API_KEY")
 version=os.getenv("AZURE_OPENAI_API_VERSION")
 deployment = os.getenv("DEPLOYMENT_NAME")
+
+NEW_EMAIL = os.getenv("NEW_EMAIL")
+NEW_TWITTER = os.getenv("NEW_TWITTER")
+NEW_WEBSITE = os.getenv("NEW_WEBSITE")
 
 # Initialize Supabase client
 supabase_url = os.getenv("SUPABASE_URL")
@@ -36,13 +46,16 @@ if supabase_url is None or supabase_key is None:
 supabase: Client = create_client(supabase_url, supabase_key)
 
 FALLBACK_RESPONSE = LLMRespSchema(
-			# category="Unknown",
-			short_description="",
-			actionable=False,
+analysis=AnalysisContent(
+			short_description="",	
+			actionable=False,		
 			suggested_action="",
 			relevance="",
-			suggested_reply=""
+			suggested_reply="",
+			priority_level="",
+			opportunity_type=""
 		)
+)
 
 llm = AzureChatOpenAI(
 	azure_endpoint   = endpoint,   
@@ -52,65 +65,75 @@ llm = AzureChatOpenAI(
 	temperature      = 1,
 )
 
-def get_supabase_prompt(prompt: str, email_text: str, db_history_text: str):
-    """
-    Loads JSON content from a specific item in the 'items' table in Supabase.
-    """
+def get_supabase_prompt(prompt_name: str):
+
     try:
-        res = supabase.table(PROMPT_TABLE).select(PROMPT_PAYLOAD).eq(PROMPT_NAME, prompt).single().execute()
-        if res.data and PROMPT_PAYLOAD in res.data:
-            return res.data[PROMPT_PAYLOAD]
+        res = supabase.table(PROMPT_TABLE).select(VALUE).eq(NAME, prompt_name).single().execute()
+        if res.data and VALUE in res.data:
+            return res.data[VALUE]
         else:
-            print(f"No data or {PROMPT_PAYLOAD} found for item: {prompt}")
+            print(f"No data or {VALUE} found for item: {prompt_name}")
             return None
     except Exception as e:
-        print(f"Error loading {prompt} from Supabase: {e}")
+        print(f"Error loading {prompt_name} from Supabase: {e}")
         return None
 	
-def get_enhanced_prompt(prompt:  List[Dict[str, Any]], email_text: str, db_history_text: str):
 
-	prompt[1][CONTENT] += db_history_text
-	prompt[2][CONTENT] += email_text
-	return prompt
-
-def get_email_enhancements(email_text: str, db_history_text: str) -> LLMRespSchema:
+def get_email_enhancements(email_text: str) -> LLMRespSchema:
 	try:
-		# Load prompt from Supabase
-		supabase_prompt = get_supabase_prompt(SYSTEM_USER_CONTEXT_PROMP,email_text,db_history_text)
-		email_and_history_prompt=get_enhanced_prompt(supabase_prompt,email_text,db_history_text) if supabase_prompt else None
+		# Load prompt parts from Supabase
+		system_prompt = get_supabase_prompt(SYSTEM_PROMPT)
+		user_context = get_supabase_prompt(USER_CONTEXT)
+		json_instructions = get_supabase_prompt(JSON_INSTRUCTIONS)
+		rag_context = get_relevant_context_from_rag("pozitive_scenario_1.json", NEW_EMAIL if NEW_EMAIL is not None else "")
 		
-		if email_and_history_prompt is None:
-			return FALLBACK_RESPONSE
-		else:	
-			messages = email_and_history_prompt
+		prompt = (
+        f"{system_prompt}\n\n"
+        f"**User Profile & Goals (JSON):**\n{json.dumps(user_context, ensure_ascii=False, indent=2)}\n\n"
+        f"**Context from Past Interactions (RAG):**\n{rag_context}\n\n"
+        f"**Item to Analyze (JSON Object):**\n{json.dumps(email_text, ensure_ascii=False, indent=2)}\n\n"
+        f"{json_instructions}"
+    )
 
-		ai_msg = llm.invoke(messages)
+		ai_msg = llm.invoke(prompt)
 		raw = ai_msg.content
-		
-		# coalesce list→str if necessary:
+		# coalesce list→str if necessary
 		if isinstance(raw, list):
 			raw = "".join(str(item) for item in raw)
 
+		# ensure we have a string to parse
+		raw_str = str(raw).strip()
+
+		decoder = json.JSONDecoder()
 		try:
-			data = json.loads(raw)  # your parsed JSON
+			# Attempt to decode the first JSON value even if there is trailing text
+			obj, idx = decoder.raw_decode(raw_str)
+			data = obj
+
+		except json.JSONDecodeError:
+			# Try to extract a JSON substring (object or array) using a regex fallback
+			import re
+			logger = logging.getLogger(__name__)
+			logger.debug("Initial raw JSON decode failed, attempting regex fallback. Raw response: %s", raw_str)
+			m = re.search(r'(?s)(\{.*?\}|\[.*?\])', raw_str)
+			if m:
+				try:
+					data = json.loads(m.group(1))
+				except Exception as e:
+					logger.error("Regex-extracted JSON failed to parse", exc_info=e)
+					return FALLBACK_RESPONSE
+			else:
+				logger.error("No JSON object found in LLM response")
+				return FALLBACK_RESPONSE
+
+		# Validate and coerce into the Pydantic schema
+		try:
 			email_enhancements: LLMRespSchema = LLMRespSchema(**data)
 			return email_enhancements
-		
-		except json.JSONDecodeError as e:
-			# TODO remove print, use logging
-			# print(f"❌ JSON parsing failed: {e}")
 
-			logger = logging.getLogger(__name__)
-			logger.error("JSON decoding failed", exc_info=e)
-
-			# Return a fallback LLMRespSchema instance on JSON error
-			return FALLBACK_RESPONSE
-		
 		except ValidationError as exc:
-
 			logger = logging.getLogger(__name__)
 			logger.error("Validation failed", exc_info=exc)
-
 			# this will include missing-fields, wrong-types, extra-fields
 			raise RuntimeError(f"Invalid response schema from LLM:\n{exc}")
 

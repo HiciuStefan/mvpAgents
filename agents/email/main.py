@@ -1,9 +1,10 @@
 
 import os
+import json
 import requests
 from datetime import datetime, timezone
 from dotenv import load_dotenv
-from .enhance_and_filter_emails_workflow import enhance_and_filter_emails_workflow,AgentState
+from mvpAgents.agents.email.enhance_and_filter_emails_workflow import enhance_and_filter_emails_workflow,AgentState
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -104,7 +105,6 @@ def send_to_server(data):
         
 @app.route("/normal", methods=["GET"])
 def handle_data_normal():
-    # Run the workflow
     try:
         result = enhance_and_filter_emails_workflow.invoke(AgentState(emails=[], filtered_emails=[], email_creds=None))
         emails = result.get("emails", [])
@@ -153,8 +153,6 @@ def handle_data__with_params():
     except Exception as main_err:
         print(f"🚨 Failed to run workflow: {main_err}")
         return jsonify({"error": str(main_err)}), 500
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)
