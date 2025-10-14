@@ -17,6 +17,9 @@ export const companyDetails = createAuditTable('company_details', {
   industry: text('industry').notNull(),
   companyDescription: text('company_description').notNull(),
   website: text('website'),
+  businessOverview: text('business_overview'),
+  companyGoals: text('company_goals'),
+  otherBusinessDetails: text('other_business_details'),
 });
 
 // COMPANY DETAILS FORM SCHEMAS

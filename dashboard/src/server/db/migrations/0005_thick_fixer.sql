@@ -1,0 +1,1 @@
+ALTER TABLE "agents"."partners" ADD COLUMN "goals" text;

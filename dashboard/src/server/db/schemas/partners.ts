@@ -15,6 +15,7 @@ export const partners = createAuditTable('partners', {
     }),
   name: text('name').notNull(),
   description: text('description'),
+  goals: text('goals'),
 });
 
 // PARTNER FORM SCHEMAS
@@ -26,6 +27,10 @@ export const partnerFormSchema = z.object({
   description: z
     .string()
     .max(500, 'Description must be less than 500 characters')
+    .optional(),
+  goals: z
+    .string()
+    .max(1000, 'Goals must be less than 1000 characters')
     .optional(),
 });
 

@@ -1,11 +1,14 @@
-'use client'
+'use client';
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { partnerFormSchema, type PartnerFormData } from '~/server/db/schemas/partners';
+import {
+  partnerFormSchema,
+  type PartnerFormData,
+} from '~/server/db/schemas/partners';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { Textarea } from '~/components/ui/textarea';
@@ -17,15 +20,26 @@ import {
   CardTitle,
 } from '~/components/ui/card';
 import { Badge } from '~/components/ui/badge';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '~/components/ui/sheet';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '~/components/ui/alert-dialog';
 import {
-  Building,
-  FileText,
-  Edit,
-  Trash2,
-  ArrowLeft,
-} from 'lucide-react';
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '~/components/ui/sheet';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '~/components/ui/alert-dialog';
+import { Building, FileText, Edit, Trash2, ArrowLeft } from 'lucide-react';
 import { formatDistanceToNow, format } from 'date-fns';
 import { api } from '~/trpc/react';
 import { PartnerContactForm } from '~/components/partners/PartnerContactForm';
@@ -34,6 +48,7 @@ type Partner = {
   id: string;
   name: string;
   description: string | null;
+  goals: string | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -54,6 +69,7 @@ export function PartnerDetailsClient({ partner }: PartnerDetailsClientProps) {
     defaultValues: {
       name: partner.name,
       description: partner.description ?? undefined,
+      goals: partner.goals ?? undefined,
     },
   });
 
@@ -82,6 +98,7 @@ export function PartnerDetailsClient({ partner }: PartnerDetailsClientProps) {
         data: {
           name: data.name,
           description: data.description,
+          goals: data.goals,
         },
       });
     } catch (error) {
@@ -106,6 +123,7 @@ export function PartnerDetailsClient({ partner }: PartnerDetailsClientProps) {
       form.reset({
         name: partner.name,
         description: partner.description ?? undefined,
+        goals: partner.goals ?? undefined,
       });
     }
   };
@@ -146,16 +164,24 @@ export function PartnerDetailsClient({ partner }: PartnerDetailsClientProps) {
                   </SheetDescription>
                 </SheetHeader>
                 <div className="py-6 space-y-6 mx-4">
-                  <form onSubmit={form.handleSubmit(handleEdit)} className="space-y-4">
+                  <form
+                    onSubmit={form.handleSubmit(handleEdit)}
+                    className="space-y-4"
+                  >
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium mb-2">
+                      <label
+                        htmlFor="name"
+                        className="block text-sm font-medium mb-2"
+                      >
                         Partner Name *
                       </label>
                       <Input
                         id="name"
                         {...form.register('name')}
                         placeholder="Enter partner name"
-                        className={form.formState.errors.name ? 'border-red-500' : ''}
+                        className={
+                          form.formState.errors.name ? 'border-red-500' : ''
+                        }
                       />
                       {form.formState.errors.name && (
                         <p className="text-red-500 text-sm mt-1">
@@ -165,7 +191,10 @@ export function PartnerDetailsClient({ partner }: PartnerDetailsClientProps) {
                     </div>
 
                     <div>
-                      <label htmlFor="description" className="block text-sm font-medium mb-2">
+                      <label
+                        htmlFor="description"
+                        className="block text-sm font-medium mb-2"
+                      >
                         Description
                       </label>
                       <Textarea
@@ -177,6 +206,26 @@ export function PartnerDetailsClient({ partner }: PartnerDetailsClientProps) {
                       {form.formState.errors.description && (
                         <p className="text-red-500 text-sm mt-1">
                           {form.formState.errors.description.message}
+                        </p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="goals"
+                        className="block text-sm font-medium mb-2"
+                      >
+                        Partner Goals (Intent)
+                      </label>
+                      <Textarea
+                        id="goals"
+                        {...form.register('goals')}
+                        placeholder="Describe the partner's goals and intent (optional)"
+                        rows={4}
+                      />
+                      {form.formState.errors.goals && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {form.formState.errors.goals.message}
                         </p>
                       )}
                     </div>
@@ -208,7 +257,9 @@ export function PartnerDetailsClient({ partner }: PartnerDetailsClientProps) {
                 <AlertDialogHeader>
                   <AlertDialogTitle>Delete Partner</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Are you sure you want to delete &quot;{partner.name}&quot;? This action cannot be undone and will permanently remove all partner information.
+                    Are you sure you want to delete &quot;{partner.name}&quot;?
+                    This action cannot be undone and will permanently remove all
+                    partner information.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -277,6 +328,15 @@ export function PartnerDetailsClient({ partner }: PartnerDetailsClientProps) {
                 </p>
               </div>
             )}
+
+            {partner.goals && (
+              <div>
+                <label className="text-sm font-medium text-muted-foreground">
+                  Partner Goals (Intent)
+                </label>
+                <p className="mt-1 text-sm leading-relaxed">{partner.goals}</p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -299,7 +359,8 @@ export function PartnerDetailsClient({ partner }: PartnerDetailsClientProps) {
               Partner ID: {partner.id}
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              Created: {formatDistanceToNow(partner.createdAt, { addSuffix: true })}
+              Created:{' '}
+              {formatDistanceToNow(partner.createdAt, { addSuffix: true })}
             </p>
           </CardContent>
         </Card>

@@ -1,4 +1,3 @@
-import { relations } from 'drizzle-orm';
 import { boolean, integer, text } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { createAuditTable } from './helper';
