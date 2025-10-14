@@ -4,6 +4,7 @@ import { website_router } from '~/server/api/routers/website';
 import { rag_router } from '~/server/api/routers/rag';
 import { processed_items_router }from '~/server/api/routers/latest_items';
 import { partners_router } from '~/server/api/routers/partners';
+import { companyDetailsRouter } from '~/server/api/routers/company-details';
 import { createCallerFactory, createTRPCRouter } from '~/server/api/trpc';
 /**
  * This is the primary router for your server.
@@ -16,7 +17,8 @@ export const appRouter = createTRPCRouter({
 	website: website_router,
 	processed_items: processed_items_router,
 	rag: rag_router,
-	partners: partners_router
+	partners: partners_router,
+	companyDetails: companyDetailsRouter
 });
 
 // export type definition of API

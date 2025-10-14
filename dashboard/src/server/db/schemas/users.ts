@@ -9,8 +9,8 @@ export const users = basicSchema.table('users', {
   clerk_id: text('clerk_id').unique().notNull(),
   email: text('email').unique(),
   isActive: boolean('is_active').default(true),
-  firstName: text('first_name').notNull(),
-  lastName: text('last_name').notNull(),
+  firstName: text('first_name'),
+  lastName: text('last_name'),
   createdAt: timestamp('created_at', { withTimezone: true })
     .defaultNow()
     .notNull(),

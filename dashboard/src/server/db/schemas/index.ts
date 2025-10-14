@@ -5,6 +5,7 @@ export * from './users';
 export * from './partners';
 export * from './processed-items';
 export * from './agent-tables';
+export * from './company-details';
 
 // Validation schemas
 export * from './validation-schemas';
