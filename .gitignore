@@ -11,3 +11,7 @@ token.json
 credentials.json
 token.pickle
 local.settings.json
+node_modules/
+**/node_modules/
+dist/
+**/dist/

@@ -1,0 +1,25 @@
+{
+  "name": "twitter-apify-ts",
+  "version": "1.0.0",
+  "description": "Twitter scraper using Apify API - TypeScript version",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "prestart": "npm run build",
+    "start": "func start",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.0.0",
+    "@supabase/supabase-js": "^2.39.0",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "azure-functions-core-tools": "^4.0.0",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.3.0"
+  }
+}
+
